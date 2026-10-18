@@ -1,0 +1,186 @@
+{
+  "schema_version": "0.1.0",
+  "document_status": "EXAMPLE",
+  "not_for_runtime": true,
+  "example_id": "progression_milestones_v0_1",
+  "numeric_status": "HYPOTHESIS",
+  "source_documents": [
+    "../docs/03-time-soul-and-reincarnation.md",
+    "../docs/10-white-sedge-campaign.md",
+    "../docs/11-balance-and-pacing.md"
+  ],
+  "description_ru": "Иллюстративные пределы для эталонной кампании «Белая осока». Структура файла не является утверждённой схемой производственных данных.",
+  "cap_scope": "total_lifespan_ceilings_not_additive_rewards",
+  "cap_application_ru": "Тело использует базовый предел текущей ступени в этом примере. Душа сохраняет наибольший впервые достигнутый личный предел; повторные ступени не прибавляют годы и не снижают сохранённый предел.",
+  "age_origin_ru": "Возраст души отсчитывается от первого игрового вселения; возраст тела учитывается отдельно.",
+  "units": {
+    "lifespan_cap_years": "calendar_years",
+    "rank": "ordinal_milestone_rank"
+  },
+  "milestones": [
+    {
+      "milestone_id": "qi_condensation.early",
+      "rank": 0,
+      "realm_id": "qi_condensation",
+      "realm_name_ru": "Конденсация ци",
+      "substage_id": "early",
+      "substage_name_ru": "Ранняя",
+      "lifespan_cap_years": 100
+    },
+    {
+      "milestone_id": "qi_condensation.middle",
+      "rank": 1,
+      "realm_id": "qi_condensation",
+      "realm_name_ru": "Конденсация ци",
+      "substage_id": "middle",
+      "substage_name_ru": "Средняя",
+      "lifespan_cap_years": 115
+    },
+    {
+      "milestone_id": "qi_condensation.late",
+      "rank": 2,
+      "realm_id": "qi_condensation",
+      "realm_name_ru": "Конденсация ци",
+      "substage_id": "late",
+      "substage_name_ru": "Поздняя",
+      "lifespan_cap_years": 130
+    },
+    {
+      "milestone_id": "qi_condensation.perfection",
+      "rank": 3,
+      "realm_id": "qi_condensation",
+      "realm_name_ru": "Конденсация ци",
+      "substage_id": "perfection",
+      "substage_name_ru": "Великое Совершенство",
+      "lifespan_cap_years": 150
+    },
+    {
+      "milestone_id": "foundation_establishment.early",
+      "rank": 4,
+      "realm_id": "foundation_establishment",
+      "realm_name_ru": "Основание",
+      "substage_id": "early",
+      "substage_name_ru": "Ранняя",
+      "lifespan_cap_years": 200
+    },
+    {
+      "milestone_id": "foundation_establishment.middle",
+      "rank": 5,
+      "realm_id": "foundation_establishment",
+      "realm_name_ru": "Основание",
+      "substage_id": "middle",
+      "substage_name_ru": "Средняя",
+      "lifespan_cap_years": 235
+    },
+    {
+      "milestone_id": "foundation_establishment.late",
+      "rank": 6,
+      "realm_id": "foundation_establishment",
+      "realm_name_ru": "Основание",
+      "substage_id": "late",
+      "substage_name_ru": "Поздняя",
+      "lifespan_cap_years": 270
+    },
+    {
+      "milestone_id": "foundation_establishment.perfection",
+      "rank": 7,
+      "realm_id": "foundation_establishment",
+      "realm_name_ru": "Основание",
+      "substage_id": "perfection",
+      "substage_name_ru": "Великое Совершенство",
+      "lifespan_cap_years": 300
+    },
+    {
+      "milestone_id": "core_formation.early",
+      "rank": 8,
+      "realm_id": "core_formation",
+      "realm_name_ru": "Формирование ядра",
+      "substage_id": "early",
+      "substage_name_ru": "Ранняя",
+      "lifespan_cap_years": 400
+    },
+    {
+      "milestone_id": "core_formation.middle",
+      "rank": 9,
+      "realm_id": "core_formation",
+      "realm_name_ru": "Формирование ядра",
+      "substage_id": "middle",
+      "substage_name_ru": "Средняя",
+      "lifespan_cap_years": 470
+    },
+    {
+      "milestone_id": "core_formation.late",
+      "rank": 10,
+      "realm_id": "core_formation",
+      "realm_name_ru": "Формирование ядра",
+      "substage_id": "late",
+      "substage_name_ru": "Поздняя",
+      "lifespan_cap_years": 535
+    },
+    {
+      "milestone_id": "core_formation.perfection",
+      "rank": 11,
+      "realm_id": "core_formation",
+      "realm_name_ru": "Формирование ядра",
+      "substage_id": "perfection",
+      "substage_name_ru": "Великое Совершенство",
+      "lifespan_cap_years": 600
+    },
+    {
+      "milestone_id": "nascent_soul.early",
+      "rank": 12,
+      "realm_id": "nascent_soul",
+      "realm_name_ru": "Зарождающаяся душа",
+      "substage_id": "early",
+      "substage_name_ru": "Ранняя",
+      "lifespan_cap_years": 900
+    },
+    {
+      "milestone_id": "nascent_soul.middle",
+      "rank": 13,
+      "realm_id": "nascent_soul",
+      "realm_name_ru": "Зарождающаяся душа",
+      "substage_id": "middle",
+      "substage_name_ru": "Средняя",
+      "lifespan_cap_years": 1030
+    },
+    {
+      "milestone_id": "nascent_soul.late",
+      "rank": 14,
+      "realm_id": "nascent_soul",
+      "realm_name_ru": "Зарождающаяся душа",
+      "substage_id": "late",
+      "substage_name_ru": "Поздняя",
+      "lifespan_cap_years": 1160
+    },
+    {
+      "milestone_id": "nascent_soul.perfection",
+      "rank": 15,
+      "realm_id": "nascent_soul",
+      "realm_name_ru": "Зарождающаяся душа",
+      "substage_id": "perfection",
+      "substage_name_ru": "Великое Совершенство",
+      "lifespan_cap_years": 1300
+    }
+  ],
+  "victory_milestone": {
+    "milestone_id": "divine_transformation",
+    "name_ru": "Божественная трансформация",
+    "lifespan_cap_years": null,
+    "lifespan_cap_status": "UNSPECIFIED_AFTER_VICTORY",
+    "effect": "campaign_victory",
+    "notes_ru": "Победа не требует отдельного доказательства бесконечного срока. Значение после победы не задано этим примером."
+  },
+  "invariants": [
+    "Milestone ranks are unique integers from 0 through 15.",
+    "Lifespan caps are total ceilings, not additive rewards.",
+    "Repeating a milestone in a new body does not extend the soul lifespan ceiling.",
+    "Reincarnation does not lower the previously earned soul ceiling.",
+    "A new ceiling takes effect only after its milestone is actually achieved."
+  ],
+  "limitations_ru": [
+    "Числа не являются проверенным балансом для всех тел и способов развития.",
+    "Параметры после Божественной трансформации не определены.",
+    "Этот JSON не следует подключать как готовые настройки игры без отдельного этапа переноса и проверки."
+  ]
+}

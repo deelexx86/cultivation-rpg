@@ -1,0 +1,87 @@
+{
+  "schema_version": "0.1.0",
+  "document_status": "EXAMPLE",
+  "not_for_runtime": true,
+  "source_documents": [
+    "../docs/03-time-soul-and-reincarnation.md",
+    "../docs/09-ui-ux-and-feedback.md",
+    "../docs/10-white-sedge-campaign.md",
+    "../docs/13-state-data-and-save-contracts.md"
+  ],
+  "purpose_ru": "Предварительный экран отделён от авторского примера будущего исхода. Скрытые события из resolution_fixture нельзя отображать игроку до их обнаружения.",
+  "player_visible_preview": {
+    "action_id": "retreat.liang_shen.312",
+    "target_milestone_id": "nascent_soul.middle",
+    "current_world_year": 312,
+    "planned_duration_years": 90,
+    "planned_end_world_year": 402,
+    "soul": {
+      "elapsed_years": 312,
+      "current_lifespan_cap_years": 900,
+      "remaining_before_years": 588,
+      "elapsed_at_planned_end_years": 402,
+      "remaining_at_end_under_current_cap_years": 498,
+      "conditional_cap_after_first_success_years": 1030
+    },
+    "body": {
+      "body_id": "liang_shen",
+      "age_years": 332,
+      "current_lifespan_cap_years": 900,
+      "remaining_before_years": 568,
+      "age_at_planned_end_years": 422,
+      "remaining_at_end_under_current_cap_years": 478
+    },
+    "consumables": [
+      {
+        "definition_id": "prepared_retreat_mixture",
+        "consumption_point": "start_of_supported_practice_phase",
+        "returned_if_interrupted_after_use": false
+      }
+    ],
+    "reusable_support": ["leased_retreat_chamber", "compatible_cultivation_method"],
+    "known_obligations": [
+      {
+        "contract_id": "quiet_dam.guest_elder.liang_shen.300",
+        "ends_world_year": 450,
+        "may_call_during_retreat": true,
+        "exact_future_call_year_known": false
+      }
+    ],
+    "risk_forecast": {
+      "numerical_probability": null,
+      "status": "forecast_model_open",
+      "message_ru": "Оценить подготовку и возможное прерывание; не показывать вымышленный точный процент."
+    },
+    "storage_forecast_required": true,
+    "calendar_advances_before_confirmation": false,
+    "rng_advances_on_preview": false
+  },
+  "author_only_resolution_fixture": {
+    "must_not_be_used_as_player_foreknowledge": true,
+    "interrupt_world_year": 346,
+    "completed_practice_years": 34,
+    "remaining_practice_years": 56,
+    "defense_battle_adds_calendar_years": 0,
+    "injury_recovery": {
+      "known_after_resolution": true,
+      "start_world_year": 346,
+      "end_world_year": 354,
+      "duration_years": 8
+    },
+    "resumed_practice": {
+      "start_world_year": 354,
+      "end_world_year": 410,
+      "duration_years": 56,
+      "used_mixture_from_previous_phase_not_refunded": true,
+      "new_preparation_cost_requires_own_preview": true
+    },
+    "actual_total_elapsed_years": 98,
+    "actual_total_practice_years": 90,
+    "final_world_year": 410,
+    "final_soul_elapsed_years": 410,
+    "final_body_age_years": 430,
+    "first_new_milestone_id": "nascent_soul.middle",
+    "final_soul_lifespan_cap_years": 1030,
+    "final_body_lifespan_cap_years": 1030
+  }
+}

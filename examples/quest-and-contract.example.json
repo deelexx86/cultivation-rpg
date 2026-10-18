@@ -1,0 +1,90 @@
+{
+  "schema_version": "0.1.0",
+  "document_status": "EXAMPLE",
+  "not_for_runtime": true,
+  "source_documents": [
+    "../docs/08-npcs-quests-and-sects.md",
+    "../docs/10-white-sedge-campaign.md",
+    "../docs/13-state-data-and-save-contracts.md"
+  ],
+  "purpose_ru": "Сопоставление личного обещания, торговой роли и договоров организации. Это примеры переходов, а не полный набор квестовых состояний движка.",
+  "personal_quest": {
+    "quest_id": "quest.luo_wei.copper_sign",
+    "issuer_person_id": "luo_wei",
+    "contract_scope": "personal",
+    "accepted_world_year": 0,
+    "objective_item_id": "item.luo_wei.copper_sign",
+    "item_exists_in_world_independently_of_quest": true,
+    "transitions": [
+      {
+        "world_year": 0,
+        "event": "quest_accepted",
+        "state": "active",
+        "objective_item_obtained": false,
+        "reward_promise_valid": true,
+        "reward_claim_available": false,
+        "reward_paid": false
+      },
+      {
+        "world_year": 15,
+        "event": "issuer_died",
+        "state": "expired_issuer_dead",
+        "objective_item_obtained": false,
+        "reward_promise_valid": false,
+        "reward_claim_available": false,
+        "reward_paid": false,
+        "objective_item_deleted": false
+      },
+      {
+        "world_year": 24,
+        "event": "item_found_after_expiration",
+        "state": "expired_issuer_dead",
+        "objective_item_obtained": true,
+        "reward_promise_valid": false,
+        "reward_claim_available": false,
+        "reward_paid": false,
+        "objective_item_location": "player_inventory"
+      }
+    ],
+    "counterexample_ru": "Если награда была выдана до смерти, квест остаётся завершённым. Если знак уже был в инвентаре, смерть заказчика не удаляет его."
+  },
+  "merchant_role": {
+    "role_id": "white_sedge.trading_counter.owner",
+    "former_person_id": "luo_wei",
+    "new_person_id": "yin_qiu",
+    "new_person_occupies_role_by_year": 24,
+    "inherits_personal_trust": false,
+    "inherits_old_personal_reward_debt": false,
+    "inventory_policy": "new_person_stock_from_existing_world_supply_rules"
+  },
+  "first_guest_elder_contract": {
+    "contract_id": "quiet_dam.guest_elder.liang_shen.300",
+    "organization_id": "quiet_dam_retreat",
+    "holder_body_id": "liang_shen",
+    "holder_identity_scope": "current_personal_identity",
+    "start_world_year": 300,
+    "scheduled_end_world_year": 450,
+    "term_years": 150,
+    "benefits": ["limited_retreat_access", "specified_library_access", "finite_services_and_supplies"],
+    "obligation": "protect_upper_intake_and_spiritual_dam",
+    "interrupt_event_year": 346,
+    "actual_end_world_year": 440,
+    "actual_end_cause": "holder_body_died",
+    "new_body_automatically_inherits_personal_access": false
+  },
+  "final_chamber_contract": {
+    "contract_id": "quiet_dam.chamber_use.yun_ze.825",
+    "organization_id": "quiet_dam_retreat",
+    "representative_person_id": "jiang_le",
+    "holder_body_id": "yun_ze",
+    "contract_scope": "institutional",
+    "start_world_year": 825,
+    "record_location": "organization_archive",
+    "consideration_ru": "Переданное исследование и выполненная договорная защита; условия доступа записаны до уединения.",
+    "use_scope": "final_transformation_project",
+    "representative_death_world_year": 830,
+    "representative_death_terminates_contract": false,
+    "right_remains_conditional_on_organization_and_contract": true,
+    "unknown_new_body_transfer_policy": "requires_explicit_contract_terms"
+  }
+}

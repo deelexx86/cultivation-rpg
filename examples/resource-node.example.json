@@ -1,0 +1,97 @@
+{
+  "schema_version": "0.1.0",
+  "document_status": "EXAMPLE",
+  "not_for_runtime": true,
+  "source_documents": [
+    "../docs/06-resources-gathering-and-economy.md",
+    "../docs/10-white-sedge-campaign.md",
+    "../docs/13-state-data-and-save-contracts.md"
+  ],
+  "purpose_ru": "Один источник в последовательных состояниях. Снимки before и after не являются одновременно существующими экземплярами.",
+  "node_id": "white_sedge.glass_root.001",
+  "definition_id": "glass_root",
+  "first_observation": {
+    "world_year": 4,
+    "plant_age_years": 600,
+    "habitat": "old_riverbed_wet_stones",
+    "known_evidence": ["mineral_film_on_stone", "weak_qi_flow"],
+    "discovery_qualification": ["herbalism.basic", "spiritual_perception.basic"],
+    "knowledge_status": "dated_observation",
+    "exact_future_survival_known": false
+  },
+  "before_extraction": {
+    "world_year": 24,
+    "plant_age_years": 620,
+    "status": "present",
+    "origin_properties": {
+      "maturity": "adult",
+      "natural_potential": "rare_spiritual_plant"
+    },
+    "condition_properties": {
+      "integrity": "whole_living_root",
+      "purity": "unprocessed",
+      "energy_retention": "intact"
+    },
+    "observed_structure": ["thin_living_tendrils_attached_to_stone"],
+    "player_options": [
+      "hire_qualified_herbalist",
+      "return_with_better_tools_or_training",
+      "collect_upper_parts_conservatively",
+      "attempt_whole_root_with_declared_risk"
+    ]
+  },
+  "committed_operation": {
+    "operation_id": "harvest.white_sedge.glass_root.001.24",
+    "method": "attempt_whole_root_with_declared_risk",
+    "qualification": "possible_with_risk",
+    "result": "partial_success",
+    "observed_cause": "two_living_tendrils_broken_during_extraction",
+    "result_persisted": true,
+    "repeat_original_roll_allowed": false
+  },
+  "after_extraction": {
+    "world_year": 24,
+    "node_status": "harvested",
+    "whole_plant_available_at_source": false,
+    "produced_items": [
+      {
+        "item_id": "item.glass_root.001.damaged_root",
+        "part": "root",
+        "origin_age_years_at_harvest": 620,
+        "integrity": "damaged_living_tendrils",
+        "can_replace_whole_living_root": false,
+        "remaining_uses": ["processed_stabilizing_substrate"],
+        "container_requirement": "stabilized_root_vessel"
+      },
+      {
+        "item_id": "item.glass_root.001.leaves",
+        "part": "leaves",
+        "origin_age_years_at_harvest": 620,
+        "remaining_uses": ["practice_support_preparation"],
+        "container_requirement": "dry_sealed_packet"
+      },
+      {
+        "item_id": "item.glass_root.001.sap",
+        "part": "sap",
+        "origin_age_years_at_harvest": 620,
+        "remaining_uses": ["practice_support_preparation"],
+        "container_requirement": "sealed_alchemical_vial"
+      }
+    ],
+    "regrowth_policy": "no_automatic_regrowth_in_this_example",
+    "shop_or_scene_reload_effect": "none"
+  },
+  "storage_rule_example": {
+    "calendar_long_action_requires_storage_forecast": true,
+    "walking_or_reading_does_not_apply_calendar_spoilage": true,
+    "unsuitable_container_can_reduce_condition": true,
+    "exact_decay_rates_status": "OPEN"
+  },
+  "expected_invariants": [
+    "age_at_year_24_equals_age_at_year_4_plus_20",
+    "damage_changes_integrity_not_origin_age",
+    "every_produced_item_has_one_physical_instance",
+    "source_does_not_remain_a_second_whole_root",
+    "repeat_inspection_or_reload_does_not_restore_source"
+  ]
+}

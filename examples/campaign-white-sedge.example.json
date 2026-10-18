@@ -1,0 +1,752 @@
+{
+  "schema_version": "0.1.0",
+  "document_status": "EXAMPLE",
+  "not_for_runtime": true,
+  "example_id": "campaign_white_sedge_v0_1",
+  "title_ru": "Белая осока: одна кампания, две жизни",
+  "numeric_status": "HYPOTHESIS",
+  "source_documents": [
+    "../docs/03-time-soul-and-reincarnation.md",
+    "../docs/10-white-sedge-campaign.md",
+    "../docs/11-balance-and-pacing.md"
+  ],
+  "progression_reference_file": "progression-milestones.example.json",
+  "description_ru": "Контрольный набор состояний принятого эталонного маршрута. Это не сценарий обязательного прохождения и не производственная схема сохранений.",
+  "start_world_year": 0,
+  "start_campaign_year": 0,
+  "calendar_unit": "year",
+  "soul_elapsed_origin": "first_playable_possession_after_injury",
+  "cap_scope": "total_lifespan_ceilings_not_additive_rewards",
+  "checkpoint_interpretation_ru": "Состояние после указанного события; у body_death — при гибели, у victory — явно до нового предела. soul_milestone_first_time относится к milestone_id данной строки, а не к любому другому результату события.",
+  "body_definitions": [
+    {
+      "body_id": "liang_shen",
+      "name_ru": "Лян Шэнь",
+      "entry_campaign_year": 0,
+      "age_at_entry_years": 20,
+      "initial_milestone_id": "qi_condensation.early",
+      "initial_body_lifespan_cap_years": 100,
+      "death_campaign_year": 440,
+      "notes_ru": "Первое тело. Его сознание угасло до игрового вселения души."
+    },
+    {
+      "body_id": "yun_ze",
+      "name_ru": "Юнь Цзэ",
+      "entry_campaign_year": 445,
+      "age_at_entry_years": 18,
+      "initial_milestone_id": "qi_condensation.early",
+      "initial_body_lifespan_cap_years": 100,
+      "death_campaign_year": null,
+      "notes_ru": "Второе тело; склонность к холодной ци и сравнительно слабая физическая выносливость. Прежнее сознание угасло до переселения."
+    }
+  ],
+  "checkpoints": [
+    {
+      "campaign_year": 0,
+      "world_year": 0,
+      "body_id": "liang_shen",
+      "body_age_years": 20,
+      "body_lifespan_cap_years": 100,
+      "soul_lifespan_cap_years": 100,
+      "milestone_id": "qi_condensation.early",
+      "event_kind": "start",
+      "soul_milestone_first_time": true,
+      "notes_ru": "Стартовая ступень записывается как первое известное личное достижение; предел 100 является начальным общим пределом, а не дополнительной наградой."
+    },
+    {
+      "campaign_year": 24,
+      "world_year": 24,
+      "body_id": "liang_shen",
+      "body_age_years": 44,
+      "body_lifespan_cap_years": 115,
+      "soul_lifespan_cap_years": 115,
+      "milestone_id": "qi_condensation.middle",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": true
+    },
+    {
+      "campaign_year": 35,
+      "world_year": 35,
+      "body_id": "liang_shen",
+      "body_age_years": 55,
+      "body_lifespan_cap_years": 130,
+      "soul_lifespan_cap_years": 130,
+      "milestone_id": "qi_condensation.late",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": true
+    },
+    {
+      "campaign_year": 40,
+      "world_year": 40,
+      "body_id": "liang_shen",
+      "body_age_years": 60,
+      "body_lifespan_cap_years": 150,
+      "soul_lifespan_cap_years": 150,
+      "milestone_id": "qi_condensation.perfection",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": true
+    },
+    {
+      "campaign_year": 45,
+      "world_year": 45,
+      "body_id": "liang_shen",
+      "body_age_years": 65,
+      "body_lifespan_cap_years": 200,
+      "soul_lifespan_cap_years": 200,
+      "milestone_id": "foundation_establishment.early",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": true
+    },
+    {
+      "campaign_year": 70,
+      "world_year": 70,
+      "body_id": "liang_shen",
+      "body_age_years": 90,
+      "body_lifespan_cap_years": 235,
+      "soul_lifespan_cap_years": 235,
+      "milestone_id": "foundation_establishment.middle",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": true
+    },
+    {
+      "campaign_year": 90,
+      "world_year": 90,
+      "body_id": "liang_shen",
+      "body_age_years": 110,
+      "body_lifespan_cap_years": 270,
+      "soul_lifespan_cap_years": 270,
+      "milestone_id": "foundation_establishment.late",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": true
+    },
+    {
+      "campaign_year": 110,
+      "world_year": 110,
+      "body_id": "liang_shen",
+      "body_age_years": 130,
+      "body_lifespan_cap_years": 300,
+      "soul_lifespan_cap_years": 300,
+      "milestone_id": "foundation_establishment.perfection",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": true
+    },
+    {
+      "campaign_year": 130,
+      "world_year": 130,
+      "body_id": "liang_shen",
+      "body_age_years": 150,
+      "body_lifespan_cap_years": 400,
+      "soul_lifespan_cap_years": 400,
+      "milestone_id": "core_formation.early",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": true
+    },
+    {
+      "campaign_year": 170,
+      "world_year": 170,
+      "body_id": "liang_shen",
+      "body_age_years": 190,
+      "body_lifespan_cap_years": 470,
+      "soul_lifespan_cap_years": 470,
+      "milestone_id": "core_formation.middle",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": true
+    },
+    {
+      "campaign_year": 215,
+      "world_year": 215,
+      "body_id": "liang_shen",
+      "body_age_years": 235,
+      "body_lifespan_cap_years": 535,
+      "soul_lifespan_cap_years": 535,
+      "milestone_id": "core_formation.late",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": true
+    },
+    {
+      "campaign_year": 255,
+      "world_year": 255,
+      "body_id": "liang_shen",
+      "body_age_years": 275,
+      "body_lifespan_cap_years": 600,
+      "soul_lifespan_cap_years": 600,
+      "milestone_id": "core_formation.perfection",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": true
+    },
+    {
+      "campaign_year": 300,
+      "world_year": 300,
+      "body_id": "liang_shen",
+      "body_age_years": 320,
+      "body_lifespan_cap_years": 900,
+      "soul_lifespan_cap_years": 900,
+      "milestone_id": "nascent_soul.early",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": true
+    },
+    {
+      "campaign_year": 410,
+      "world_year": 410,
+      "body_id": "liang_shen",
+      "body_age_years": 430,
+      "body_lifespan_cap_years": 1030,
+      "soul_lifespan_cap_years": 1030,
+      "milestone_id": "nascent_soul.middle",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": true
+    },
+    {
+      "campaign_year": 440,
+      "world_year": 440,
+      "body_id": "liang_shen",
+      "body_age_years": 460,
+      "body_lifespan_cap_years": 1030,
+      "soul_lifespan_cap_years": 1030,
+      "milestone_id": "nascent_soul.middle",
+      "event_kind": "body_death",
+      "soul_milestone_first_time": false,
+      "notes_ru": "Предотвратимая гибель в Архиве Верхнего Створа. Показаны состояние и возраст при гибели. Тридцать лет движения к следующей ступени не были закреплены."
+    },
+    {
+      "campaign_year": 445,
+      "world_year": 445,
+      "body_id": "yun_ze",
+      "body_age_years": 18,
+      "body_lifespan_cap_years": 100,
+      "soul_lifespan_cap_years": 1030,
+      "milestone_id": "qi_condensation.early",
+      "event_kind": "reincarnation",
+      "soul_milestone_first_time": false,
+      "notes_ru": "Новое тело получает свой начальный предел 100 лет. Предел души 1030 сохранён; на переселение уже потрачено пять календарных лет."
+    },
+    {
+      "campaign_year": 448,
+      "world_year": 448,
+      "body_id": "yun_ze",
+      "body_age_years": 21,
+      "body_lifespan_cap_years": 115,
+      "soul_lifespan_cap_years": 1030,
+      "milestone_id": "qi_condensation.middle",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": false
+    },
+    {
+      "campaign_year": 452,
+      "world_year": 452,
+      "body_id": "yun_ze",
+      "body_age_years": 25,
+      "body_lifespan_cap_years": 130,
+      "soul_lifespan_cap_years": 1030,
+      "milestone_id": "qi_condensation.late",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": false
+    },
+    {
+      "campaign_year": 456,
+      "world_year": 456,
+      "body_id": "yun_ze",
+      "body_age_years": 29,
+      "body_lifespan_cap_years": 150,
+      "soul_lifespan_cap_years": 1030,
+      "milestone_id": "qi_condensation.perfection",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": false
+    },
+    {
+      "campaign_year": 460,
+      "world_year": 460,
+      "body_id": "yun_ze",
+      "body_age_years": 33,
+      "body_lifespan_cap_years": 200,
+      "soul_lifespan_cap_years": 1030,
+      "milestone_id": "foundation_establishment.early",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": false
+    },
+    {
+      "campaign_year": 468,
+      "world_year": 468,
+      "body_id": "yun_ze",
+      "body_age_years": 41,
+      "body_lifespan_cap_years": 235,
+      "soul_lifespan_cap_years": 1030,
+      "milestone_id": "foundation_establishment.middle",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": false
+    },
+    {
+      "campaign_year": 477,
+      "world_year": 477,
+      "body_id": "yun_ze",
+      "body_age_years": 50,
+      "body_lifespan_cap_years": 270,
+      "soul_lifespan_cap_years": 1030,
+      "milestone_id": "foundation_establishment.late",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": false
+    },
+    {
+      "campaign_year": 483,
+      "world_year": 483,
+      "body_id": "yun_ze",
+      "body_age_years": 56,
+      "body_lifespan_cap_years": 300,
+      "soul_lifespan_cap_years": 1030,
+      "milestone_id": "foundation_establishment.perfection",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": false
+    },
+    {
+      "campaign_year": 490,
+      "world_year": 490,
+      "body_id": "yun_ze",
+      "body_age_years": 63,
+      "body_lifespan_cap_years": 400,
+      "soul_lifespan_cap_years": 1030,
+      "milestone_id": "core_formation.early",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": false
+    },
+    {
+      "campaign_year": 505,
+      "world_year": 505,
+      "body_id": "yun_ze",
+      "body_age_years": 78,
+      "body_lifespan_cap_years": 470,
+      "soul_lifespan_cap_years": 1030,
+      "milestone_id": "core_formation.middle",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": false
+    },
+    {
+      "campaign_year": 521,
+      "world_year": 521,
+      "body_id": "yun_ze",
+      "body_age_years": 94,
+      "body_lifespan_cap_years": 535,
+      "soul_lifespan_cap_years": 1030,
+      "milestone_id": "core_formation.late",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": false
+    },
+    {
+      "campaign_year": 536,
+      "world_year": 536,
+      "body_id": "yun_ze",
+      "body_age_years": 109,
+      "body_lifespan_cap_years": 600,
+      "soul_lifespan_cap_years": 1030,
+      "milestone_id": "core_formation.perfection",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": false
+    },
+    {
+      "campaign_year": 550,
+      "world_year": 550,
+      "body_id": "yun_ze",
+      "body_age_years": 123,
+      "body_lifespan_cap_years": 900,
+      "soul_lifespan_cap_years": 1030,
+      "milestone_id": "nascent_soul.early",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": false
+    },
+    {
+      "campaign_year": 585,
+      "world_year": 585,
+      "body_id": "yun_ze",
+      "body_age_years": 158,
+      "body_lifespan_cap_years": 1030,
+      "soul_lifespan_cap_years": 1030,
+      "milestone_id": "nascent_soul.middle",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": false
+    },
+    {
+      "campaign_year": 695,
+      "world_year": 695,
+      "body_id": "yun_ze",
+      "body_age_years": 268,
+      "body_lifespan_cap_years": 1160,
+      "soul_lifespan_cap_years": 1160,
+      "milestone_id": "nascent_soul.late",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": true
+    },
+    {
+      "campaign_year": 825,
+      "world_year": 825,
+      "body_id": "yun_ze",
+      "body_age_years": 398,
+      "body_lifespan_cap_years": 1300,
+      "soul_lifespan_cap_years": 1300,
+      "milestone_id": "nascent_soul.perfection",
+      "event_kind": "milestone",
+      "soul_milestone_first_time": true
+    },
+    {
+      "campaign_year": 985,
+      "world_year": 985,
+      "body_id": "yun_ze",
+      "body_age_years": 558,
+      "body_lifespan_cap_years": 1300,
+      "soul_lifespan_cap_years": 1300,
+      "milestone_id": "nascent_soul.perfection",
+      "event_kind": "victory",
+      "soul_milestone_first_time": false,
+      "achieved_milestone_id": "divine_transformation",
+      "cap_measurement": "before_victory",
+      "notes_ru": "Оба предела 1300 и milestone_id nascent_soul.perfection описывают состояние до победы. Божественная трансформация достигнута впервые, но soul_milestone_first_time=false относится к измеряемой прежней ступени. Новый предел после победы не задан."
+    }
+  ],
+  "npc_events": [
+    {
+      "npc_id": "luo_wei",
+      "name_ru": "Ло Вэй",
+      "event_kind": "npc_death",
+      "campaign_year": 15,
+      "world_year": 15,
+      "age_years": 82,
+      "age_reference_campaign_year": 0,
+      "age_at_reference_years": 67,
+      "consequence_ru": "Личное поручение заканчивается; найденный позднее медный знак не исчезает и не даёт прежнюю награду автоматически."
+    },
+    {
+      "npc_id": "shen_yu",
+      "name_ru": "Шэнь Юй",
+      "event_kind": "npc_death",
+      "campaign_year": 154,
+      "world_year": 154,
+      "age_years": 300,
+      "age_reference_campaign_year": 0,
+      "age_at_reference_years": 146,
+      "consequence_ru": "Наставница больше не обучает; уже полученные знания игрока сохраняются."
+    },
+    {
+      "npc_id": "jiang_le",
+      "name_ru": "Цзян Лэ",
+      "event_kind": "npc_death",
+      "campaign_year": 830,
+      "world_year": 830,
+      "age_years": 1030,
+      "age_reference_campaign_year": 300,
+      "age_at_reference_years": 500,
+      "consequence_ru": "Личная связь прекращается; отдельно оформленный договор с обителью о камере сохраняется."
+    }
+  ],
+  "calendar_events": [
+    {
+      "event_id": "cache_created",
+      "campaign_year": 170,
+      "world_year": 170,
+      "description_ru": "Лян Шэнь создаёт тайник с внешним и внутренним отделениями."
+    },
+    {
+      "event_id": "dam_defence_call",
+      "campaign_year": 346,
+      "world_year": 346,
+      "description_ru": "Вызов по договору о защите обители прерывает текущее уединение."
+    },
+    {
+      "event_id": "spiritual_vein_shift",
+      "campaign_year": 512,
+      "world_year": 512,
+      "description_ru": "Меняются условия части местообитаний, открываются холодные выходы, перемещается часть жителей и торговли."
+    },
+    {
+      "event_id": "chamber_institutional_agreement_recorded",
+      "campaign_year": 825,
+      "world_year": 825,
+      "description_ru": "Право использования финальной камеры закреплено в архиве обители к началу подготовки."
+    }
+  ],
+  "illustrative_intervals": [
+    {
+      "interval_id": "initial_training",
+      "start_campaign_year": 0,
+      "end_campaign_year": 4,
+      "duration_years": 4,
+      "description_ru": "Обучение травничеству и духовному обследованию"
+    },
+    {
+      "interval_id": "qi_middle_retreat",
+      "start_campaign_year": 4,
+      "end_campaign_year": 24,
+      "duration_years": 20,
+      "description_ru": "Уединение до средней Конденсации ци"
+    },
+    {
+      "interval_id": "alchemy_study",
+      "start_campaign_year": 24,
+      "end_campaign_year": 30,
+      "duration_years": 6,
+      "description_ru": "Обучение алхимии"
+    },
+    {
+      "interval_id": "qi_late_retreat",
+      "start_campaign_year": 30,
+      "end_campaign_year": 35,
+      "duration_years": 5,
+      "description_ru": "Продвижение до поздней Конденсации ци"
+    },
+    {
+      "interval_id": "qi_perfection_retreat",
+      "start_campaign_year": 35,
+      "end_campaign_year": 40,
+      "duration_years": 5,
+      "description_ru": "Продвижение до Великого Совершенства Конденсации ци"
+    },
+    {
+      "interval_id": "foundation_breakthrough",
+      "start_campaign_year": 40,
+      "end_campaign_year": 45,
+      "duration_years": 5,
+      "description_ru": "Плавное закрепление Основания"
+    },
+    {
+      "interval_id": "foundation_accumulation",
+      "start_campaign_year": 45,
+      "end_campaign_year": 60,
+      "duration_years": 15,
+      "description_ru": "Накопление для следующей подстадии Основания"
+    },
+    {
+      "interval_id": "minor_breakthrough_failed",
+      "start_campaign_year": 60,
+      "end_campaign_year": 63,
+      "duration_years": 3,
+      "description_ru": "Неудачная малая попытка; накопление сохраняется"
+    },
+    {
+      "interval_id": "minor_stability_recovery",
+      "start_campaign_year": 63,
+      "end_campaign_year": 65,
+      "duration_years": 2,
+      "description_ru": "Восстановление устойчивости"
+    },
+    {
+      "interval_id": "minor_breakthrough_retry",
+      "start_campaign_year": 65,
+      "end_campaign_year": 70,
+      "duration_years": 5,
+      "description_ru": "Успешная повторная малая попытка"
+    },
+    {
+      "interval_id": "resonant_core_abort",
+      "start_campaign_year": 110,
+      "end_campaign_year": 116,
+      "duration_years": 6,
+      "description_ru": "Резонансный великий прорыв прекращён по решению игрока"
+    },
+    {
+      "interval_id": "core_recovery",
+      "start_campaign_year": 116,
+      "end_campaign_year": 120,
+      "duration_years": 4,
+      "description_ru": "Восстановление после прекращённого прорыва"
+    },
+    {
+      "interval_id": "alternative_core_breakthrough",
+      "start_campaign_year": 120,
+      "end_campaign_year": 130,
+      "duration_years": 10,
+      "description_ru": "Другой метод Формирования ядра"
+    },
+    {
+      "interval_id": "nascent_stabilization",
+      "start_campaign_year": 300,
+      "end_campaign_year": 312,
+      "duration_years": 12,
+      "description_ru": "Изучение жилы и подготовка состояния"
+    },
+    {
+      "interval_id": "interrupted_retreat_elapsed",
+      "start_campaign_year": 312,
+      "end_campaign_year": 346,
+      "duration_years": 34,
+      "description_ru": "Фактически прошедшая часть уединения до вызова"
+    },
+    {
+      "interval_id": "post_defence_recovery",
+      "start_campaign_year": 346,
+      "end_campaign_year": 354,
+      "duration_years": 8,
+      "description_ru": "Восстановление после защиты плотины"
+    },
+    {
+      "interval_id": "resumed_retreat",
+      "start_campaign_year": 354,
+      "end_campaign_year": 410,
+      "duration_years": 56,
+      "description_ru": "Оставшаяся часть практики после восстановления"
+    },
+    {
+      "interval_id": "uncommitted_late_nascent_growth",
+      "start_campaign_year": 410,
+      "end_campaign_year": 440,
+      "duration_years": 30,
+      "description_ru": "Продвижение к поздней подстадии без её закрепления"
+    },
+    {
+      "interval_id": "soul_transfer",
+      "start_campaign_year": 440,
+      "end_campaign_year": 445,
+      "duration_years": 5,
+      "description_ru": "Переселение в тело Юнь Цзэ"
+    },
+    {
+      "interval_id": "body_rebuilding",
+      "start_campaign_year": 445,
+      "end_campaign_year": 585,
+      "duration_years": 140,
+      "description_ru": "Восстановление прежней средней Зарождающейся души"
+    },
+    {
+      "interval_id": "transformation_preparation",
+      "start_campaign_year": 825,
+      "end_campaign_year": 960,
+      "duration_years": 135,
+      "description_ru": "Подготовка камеры, среды и резервов"
+    },
+    {
+      "interval_id": "transformation_process",
+      "start_campaign_year": 960,
+      "end_campaign_year": 985,
+      "duration_years": 25,
+      "description_ru": "Процесс Божественной трансформации"
+    }
+  ],
+  "retreat_interruption_example": {
+    "planned_start_campaign_year": 312,
+    "planned_duration_years": 90,
+    "planned_end_campaign_year": 402,
+    "interruption_campaign_year": 346,
+    "elapsed_practice_years": 34,
+    "recovery_duration_years": 8,
+    "resumed_start_campaign_year": 354,
+    "remaining_practice_years": 56,
+    "actual_completion_campaign_year": 410,
+    "cultivation_retained": true,
+    "consumed_materials_refunded": false,
+    "notes_ru": "Вызов разрешается на фактической дате. Сначала 34 года практики, затем восемь лет восстановления и оставшиеся 56 лет практики."
+  },
+  "contracts": [
+    {
+      "contract_id": "first_body_invited_elder",
+      "subject_body_id": "liang_shen",
+      "start_campaign_year": 300,
+      "planned_end_campaign_year": 450,
+      "planned_duration_years": 150,
+      "actual_end_campaign_year": 440,
+      "actual_end_reason": "body_death",
+      "description_ru": "Личный договор приглашённого старейшины; прекращается при гибели тела до запланированного конца срока."
+    },
+    {
+      "contract_id": "final_chamber_institutional_use",
+      "subject_body_id": "yun_ze",
+      "recorded_by_campaign_year": 825,
+      "expiry_campaign_year": null,
+      "expiry_status": "UNSPECIFIED_IN_EXAMPLE",
+      "survives_signer_npc_death": true,
+      "description_ru": "Договор с обителью о камере сохраняется после смерти Цзян Лэ. null не означает бесконечного срока; конечные условия вне этого примера."
+    }
+  ],
+  "cache_example": {
+    "creation_campaign_year": 170,
+    "recovery_campaign_year": null,
+    "recovery_date_status": "AFTER_REINCARNATION_EXACT_YEAR_UNSPECIFIED",
+    "outer_compartment": "looted_after_collapse",
+    "inner_compartment": "partially_preserved",
+    "surviving_categories_ru": [
+      "часть средств",
+      "инструменты",
+      "сосуды",
+      "медный торговый знак Ло Вэя"
+    ],
+    "lost_or_damaged_categories_ru": [
+      "часть разграбленного содержимого",
+      "материалы, испортившиеся за время хранения"
+    ],
+    "state_rerolled_on_open": false,
+    "items_automatically_transferred_to_new_body": false
+  },
+  "pacing_estimate": {
+    "status": "HYPOTHESIS_NOT_PLAYTEST_DATA",
+    "phases": [
+      {
+        "phase_id": "start_to_foundation",
+        "start_campaign_year": 0,
+        "end_campaign_year": 45,
+        "estimated_real_hours": 6
+      },
+      {
+        "phase_id": "foundation_to_core",
+        "start_campaign_year": 45,
+        "end_campaign_year": 130,
+        "estimated_real_hours": 7
+      },
+      {
+        "phase_id": "core_to_first_nascent",
+        "start_campaign_year": 130,
+        "end_campaign_year": 300,
+        "estimated_real_hours": 8
+      },
+      {
+        "phase_id": "first_nascent_to_death",
+        "start_campaign_year": 300,
+        "end_campaign_year": 440,
+        "estimated_real_hours": 6
+      },
+      {
+        "phase_id": "death_to_restored_mid_nascent",
+        "start_campaign_year": 440,
+        "end_campaign_year": 585,
+        "estimated_real_hours": 5
+      },
+      {
+        "phase_id": "restored_mid_nascent_to_victory",
+        "start_campaign_year": 585,
+        "end_campaign_year": 985,
+        "estimated_real_hours": 14
+      }
+    ],
+    "estimated_real_hours_total": 46,
+    "communicated_range_hours": [
+      45,
+      50
+    ]
+  },
+  "one_body_comparison": {
+    "status": "HYPOTHESIS_NOT_PLAYTEST_DATA",
+    "avoidable_death_campaign_year": 440,
+    "late_nascent_campaign_year": 520,
+    "nascent_perfection_campaign_year": 650,
+    "victory_campaign_year": 810,
+    "target_ideal_real_hours": 30,
+    "two_body_victory_campaign_year": 985,
+    "additional_calendar_years": 175,
+    "additional_years_components": {
+      "soul_transfer": 5,
+      "restoration_after_transfer": 140,
+      "lost_uncommitted_body_cultivation": 30
+    },
+    "death_to_restored_milestone_years": 145,
+    "notes_ru": "Сравнение двух конкретных маршрутов. Оно не задаёт фиксированную цену любой смерти, не требует смены тела для победы и не доказывает реальную длительность."
+  },
+  "design_guardrails": {
+    "body_death_is_mandatory": false,
+    "world_seed_reset_on_reincarnation": false,
+    "rare_crystal_is_mandatory_for_victory": false,
+    "old_personal_trust_automatically_transfers": false,
+    "repeated_milestones_extend_soul_lifespan": false,
+    "post_victory_lifespan_is_specified": false
+  },
+  "limitations_ru": [
+    "Все указанные исходы составляют один пример, а не обязательную линейную кампанию.",
+    "Редкие ресурсы могут отсутствовать в иной генерации; должны существовать другие логичные пути развития.",
+    "Уникальные состояния мира сохраняются между телами; вход в сцену и загрузка не обновляют находки.",
+    "Часы реальной игры являются целевыми оценками, а не результатом измерения готового прототипа.",
+    "Календарная хронология не утверждает конкретную производственную единицу времени и порядок совпавших событий."
+  ]
+}
