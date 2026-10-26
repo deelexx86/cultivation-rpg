@@ -1,14 +1,16 @@
 {
-  "schema_version": "0.1.0",
+  "schema_version": "0.2.0",
   "document_status": "EXAMPLE",
   "not_for_runtime": true,
-  "example_id": "campaign_white_sedge_v0_1",
+  "example_id": "campaign_white_sedge_v0_2",
   "title_ru": "Белая осока: одна кампания, две жизни",
   "numeric_status": "HYPOTHESIS",
   "source_documents": [
     "../docs/03-time-soul-and-reincarnation.md",
     "../docs/10-white-sedge-campaign.md",
-    "../docs/11-balance-and-pacing.md"
+    "../docs/11-balance-and-pacing.md",
+    "../docs/21-space-time-and-regional-calendar.md",
+    "../docs/22-endgame-and-ascension.md"
   ],
   "progression_reference_file": "progression-milestones.example.json",
   "description_ru": "Контрольный набор состояний принятого эталонного маршрута. Это не сценарий обязательного прохождения и не производственная схема сохранений.",
@@ -397,7 +399,7 @@
       "soul_milestone_first_time": false,
       "achieved_milestone_id": "divine_transformation",
       "cap_measurement": "before_victory",
-      "notes_ru": "Оба предела 1300 и milestone_id nascent_soul.perfection описывают состояние до победы. Божественная трансформация достигнута впервые, но soul_milestone_first_time=false относится к измеряемой прежней ступени. Новый предел после победы не задан."
+      "notes_ru": "Оба предела 1300 и milestone_id nascent_soul.perfection описывают состояние до победы. Божественная трансформация достигнута впервые, но soul_milestone_first_time=false относится к измеряемой прежней ступени. После победы срок души бесконечен; эти численные поля сохраняют измерение до победы, предел тела после неё остаётся OPEN."
     }
   ],
   "npc_events": [
@@ -740,13 +742,28 @@
     "rare_crystal_is_mandatory_for_victory": false,
     "old_personal_trust_automatically_transfers": false,
     "repeated_milestones_extend_soul_lifespan": false,
-    "post_victory_lifespan_is_specified": false
+    "post_victory_soul_lifespan_unbounded": true,
+    "post_victory_body_lifespan_specified": false
   },
   "limitations_ru": [
     "Все указанные исходы составляют один пример, а не обязательную линейную кампанию.",
-    "Редкие ресурсы могут отсутствовать в иной генерации; должны существовать другие логичные пути развития.",
+    "Редкие ресурсы могут отсутствовать в другом допустимом профиле; должны существовать другие логичные пути развития.",
     "Уникальные состояния мира сохраняются между телами; вход в сцену и загрузка не обновляют находки.",
     "Часы реальной игры являются целевыми оценками, а не результатом измерения готового прототипа.",
-    "Календарная хронология не утверждает конкретную производственную единицу времени и порядок совпавших событий."
-  ]
+    "Годовая хронология — EXAMPLE. Runtime использует дни и земной календарь; точные даты примера не назначены, порядок совпавших событий остаётся OPEN."
+  ],
+  "calendar_contract": {
+    "status": "EXAMPLE",
+    "fixture_unit": "calendar_year",
+    "runtime_precision": "day",
+    "start_world_year": 0,
+    "start_soul_age_years": 0,
+    "initial_soul_lifespan_cap_years": 100,
+    "calendar_structure": "earth_analog",
+    "runtime_exact_dates_assigned": false,
+    "starting_epoch_selection": false,
+    "forced_ascension_world_year": 3000,
+    "forced_ascension_requires_victory": true,
+    "voluntary_ascension_after_victory": true
+  }
 }

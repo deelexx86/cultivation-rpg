@@ -1,13 +1,14 @@
 {
-  "schema_version": "0.1.0",
+  "schema_version": "0.2.0",
   "document_status": "EXAMPLE",
   "not_for_runtime": true,
-  "example_id": "progression_milestones_v0_1",
-  "numeric_status": "HYPOTHESIS",
+  "example_id": "progression_milestones_v0_2",
+  "numeric_status": "HYPOTHESIS_EXCEPT_ACCEPTED_INITIAL_SOUL_CAP",
   "source_documents": [
     "../docs/03-time-soul-and-reincarnation.md",
     "../docs/10-white-sedge-campaign.md",
-    "../docs/11-balance-and-pacing.md"
+    "../docs/11-balance-and-pacing.md",
+    "../docs/22-endgame-and-ascension.md"
   ],
   "description_ru": "Иллюстративные пределы для эталонной кампании «Белая осока». Структура файла не является утверждённой схемой производственных данных.",
   "cap_scope": "total_lifespan_ceilings_not_additive_rewards",
@@ -167,9 +168,11 @@
     "milestone_id": "divine_transformation",
     "name_ru": "Божественная трансформация",
     "lifespan_cap_years": null,
-    "lifespan_cap_status": "UNSPECIFIED_AFTER_VICTORY",
+    "lifespan_cap_status": "SOUL_UNBOUNDED_AFTER_VICTORY",
     "effect": "campaign_victory",
-    "notes_ru": "Победа не требует отдельного доказательства бесконечного срока. Значение после победы не задано этим примером."
+    "notes_ru": "После победы срок души бесконечен. null вместе с SOUL_UNBOUNDED_AFTER_VICTORY обозначает отсутствие конечного предела души; предел тела после победы остаётся OPEN.",
+    "soul_lifespan_unbounded": true,
+    "body_lifespan_cap_status": "OPEN"
   },
   "invariants": [
     "Milestone ranks are unique integers from 0 through 15.",
@@ -179,8 +182,8 @@
     "A new ceiling takes effect only after its milestone is actually achieved."
   ],
   "limitations_ru": [
-    "Числа не являются проверенным балансом для всех тел и способов развития.",
-    "Параметры после Божественной трансформации не определены.",
+    "Начальный предел души 100 лет принят; остальные численные пределы до победы не являются проверенным балансом.",
+    "Предел тела и детали эндгейма после Божественной трансформации не определены; бессмертие души принято.",
     "Этот JSON не следует подключать как готовые настройки игры без отдельного этапа переноса и проверки."
   ]
 }
