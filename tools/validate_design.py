@@ -133,7 +133,26 @@ def progression_and_campaign():
     check(all(type(cap) is int and cap > 0 for cap in caps), "progression: positive integer caps")
     check(all(a < b for a, b in zip(caps, caps[1:])), "progression: strictly increasing caps")
     check(progression["victory_milestone"]["lifespan_cap_years"] is None,
-          "progression: post-victory cap remains unspecified")
+          "progression: unbounded soul has no finite numeric cap")
+    victory_rule = progression["victory_milestone"]
+    equal(victory_rule["lifespan_cap_status"], "SOUL_UNBOUNDED_AFTER_VICTORY", "victory: explicit soul lifespan meaning")
+    check(victory_rule["soul_lifespan_unbounded"] is True, "victory: immortal soul")
+    equal(victory_rule["body_lifespan_cap_status"], "OPEN", "victory: body cap not inferred")
+    cal = campaign["calendar_contract"]
+    equal((campaign["start_world_year"], campaign["start_campaign_year"], cal["start_world_year"], cal["start_soul_age_years"]),
+          (0, 0, 0, 0), "calendar: fixed zero start")
+    equal(cal["initial_soul_lifespan_cap_years"], rows[0]["lifespan_cap_years"], "calendar: initial cap matches progression")
+    equal(cal["initial_soul_lifespan_cap_years"], 100, "calendar: initial soul cap 100")
+    equal((cal["fixture_unit"], cal["runtime_precision"], cal["calendar_structure"]),
+          ("calendar_year", "day", "earth_analog"), "calendar: fixture years distinct from runtime days")
+    check(cal["runtime_exact_dates_assigned"] is False, "calendar: no invented exact fixture dates")
+    check(cal["starting_epoch_selection"] is False, "calendar: no starting epoch selection")
+    equal(cal["forced_ascension_world_year"], 3000, "calendar: shared epoch boundary")
+    check(cal["forced_ascension_requires_victory"] is True and cal["voluntary_ascension_after_victory"] is True,
+          "calendar: ascension rules apply after victory")
+    check(campaign["design_guardrails"]["post_victory_soul_lifespan_unbounded"] is True
+          and campaign["design_guardrails"]["post_victory_body_lifespan_specified"] is False,
+          "campaign: soul/body post-victory distinction")
     equal(campaign["progression_reference_file"], EXAMPLES[0] + ".example.json", "progression reference")
     bodies = by_id(campaign["body_definitions"], "body_id", "bodies")
     points = campaign["checkpoints"]
