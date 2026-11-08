@@ -3,7 +3,7 @@
 
 These checks do not run the game or validate production balance. Fixture-specific
 dates/counts are intentional; update them when the reference design is revised.
-Life boundaries use TIME-08's strict comparison for this fixture only (PROPOSAL).
+Life boundaries use TIME-08's accepted strict comparison; fixture values remain examples.
 """
 
 import json

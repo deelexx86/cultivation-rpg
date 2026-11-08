@@ -1,6 +1,6 @@
 # 24. Профессии и изготовление
 
-**ID:** SYS-CRAFT · **Версия:** 0.6.0 · **Статус:** ACCEPTED для правил; каталоги, формулы, цены и сроки OPEN.
+**ID:** SYS-CRAFT · **Версия:** 0.14.1 · **Статус:** ACCEPTED для правил; каталоги, формулы, цены и сроки OPEN.
 
 Основание — принятие пользователем концепции 3 ноября 2026 года. [Реестр](01-decision-register.md), [изменение](changes/2026-11-03-professions-and-crafting.md). Система продолжает [ресурсы](06-resources-gathering-and-economy.md), [персонажа](23-character-system-foundations.md) и [свод времени](21-space-time-and-regional-calendar.md).
 
