@@ -3,7 +3,7 @@
 | Поле | Значение |
 |---|---|
 | ID документа | `SYS-RES` |
-| Версия | `0.6.0` |
+| Версия | `0.14.1` |
 | Назначение | Правила дефицита, исследования материалов, добычи, сохранения и обмена |
 | Главный реестр решений | [01-decision-register.md](01-decision-register.md) |
 | Связанные системы | [Время и душа](03-time-soul-and-reincarnation.md), [культивация](04-cultivation-and-breakthroughs.md), [мир](07-world-calendar-and-content-generation.md), [состояние и сохранения](13-state-data-and-save-contracts.md) |

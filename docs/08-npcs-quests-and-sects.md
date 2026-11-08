@@ -3,7 +3,7 @@
 | Поле | Значение |
 |---|---|
 | ID документа | `SYS-NPC` |
-| Версия | `0.8.0` |
+| Версия | `0.14.1` |
 | Назначение | Смена поколений, последствия смерти для заданий и минимальные отношения с людьми и организациями |
 | Главный реестр решений | [01-decision-register.md](01-decision-register.md) |
 | Связанные системы | [Время и перерождение](03-time-soul-and-reincarnation.md), [мир](07-world-calendar-and-content-generation.md), [интерфейс](09-ui-ux-and-feedback.md), [состояние и сохранения](13-state-data-and-save-contracts.md) |
