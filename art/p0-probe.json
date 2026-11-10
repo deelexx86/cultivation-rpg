@@ -1,0 +1,15 @@
+{
+  "id": "p0-import-probe",
+  "purpose": "Original technical import fixture; not game content or balance",
+  "origin": "Project-authored parametric cubes and keyframes using tools/create_probe.py; no third-party art inputs",
+  "storage": "Small source and prepared asset are versioned directly in Git; no LFS dependency for P0",
+  "blender_version": "5.2.3",
+  "source": "art/source/p0_probe.blend",
+  "source_sha256": "9a6340b60eb0b39424a28a73f0bdd51e0b0a155da2197bcbbe364e0499544b9a",
+  "prepared": "game/assets/p0_probe.glb",
+  "prepared_sha256": "5e2791b6f290fd21c43e4d0e7b29bd588e81facd50cd7b6d6b5f59b75b0766da",
+  "units": "metres; Blender Z-up exported as glTF/Godot Y-up; unit scale and applied object scales are 1",
+  "geometry": "Two cubes, each 12 triangles, flat unit normals and one material; no skeleton, collision or external textures",
+  "animation": "Pulse, 0–60 frames at 30 fps, 2 seconds; Bob centre Y=1.2, 1.5, 1.2, 0.9, 1.2 at quarter cycles",
+  "rights": "Original project material. Repository-wide licensing remains undecided; no new license is assigned here."
+}

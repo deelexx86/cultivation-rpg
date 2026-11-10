@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scenes/foundation.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/p0_probe.glb" id="2"]
+
+[sub_resource type="PlaneMesh" id="Ground"]
+size = Vector2(8, 8)
+
+[sub_resource type="StandardMaterial3D" id="GroundMaterial"]
+albedo_color = Color(0.16, 0.21, 0.25, 1)
+roughness = 0.9
+
+[node name="Foundation" type="Node3D"]
+script = ExtResource("1")
+
+[node name="Probe" parent="." instance=ExtResource("2")]
+
+[node name="Ground" type="MeshInstance3D" parent="."]
+mesh = SubResource("Ground")
+material_override = SubResource("GroundMaterial")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+position = Vector3(3.5, 2.8, 4.5)
+rotation_degrees = Vector3(-22, 38, 0)
+current = true
+
+[node name="KeyLight" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-55, -30, 0)
+light_energy = 1.4
+
+[node name="FillLight" type="OmniLight3D" parent="."]
+position = Vector3(-2, 3, 2)
+omni_range = 10.0
+light_energy = 2.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+offset_left = 28.0
+offset_top = 24.0
+theme_override_font_sizes/font_size = 22
+text = "Cultivation RPG\nP0 / VS-00 · Blender → GLB → Godot\nAnimated import probe · no gameplay systems"

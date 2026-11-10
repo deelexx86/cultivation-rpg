@@ -69,3 +69,7 @@
 - [Границы случайности](docs/07-world-calendar-and-content-generation.md): авторские опорные, обычные и редкие возможности, без подгонки под стадию героя и переброса при посещении. Альфа фиксирована. Случайные редкие носители отложены; плотность, вероятности и алгоритмы OPEN.
 
 - Переноска ограничена весом (RES-CARRY), артефакты требуют подготовки и резерва/расхода Ци (CHAR-20). NPC доступны для нападения; кража исключена, мародёрство имеет последствия; полное преследование отложено (NPC-AGGRESSION). Лечение и состояния — COMBAT-HEALTH. TIME-08 принят: прорыв требует положительного запаса жизни.
+
+## Windows development baseline — owner instruction, 2026-11-10
+
+All development now takes place directly on Windows 11; this supersedes the previous Ubuntu preference. P0 does not require Linux, WSL or other operating systems. Read [the Windows workflow](docs/technical/03-windows-development.md) and [P0 evidence](docs/technical/04-p0-validation.md). Use PowerShell 7 and `python tools/validate_design.py`; the GDD validator remains a separate check from game execution. Do not add future gameplay systems to the technical probe.

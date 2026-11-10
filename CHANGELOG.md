@@ -114,3 +114,9 @@
 - Числа отделены от принятых правил. Конкретизация интерфейсов, форматов состояния, визуального направления и очередности разработки обозначена как PROPOSAL там, где она появилась при оформлении пакета.
 
 Эта версия не означает готовности баланса, контента, управления или производительности к релизу. Последующие версии отражают новые явные решения пользователя и фактические результаты разработки.
+
+## Technical foundation 0.2.1 — 2026-11-10
+
+- Owner superseded T-002: direct Windows 11 development; no mandatory Ubuntu, Linux or WSL procedures. Gameplay rules remain GDD 0.14.1.
+- Added the P0 Godot probe, original animated Blender/GLB asset, pinned portable toolchain, PowerShell checks/export workflow and clean-checkout verification.
+- Validation and remaining hardware/performance limits are recorded in [P0 evidence](docs/technical/04-p0-validation.md).

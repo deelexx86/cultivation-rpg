@@ -1,0 +1,5 @@
+* text=auto eol=lf
+*.blend -text
+*.glb -text
+*.png -text
+*.zip -text
