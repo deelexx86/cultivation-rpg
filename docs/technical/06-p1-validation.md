@@ -16,7 +16,7 @@ Same available Windows 11 machine and pinned tools as [P0](04-p0-validation.md):
 
 ## Automated acceptance coverage
 
-`game/tests/p1_tests.gd` currently passes **181 assertions** in six groups. The calendar group additionally checks **292,195 individual day conversions**, covering two full 400-year Gregorian cycles and day 0. Group success text is diagnostic; overall success requires zero failures, zero engine/script errors and `P1_TEST_PASS`. The process runner rejects errors even when Godot exits with code zero.
+`game/tests/p1_tests.gd` currently passes **182 assertions** in six groups. The calendar group additionally checks **292,195 individual day conversions**, covering two full 400-year Gregorian cycles and day 0. Group success text is diagnostic; overall success requires zero failures, zero engine/script errors and `P1_TEST_PASS`. The process runner rejects errors even when Godot exits with code zero.
 
 | GDD scenarios | Executed P1 evidence | Scope still outside P1 |
 |---|---|---|
@@ -37,7 +37,7 @@ Same available Windows 11 machine and pinned tools as [P0](04-p0-validation.md):
 | AT-SPACE-04, 05 | Data-only B-region consequence advances on the one global date without visiting B; reversed event storage order and split time give identical causal history | Region scene loading/streaming and gameplay content |
 | AT-SPACE-06 | Treating a cause cancels its scheduled death and dependent market/communication events; destroyed bridge cannot receive an obsolete repair; already-dead NPC cannot die again | Story/dialogue intervention UI |
 
-Additional tests cover a last-day interruption followed by zero-day completion, paid recovery while practice is paused, cyclic/missing dependencies, ambiguous same-day writes, invalid numeric data and dangling participants. A valid checksum over an invalid state does not bypass invariant validation. These are rule tests and controlled fixtures; no playtest or validated balance is inferred.
+Additional tests cover a last-day interruption followed by zero-day completion, paid recovery while practice is paused, cyclic/missing dependencies, ambiguous same-day writes, multiple interruption channels on one date, invalid numeric data and dangling participants. P1 rejects multiple same-date interruption channels explicitly rather than silently masking a choice; several consequences can feed one authored channel. A valid checksum over an invalid state does not bypass invariant validation. These are rule tests and controlled fixtures; no playtest or validated balance is inferred.
 
 AT-SAVE-02 (production item conservation), AT-SAVE-05 (dynamic combat), AT-SOUL-07 (playable awakening), resource/profession tests and VISION-09 remain unimplemented later-stage work. They are not counted as completed P1 scenarios.
 
@@ -62,7 +62,7 @@ The same eight stages are tested as ordinary reported I/O failures, retaining me
 
 The commands are in the [contract](05-p1-core-contract.md) and [Windows workflow](03-windows-development.md). The final full verification must be rerun after any executable change. Local generated logs, exports, crash snapshots and screenshots are in ignored `.artifacts/`. The committed evidence summary will identify the final successful logs and source revision; it does not replace rerunning the checks.
 
-Observed during development: `P1_TEST_PASS checks=181`, `P1_CRASH_PASS stages=8`, and the demonstration reaches `0020-01-01`, progress 7305 days, one supply spent after interruption/load/resume. P0 asset rebuild, import, typed asset tests, headless startup, design validation, Windows export and real project/export startup passed in the integrated run. P1 also executed through the independent exported release and both renderers.
+Observed during development: `P1_TEST_PASS`, `P1_CRASH_PASS stages=8`, and the demonstration reaches `0020-01-01`, progress 7305 days, one supply spent after interruption/load/resume. P0 asset rebuild, import, typed asset tests, headless startup, design validation, Windows export and real project/export startup passed in the integrated run. P1 also executed through the independent exported release and both renderers. The final evidence summary records the exact final assertion count/source revision.
 
 Visual inspection found missing glyphs on the available AMD driver despite passing runtime assertions. Size-only and ASCII-precache experiments did not fix both paths. The diagnostic theme uses 24-pixel bitmap glyphs for Forward+ and the existing MSDF fallback for Compatibility; the smoke scenario gives each visible callback time to render. Final project/export screenshots are inspected separately. This is a local diagnostic workaround, without changing P0's global font setting or the pinned renderer/toolchain. The output history scrolls. These labels are development diagnostics in English; the accepted gameplay prototype language is unchanged.
 

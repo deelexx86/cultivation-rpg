@@ -26,7 +26,7 @@ At each boundary the executor:
 
 Events have stable IDs, dates, kinds, targets, explicit prerequisites and live conditions. Missing references, backwards date edges, cycles and ambiguous same-day reads/writes are rejected before mutation. Dependencies must have been **applied**, not merely visited. Changes to a premise are retained immediately; cancellation is resolved on the affected event's actual scheduled day, and cancelled causes cancel their dependants. No stale future effect is applied. This small executor handles the fixed graph; it does not dynamically manufacture events or truncate a queue after an arbitrary count.
 
-Death closes personal obligations at the actual death date. A later death cannot kill an already-dead NPC again. Background consequences do not add knowledge. Only an explicitly configured interrupting event adds its channel/date to known information. The debug screen labels resolved world facts as diagnostic information. The P1 fixture has one decision channel per interrupted boundary; richer choice content belongs to P2.
+Death closes personal obligations at the actual death date. A later death cannot kill an already-dead NPC again. Background consequences do not add knowledge. Only an explicitly configured interrupting event adds its channel/date to known information. The debug screen labels resolved world facts as diagnostic information. P1 validates that at most one authored interruption channel exists per date, so multiple interruptions cannot silently mask each other. Multiple world consequences can lead to that one explicit choice; richer choice content belongs to P2.
 
 ## Actions and idempotency
 

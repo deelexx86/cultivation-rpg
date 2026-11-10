@@ -245,6 +245,14 @@ func causality_tests() -> void:
 	invalid = StateCodec.clone(source)
 	invalid.events[0].prerequisites = ["missing"]
 	check(not StateCodec.problems(invalid).is_empty(), "Missing causal prerequisite rejected")
+	invalid = P1Fixture.fresh()
+	var first_call := P1Fixture.event("first.call", 1, "call")
+	var second_call := P1Fixture.event("second.call", 1, "call")
+	first_call.interrupt = true
+	second_call.interrupt = true
+	second_call.prerequisites = [first_call.id]
+	invalid.events.assign([first_call, second_call])
+	check(not StateCodec.problems(invalid).is_empty(), "Multiple interruption channels are diagnosed before one could mask another")
 	var changed := session("cancel", P1Fixture.demo())
 	check(changed.intervene("region.a.bridge", "destroyed", "destroy") and begin(changed, WorldCalendar.ordinal(20)) and changed.advance(10000), "Intervention and interruption")
 	check(changed.resume("practice", "go") and changed.advance(10000), "Intervention continuation")

@@ -54,6 +54,8 @@ static func problems(state: CampaignState) -> PackedStringArray:
 		for b: CampaignState.WorldEvent in state.events:
 			if a.id >= b.id or a.day != b.day:
 				continue
+			if a.interrupt and b.interrupt:
+				errors.append("P1 requires one authored interruption channel per date: %s / %s" % [a.id, b.id])
 			var conflict := false
 			for key: String in writes(a):
 				conflict = conflict or key in writes(b) or key in reads(b)
