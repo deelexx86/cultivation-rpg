@@ -11,6 +11,8 @@ Windows 11 supersedes the former Ubuntu development preference by the owner’s 
 |---|---|
 | [Мастер-план](01-master-plan.md) | Последовательность работ, зависимости, результаты этапов, проверка рисков и переход к производству |
 | [Верхнеуровневая архитектура](02-architecture.md) | Границы систем, состояние, время, сохранения, контент, сцены, инструменты и проверки |
+| [P1 core contract](05-p1-core-contract.md) | Implemented calendar conventions, state/command/event boundaries and snapshot/recovery protocol |
+| [P1 validation](06-p1-validation.md) | Actual P1 evidence, acceptance coverage, limitations and P2 handoff |
 
 ## Статусы и связь с GDD
 

@@ -1,5 +1,6 @@
 """Bounded subprocess checks; engine errors can occur even with exit status zero."""
 import argparse
+import os
 from pathlib import Path
 import re
 import subprocess
@@ -14,11 +15,17 @@ args = parser.parse_args()
 command = args.command[1:] if args.command[:1] == ["--"] else args.command
 args.log.parent.mkdir(parents=True, exist_ok=True)
 try:
-    result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                            timeout=args.timeout, encoding="utf-8", errors="replace")
-    output = result.stdout
+    result = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                              encoding="utf-8", errors="replace")
+    output, _ = result.communicate(timeout=args.timeout)
 except subprocess.TimeoutExpired as error:
-    output = (error.stdout or b"").decode("utf-8", errors="replace") + "\nPROCESS_TIMEOUT\n"
+    # Godot's Windows console relay spawns the actual engine. Kill both on timeout.
+    if os.name == "nt":
+        subprocess.run(["taskkill", "/PID", str(result.pid), "/T", "/F"],
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=10)
+    result.kill()
+    output, _ = result.communicate(timeout=10)
+    output += "\nPROCESS_TIMEOUT\n"
     result = None
 args.log.write_text(output, encoding="utf-8")
 print(output, end="")

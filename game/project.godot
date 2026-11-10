@@ -1,9 +1,9 @@
-; P0 technical probe. No campaign or gameplay systems.
+; P0 probe remains the default. --p1-demo opens the simulation laboratory.
 config_version=5
 
 [application]
 config/name="Cultivation RPG - P0"
-config/version="0.0.1-p0"
+config/version="0.1.0-p1"
 run/main_scene="res://scenes/foundation.tscn"
 config/features=PackedStringArray("4.8", "Forward Plus")
 

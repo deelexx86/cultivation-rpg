@@ -83,6 +83,12 @@ pwsh -NoProfile -File tools/p0.ps1 -Task Asset
 
 This is an authoring operation: review the resulting source/GLB, update the manifest hashes if changed, then run `Verify`. `.blend` bytes can change because of Blender metadata; the prepared GLB is the reproducibility boundary.
 
-`game/scenes/` owns only presentation and the technical startup probe. `game/tests/` checks the import boundary. No empty domain/application/infrastructure modules, calendar, campaign state, combat, saves, content catalog or Autoload framework have been introduced. Future P1 rules belong in typed scene-independent domain code with application coordination and infrastructure adapters, per the accepted architecture.
+`game/scenes/` owns presentation and the technical startup probe. The P0 scene still checks the import boundary. P1 now implements typed state/calendar rules in `game/src/domain/`, coordination in `game/src/application/`, and validated saves in `game/src/infrastructure/`. No combat, production content catalog or Autoload framework is introduced. See the [P1 contract](05-p1-core-contract.md) and [validation](06-p1-validation.md).
 
 Forward+ is the selected P0 default. Compatibility is a verified lightweight technical fallback, without a promise of later effect parity. The probe uses MSDF font rendering to avoid missing text glyphs observed with the default font rasterization on this AMD/OpenGL driver. Its English technical labels are development diagnostics; the accepted Russian gameplay-prototype language is unchanged.
+
+## P1 simulation workflow
+
+After the same pinned setup, run `pwsh -NoProfile -File tools/p1.ps1 -Task Verify` for the complete P0 regression plus P1 logic, actual process-crash recovery, demonstration and project/export graphical checks. Run `pwsh -NoProfile -File tools/p1.ps1 -Task Demo` for the interactive laboratory. The existing exported executable opens it with `-- --p1-demo`; its default launch still shows the P0 probe. Closing the laboratory saves its one current campaign first. Saves live under Godot's per-user data directory, separate from source and exports; there is no backup-selection UI.
+
+For committed P1 source use `pwsh -NoProfile -File tools/verify_clean_checkout.ps1 -Phase P1 -Branch work/p1-core-time-state`. The clean-checkout tool now defaults to the current branch instead of the historical P0 branch; `-Phase P0` preserves the P0-only check. The [P1 report](06-p1-validation.md) distinguishes completed rule probes from future gameplay scenarios.

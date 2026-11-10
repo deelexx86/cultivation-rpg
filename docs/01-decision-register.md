@@ -272,3 +272,7 @@
 ## Принятие технического пакета — 2026-11-09
 
 Пользователь принял [технический пакет 0.2.0, T-001–012](technical/README.md), мастер-план и архитектуру. D-003 уточнён целевой веткой Godot 4.8 и допустимостью beta для прототипа. Принятие не доказывает производительность и не закрывает оставшиеся OPEN; игровые правила и баланс не изменены. История раннего выбора движка сохраняется как история, актуальный стек определяется D-003 и T-009–012.
+
+## P1 implementation record — 2026-11-10
+
+The owner's P1 / VS-01 task delegates reversible implementation choices for the accepted rules. The [P1 contract](technical/05-p1-core-contract.md) records the executable OPEN-01 conventions and P1 portion of OPEN-10; the [validation report](technical/06-p1-validation.md) records measured evidence and remaining scope. No D-rule is replaced or added: first milestones, separate soul/body lifetimes, TIME-08, causal history and one current continuation retain their accepted meaning. Fixture numbers are not accepted balance.

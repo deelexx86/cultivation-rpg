@@ -155,3 +155,7 @@
 Предусмотрены средства продления срока тела и отрицательные эффекты его сокращения. Они не продлевают душу и не выдают повторную награду за стадию. Конкретные пределы, цены и эффекты разрабатываются позже; бесконечная обычная покупка лет не предполагается.
 
 Пример будущего побочного задания: неподготовленный вход в древнюю гробницу вызывает проклятие, а дух предлагает способ его снятия. Для такой истории сокращают оставшийся срок либо задают близкую дату смерти, чтобы сохранить возможность задания. Уменьшение полного предела на 80% могло бы немедленно убить старого героя; это не универсальное правило. Число, способ снятия и взаимодействие конкретного проклятия с переселением требуют карточки.
+
+## P1 implementation supplement — 2026-11-10
+
+The [P1 contract](technical/05-p1-core-contract.md) implements calendar-based ages/deadlines, confirmed paid practice, interruption/recovery, first/repeated milestone rules and TIME-08. Prepared body-history and no-body transfer-clock fixtures test the relevant invariants without implementing playable reincarnation. Costs, limits and linear retained practice are explicitly technical test inputs. [Coverage and remaining scenarios](technical/06-p1-validation.md) are separate from this accepted design.

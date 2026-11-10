@@ -1,0 +1,170 @@
+{
+  "record_version": 1,
+  "date": "2026-11-10",
+  "stage": "P1 / VS-01",
+  "source_commit": "1ec359927925b658ad359875089f251b7c48b173",
+  "base_master": "bb62c4c489214c204611eac19bdc4cdce2757be5",
+  "branch": "work/p1-core-time-state",
+  "command": "pwsh -NoProfile -File tools/verify_clean_checkout.ps1 -Phase P1 -Branch work/p1-core-time-state",
+  "clean_checkout": {
+    "result": "P1_CLEAN_CHECKOUT_PASS",
+    "directory_leaf": "clean checkout 20261110-180721",
+    "git_clean": true,
+    "reused": "verified download archives only",
+    "aggregate_log_sha256": "158e84c3bd9daefbd5d820897be69a13760a8fd23b14340fbb6468142718d63e"
+  },
+  "environment": {
+    "os": "Windows 11 Home x86-64 10.0.26200",
+    "cpu": "AMD Ryzen 5 5600",
+    "ram_bytes": 68641923072,
+    "gpu": "AMD Radeon RX 580 2048SP",
+    "gpu_driver": "31.0.21925.1001",
+    "godot": "4.8.beta3.official.c51ff06e8 Standard",
+    "blender": "5.2.3 LTS e13b728c6880",
+    "powershell": "7.6.9",
+    "python": "3.14.0",
+    "git": "2.56.0.windows.4",
+    "elevated": false
+  },
+  "assertions": 182,
+  "calendar_day_roundtrips": 292195,
+  "hard_termination_stages": 8,
+  "toolchain_lock_sha256": "1c9658f2eade9b6522c895e6ac7cd4e134a1e3f755e111a8df863d91c7d14ac9",
+  "logs": {
+    "asset-rebuild.log": {
+      "sha256": "bcd800f75497747c0f3ee8f6cd0471a59d9a34a0c4a8e5838666b865dcad4e12",
+      "markers": [
+        "P0_ASSET_REBUILD_PASS"
+      ]
+    },
+    "import.log": {
+      "sha256": "657086c724761d2f774a74a8d30458588c2b30fd1469a92ac6451a3bdd7b8efe",
+      "markers": []
+    },
+    "tests.log": {
+      "sha256": "b994c748c33adda9c4d3ae1e8c96b0cc98ca657e0b712c6087790ec8bba1839f",
+      "markers": [
+        "P0_TEST_PASS geometry transforms materials animation_samples"
+      ]
+    },
+    "headless-startup.log": {
+      "sha256": "4f26959767c4d78e5c20cf91134ee10293a7a51943a23123b5c2feaca343de64",
+      "markers": [
+        "P0_SMOKE_PASS animation_advanced=true"
+      ]
+    },
+    "design.log": {
+      "sha256": "90df5b8946979af0fa7f357e1e568644bed1903317c0c33a5e49ce925e608756",
+      "markers": [
+        "checks=2023, text_files=69, markdown_files=54, local_links=629, json_files=7, milestones=16, checkpoints=32",
+        "Errors: 0"
+      ]
+    },
+    "export.log": {
+      "sha256": "d8c7c1e3cfa47efc6864499f95727903b440697cbc3c9c3d7bdae4a41ae4d95b",
+      "markers": []
+    },
+    "project-forward_plus.log": {
+      "sha256": "30ca1b5ec6281dcee8e522b794f1203ab8f994bf9ed410f9475a7e97cef77686",
+      "markers": [
+        "P0_SMOKE_PASS animation_advanced=true"
+      ]
+    },
+    "export-forward_plus.log": {
+      "sha256": "30ca1b5ec6281dcee8e522b794f1203ab8f994bf9ed410f9475a7e97cef77686",
+      "markers": [
+        "P0_SMOKE_PASS animation_advanced=true"
+      ]
+    },
+    "project-gl_compatibility.log": {
+      "sha256": "82bd94bafd525194d355f3656b457537dd1e2127dc977aa972f1a77c67dec81d",
+      "markers": [
+        "P0_SMOKE_PASS animation_advanced=true"
+      ]
+    },
+    "export-gl_compatibility.log": {
+      "sha256": "82bd94bafd525194d355f3656b457537dd1e2127dc977aa972f1a77c67dec81d",
+      "markers": [
+        "P0_SMOKE_PASS animation_advanced=true"
+      ]
+    },
+    "p1-tests.log": {
+      "sha256": "296eb40d311f5034e2e60daebea935e6752cf8de9645128181e40bd1e63c2139",
+      "markers": [
+        "P1_GROUP_PASS calendar",
+        "P1_GROUP_PASS preview",
+        "P1_GROUP_PASS chronology",
+        "P1_GROUP_PASS life",
+        "P1_GROUP_PASS causality",
+        "P1_GROUP_PASS save",
+        "P1_TEST_PASS checks=182 calendar preview chronology life causality save"
+      ]
+    },
+    "p1-crashes.log": {
+      "sha256": "55e2a60d4cb62a3011b098af92d24161a89cf6052cce1659007db2ffccc46d88",
+      "markers": [
+        "P1_CRASH_RECOVERY_PASS:before_write checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:partial_write checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:after_flush checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:after_verify checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:partial_backup checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:after_backup_write checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:after_backup_replace checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:after_main_replace checkpoint=10",
+        "P1_CRASH_PASS stages=8"
+      ]
+    },
+    "p1-demo-headless.log": {
+      "sha256": "6532d618c7a214e45d783912a6df0c580ca94f6e5c28683e12c6eb5b96889d5a",
+      "markers": [
+        "P1_DEMO_PASS date=0020-01-01 progress=7305 spent=1 engine=4.8-beta3 (official) display=headless"
+      ]
+    },
+    "p1-project-forward_plus.log": {
+      "sha256": "d15bd5c8f24c8d27e111f356b85ca1d74973a8c05bafa2f50319f05dda74cf2a",
+      "markers": [
+        "P1_DEMO_PASS date=0020-01-01 progress=7305 spent=1 engine=4.8-beta3 (official) display=Windows"
+      ]
+    },
+    "p1-export-forward_plus.log": {
+      "sha256": "d15bd5c8f24c8d27e111f356b85ca1d74973a8c05bafa2f50319f05dda74cf2a",
+      "markers": [
+        "P1_DEMO_PASS date=0020-01-01 progress=7305 spent=1 engine=4.8-beta3 (official) display=Windows"
+      ]
+    },
+    "p1-project-gl_compatibility.log": {
+      "sha256": "2a0f8aeb1300e8688a9a4735b33e63be40370a5972d3d16bc69c8860ae428d57",
+      "markers": [
+        "P1_DEMO_PASS date=0020-01-01 progress=7305 spent=1 engine=4.8-beta3 (official) display=Windows"
+      ]
+    },
+    "p1-export-gl_compatibility.log": {
+      "sha256": "2a0f8aeb1300e8688a9a4735b33e63be40370a5972d3d16bc69c8860ae428d57",
+      "markers": [
+        "P1_DEMO_PASS date=0020-01-01 progress=7305 spent=1 engine=4.8-beta3 (official) display=Windows"
+      ]
+    }
+  },
+  "export": {
+    "architecture": "Windows x86-64",
+    "pe_machine": "0x8664",
+    "files": {
+      "CultivationRPG.exe": "2f099ad62fdef78223c5060ad09073ce1829008e3efab3045a6c93ff4e3e215d",
+      "CultivationRPG.pck": "751f23171f831841325529efc6683b6b588631f9212ceb13e5ff7e9a8b2b3af5"
+    }
+  },
+  "visually_inspected": {
+    "p1-export-forward_plus.png": "b767f95dcc8c64510ac5903c93a27f118bd0b58c9281b9f34c47e9182bc8fe83",
+    "p1-export-gl_compatibility.png": "8ac0b1565a1ab8ec01a6af19f6be0c52579d32ddd60696862a62e0bbf9116e2a"
+  },
+  "not_claimed": [
+    "hardware power-loss durability",
+    "physical second machine",
+    "concurrent same-slot writers",
+    "dynamic combat restoration",
+    "full inventory/crafting",
+    "playable travel or reincarnation",
+    "production balance",
+    "3D performance / VISION-09"
+  ]
+}

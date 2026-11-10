@@ -111,3 +111,7 @@ Windows x86-64 remains the **ACCEPTED** first export profile. Windows 11 is the 
 ## 9. Ближайшее исполнимое задание
 
 P0 implementation and measured results are recorded in the [validation report](04-p0-validation.md). The next implementation task is P1 / VS-01 after review of this foundation. Resolve the calendar conventions and snapshot/recovery contract within P1; do not interpret P0’s renderer/import success as evidence that calendar, saves, combat or flight are implemented.
+
+## P1 implementation update — 2026-11-10
+
+The [P1 contract](05-p1-core-contract.md) now provides the executable state/calendar/action/event/snapshot foundation. The [P1 validation report](06-p1-validation.md) is the authority for its actual completion evidence and the P2 transition. Earlier future-tense descriptions in this plan are the original accepted design baseline; they are not current test results. P2 can build the small scene, dated knowledge, route and first narrative consequence on this kernel after its stated verification gate. No later-stage gameplay is included merely because a controlled fixture checks one of its time invariants.

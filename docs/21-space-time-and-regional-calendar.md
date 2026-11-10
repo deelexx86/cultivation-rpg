@@ -118,3 +118,7 @@ MVP и альфа содержат один регион. Дополнитель
 ## Техническое продолжение 2026-11-09
 
 9 ноября 2026 года нумерация календаря из SPACE-03 принята для прототипа в [техническом пакете](technical/README.md). Соглашения о начале недели, годовщине 29 февраля и полный порядок зависимых событий остаются OPEN-01.
+
+## P1 implementation supplement — 2026-11-10
+
+Within the delegated P1 engineering scope, the [executable contract](technical/05-p1-core-contract.md) selects Saturday for day 0, February-28 clamping from the original birth date, and life expiry → causal world events → still-valid action completion. Conflicting same-day events require explicit dependencies; cycles fail validation. These are tested prototype conventions for OPEN-01, without changing SPACE-03 or TIME-08. The [P1 report](technical/06-p1-validation.md) records actual rule coverage; route gameplay, region scenes and endgame remain later work.
