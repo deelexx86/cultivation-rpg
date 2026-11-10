@@ -28,7 +28,7 @@
       "character-female-b.glb": "3a0e6c3e431ae9d2016c2c9a91ec3abe8bb45243016a5cae80cbde0b61f8f2a9",
       "Textures/colormap.png": "3aba07b39c13e9fa9a02cba6246fdd9d711bb15702e00e10ad84595b25452f95",
       "character-male-f.glb": "83fa60802557199778ab606e5ee3b2da2140ef35839ac4fb557ef95dbac9c5d4",
-      "character-male-c.glb": "6bb3b1ac8b196fd005dd5cb73621cd88d8a44d1f0f92fcf0c03f3b47ac9b9a74"
+      "character-male-b.glb": "81464391ab3291bc78d23c33d5a5313cfab43469285a8e1f02b974aecbd4f943"
     }
   },
   {
@@ -48,7 +48,7 @@
       "pillar-stone.glb": "1eda742ccbc67ead6edead25c687f55d8671b88786b9e23c08ae7982bccb4b7c",
       "roof-point.glb": "a7dfd157128e04105e976d7a47f772e95e4bd9f3d73b87a00b43861f406b94f8",
       "wall-block.glb": "daa35e5b32d7941f3dc61f64f6f9630b70441478d652989cd6c02a908b84af86",
-      "wheel.glb": "c049e479d0fa31d7cae7a3f4fe239172e7117789fdd10be4be5bddde6239d59f"
+      "watermill.glb": "177e76c12f43845303638d1375c323675c3937b053b8762042fe19d3d7d27c5d"
     }
   }
 ]

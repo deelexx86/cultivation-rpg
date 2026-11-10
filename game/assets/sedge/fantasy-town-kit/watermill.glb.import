@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bkmu1jcua2i5l"
-path="res://.godot/imported/wheel.glb-9306f24406fb5888ccb23c86d83639c7.scn"
+uid="uid://sjl27ba1p1lr"
+path="res://.godot/imported/watermill.glb-dbb56a292def99385da8efd99638abd6.scn"
 
 [deps]
 
-source_file="res://assets/sedge/fantasy-town-kit/wheel.glb"
-dest_files=["res://.godot/imported/wheel.glb-9306f24406fb5888ccb23c86d83639c7.scn"]
+source_file="res://assets/sedge/fantasy-town-kit/watermill.glb"
+dest_files=["res://.godot/imported/watermill.glb-dbb56a292def99385da8efd99638abd6.scn"]
 
 [params]
 

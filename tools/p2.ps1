@@ -1,6 +1,6 @@
 #requires -Version 7.0
 [CmdletBinding()]
-param([ValidateSet('Demo','Test','Smoke','Verify')][string]$Task='Demo',[string]$Python='python')
+param([ValidateSet('Demo','Test','Smoke','Verify')][string]$Task='Demo',[string]$Python='python',[ValidatePattern('^[a-zA-Z0-9_-]{1,64}$')][string]$Campaign='white-sedge')
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot -Parent
 $lock=Get-Content "$PSScriptRoot/toolchain.json" -Raw | ConvertFrom-Json
@@ -22,7 +22,7 @@ if ($Task -eq 'Verify') {
 if ($Task -eq 'Demo') {
     & $engine --headless --path $game --import
     if ($LASTEXITCODE) { throw 'Import failed' }
-    & $engine --path $game -- --p2
+    & $engine --path $game -- --p2 "--campaign=$Campaign"
     exit $LASTEXITCODE
 }
 if ($Task -in 'Verify','Test') {

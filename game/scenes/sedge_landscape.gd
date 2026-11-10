@@ -106,7 +106,7 @@ func populate(s: CampaignState) -> void:
 		solid(Vector3(x,0.3,z+2),Vector3(1.9,0.6,0.55))
 	prop(TOWN,"cart",Vector3(-7,0,6),2.4,0.4)
 	solid(Vector3(-7,0.6,6),Vector3(1.9,1.2,3))
-	var npc := prop(PEOPLE,"character-male-f" if s.person(SedgeWorld.LO).alive else "character-male-c",POINTS.merchant,2.4,0.8)
+	var npc := prop(PEOPLE,"character-male-b" if s.person(SedgeWorld.LO).alive else "character-male-f",POINTS.merchant,2.4,0.8)
 	play_clip(npc,"idle")
 	solid(POINTS.merchant+Vector3.UP*0.7,Vector3(0.65,1.4,0.65))
 	for i in 75:
@@ -130,11 +130,15 @@ func populate(s: CampaignState) -> void:
 		solid(Vector3(x*0.7,1.6,-16),Vector3(2.5,3.2,1))
 	model(self,TOWN,"wall-block",Vector3(0,0,-22),Vector3(8,3.2,1))
 	solid(Vector3(0,1.6,-22),Vector3(8,3.2,1))
-	model(self,TOWN,"roof-point",Vector3(0,3.2,-19),Vector3(9,3,8))
-	model(self,TOWN,"roof-point",Vector3(0,4.3,-19),Vector3(5,2,4))
+	tint(model(self,TOWN,"roof-point",Vector3(0,3.2,-19),Vector3(9,3,8)),Color("#3d6462"))
+	tint(model(self,TOWN,"roof-point",Vector3(0,4.3,-19),Vector3(5,2,4)),Color("#3d6462"))
 	for x in [-2,2]:
 		prop(TOWN,"pillar-stone",Vector3(x,0,-15.4),3.4)
-	prop(TOWN,"wheel",Vector3(-4.5,0,-14.7),3.3)
+	shape(Vector3(-0.4,-0.018,-14.4),Vector3(18,0.09,1.65),Color("#648c84"))
+	for stone in 4:
+		tint(model(self,NATURE,"rock_largeA",Vector3(0,-0.07,-13.7-stone*0.42),Vector3(2.9,0.7,0.55)),Color("#929585"))
+	prop(TOWN,"watermill",Vector3(-4.8,1.65,-14.7),2.0,PI*0.43)
+	solid(Vector3(-4.8,1.6,-14.7),Vector3(3.2,3.2,1.1))
 	model(self,TOWN,"stall-bench",Vector3(0,0,-20.5),Vector3(3,3,3),PI/2)
 	prop(TOWN,"lantern",Vector3(0,0,-20.5),1.5)
 	solid(Vector3(0,0.65,-20.5),Vector3(2.8,1.3,1))

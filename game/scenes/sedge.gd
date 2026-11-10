@@ -18,6 +18,8 @@ func _ready() -> void:
 	smoke = "--p2-smoke" in OS.get_cmdline_user_args()
 	var id := "white-sedge" if not smoke else "visit-%d-%d" % [OS.get_process_id(),Time.get_ticks_usec()]
 	var base := "user://sedge"
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--campaign="): id = arg.trim_prefix("--campaign=")
 	if smoke:
 		base = "user://sedge-smoke"
 		for arg in OS.get_cmdline_user_args():
