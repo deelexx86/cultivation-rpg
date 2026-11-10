@@ -55,3 +55,7 @@ Windows 11 supersedes the former Ubuntu development preference by the owner’s 
 - Steam Deck отдельно не выбран; не включать в обязательную матрицу испытаний.
 
 Эти вопросы не требуют нового общего интервью перед подготовкой проекта. Уточнять их в момент соответствующего этапа с результатами измерений и конкретным вариантом.
+
+## Playable exploration
+
+The [P2 walkthrough and engineering notes](07-p2-exploration.md) describe the playable White Sedge scene, the schema-2 slot, licensed assets and acceptance commands.
