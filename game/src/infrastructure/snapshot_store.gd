@@ -7,6 +7,7 @@ const BUILD := "0.1.0-p1"
 const MAX_BYTES := 16777216
 const STAGES: Array[String] = ["before_write", "partial_write", "after_flush", "after_verify", "partial_backup", "after_backup_write", "after_backup_replace", "after_main_replace"]
 
+var exploration_slot: bool
 var directory: String
 var campaign_id: String
 var sequence: int = 0
@@ -15,7 +16,8 @@ var last_error: String = ""
 var fail_at: String = ""
 var crash_at: String = ""
 
-func _init(base: String, id: String) -> void:
+func _init(base: String, id: String, for_exploration: bool = false) -> void:
+	exploration_slot = for_exploration
 	campaign_id = id
 	var valid_id := RegEx.new()
 	valid_id.compile("^[a-zA-Z0-9_-]{1,64}$")
@@ -39,6 +41,8 @@ func fault(stage: String) -> bool:
 static func pack(state: CampaignState, number: int) -> String:
 	var payload := JSON.stringify(state.encode())
 	var header := {"schema": SCHEMA, "content": CONTENT, "build": BUILD, "campaign_id": state.campaign_id, "sequence": number, "rng_algorithm": "sha256-keyed-v1"}
+	if not state.exploration.is_empty():
+		header.merge({"schema": 2, "content": "white-sedge-1", "build": "p2"}, true)
 	return JSON.stringify({"header": header, "payload": payload, "checksum": digest(header, payload)})
 
 static func digest(header: Dictionary, payload: String) -> String:
@@ -77,14 +81,14 @@ func read_file(file_path: String) -> Dictionary:
 	var header: Dictionary = envelope.header
 	if digest(header, payload) != envelope.checksum:
 		return {"error": "Snapshot checksum mismatch"}
-	if int(header.schema) != SCHEMA or header.content != CONTENT or header.rng_algorithm != "sha256-keyed-v1":
+	if int(header.schema) != (2 if exploration_slot else SCHEMA) or header.content != ("white-sedge-1" if exploration_slot else CONTENT) or header.rng_algorithm != "sha256-keyed-v1":
 		return {"error": "Unsupported snapshot schema/content/RNG; migration required", "incompatible": true}
 	if header.campaign_id != campaign_id or int(header.sequence) < 1:
 		return {"error": "Snapshot identity/sequence mismatch"}
 	if json.parse(payload) != OK:
 		return {"error": "Malformed payload"}
 	var state := StateCodec.decode(json.data)
-	if state == null or state.campaign_id != campaign_id:
+	if state == null or state.campaign_id != campaign_id or state.exploration.is_empty() == exploration_slot:
 		return {"error": "Snapshot state invariant violation"}
 	return {"error": "", "state": state, "sequence": int(header.sequence), "source": source}
 

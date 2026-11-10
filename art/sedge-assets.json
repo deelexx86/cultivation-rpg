@@ -1,0 +1,54 @@
+[
+  {
+    "pack": "Nature Kit (2.1)",
+    "source": "https://kenney.nl/assets/nature-kit",
+    "license": "CC0-1.0",
+    "archive_sha256": "fa7974a0d342bfe63c38664ba9f8ec1a4aab8ea25f099bdc56870e33588c4d9d",
+    "directory": "nature-kit",
+    "conversion": "Original GLB and referenced palette PNG, byte-identical subset. Scene supplies placement and scale.",
+    "sha256": {
+      "tree_plateau.glb": "7f19e347ff28703dd9e5fcce89b920156e291fbdb19331a57cb31a95c73e1322",
+      "tree_pineRoundA.glb": "7dc9711f31585eafdcb965d0649c30af5e19f2def1955f7a915081d30759ef8e",
+      "rock_largeA.glb": "6dd15390fd96501dcd1454765a17ba61dbbd8d47705dfe5149c8dd92b353ce25",
+      "rock_tallA.glb": "88250f236a3b75f8b55c1d8afb6af020f8a91b1e81f9fb51f7ef513420d45a2d",
+      "grass.glb": "260e41d3e5f2472492ed7b475c5b92a30b13ce2bad408535b5ff50574d4575e7",
+      "plant_flatTall.glb": "b192523736f32754788de4dc7a5dcf30a58322b260ec8969120c91432a10b633",
+      "flower_yellowA.glb": "8a3b08cd2ca411c21f9c581d5bda651d78b13c50cba45ad8fa0389398ead6d1d",
+      "canoe.glb": "ad9c7a315f55accbce8d1ee3dc853f919f01f97ab4e3096bb235d1815aed6941"
+    }
+  },
+  {
+    "pack": "Mini Characters (2.0)",
+    "source": "https://kenney.nl/assets/mini-characters",
+    "license": "CC0-1.0",
+    "archive_sha256": "add348e98ab9e23d9973c4740ef2c5cceb229c742106aca2d56b30a8f1241bb7",
+    "directory": "mini-characters",
+    "conversion": "Original GLB and referenced palette PNG, byte-identical subset. Scene supplies placement and scale.",
+    "sha256": {
+      "character-female-b.glb": "3a0e6c3e431ae9d2016c2c9a91ec3abe8bb45243016a5cae80cbde0b61f8f2a9",
+      "Textures/colormap.png": "3aba07b39c13e9fa9a02cba6246fdd9d711bb15702e00e10ad84595b25452f95",
+      "character-male-f.glb": "83fa60802557199778ab606e5ee3b2da2140ef35839ac4fb557ef95dbac9c5d4",
+      "character-male-c.glb": "6bb3b1ac8b196fd005dd5cb73621cd88d8a44d1f0f92fcf0c03f3b47ac9b9a74"
+    }
+  },
+  {
+    "pack": "Fantasy Town Kit (2.0)",
+    "source": "https://kenney.nl/assets/fantasy-town-kit",
+    "license": "CC0-1.0",
+    "archive_sha256": "1a7530c09f4d2fa2cdee259876f089334f8b1f27fa86a0c4f54ef86cdd8676ef",
+    "directory": "fantasy-town-kit",
+    "conversion": "Original GLB and referenced palette PNG, byte-identical subset. Scene supplies placement and scale.",
+    "sha256": {
+      "stall-red.glb": "aa20a630f417032c46aaefbc779fd2b3355b451bf05d31acc36fd664146866b1",
+      "Textures/colormap.png": "4aac939dc33195e35caf8c382ee3cb170054da763577f22d3c22692ec6afccdf",
+      "stall-green.glb": "2da2f7b31cde5d943d7c08c457bbb39797ef0a607921fde0b8455f338ce40205",
+      "stall-bench.glb": "5a4b379488241394916991c4b482ec4863c05bb548ca8751f5c3935f1f6e5b9c",
+      "cart.glb": "63503cd0a7398310e01aabc8e3663f711a7517394d23d179d0695157fee99d40",
+      "lantern.glb": "f270637e3083d6e84a30626ee05df2b09597a642985a7f5c3e4ab5bb1c7a8d55",
+      "pillar-stone.glb": "1eda742ccbc67ead6edead25c687f55d8671b88786b9e23c08ae7982bccb4b7c",
+      "roof-point.glb": "a7dfd157128e04105e976d7a47f772e95e4bd9f3d73b87a00b43861f406b94f8",
+      "wall-block.glb": "daa35e5b32d7941f3dc61f64f6f9630b70441478d652989cd6c02a908b84af86",
+      "wheel.glb": "c049e479d0fa31d7cae7a3f4fe239172e7117789fdd10be4be5bddde6239d59f"
+    }
+  }
+]

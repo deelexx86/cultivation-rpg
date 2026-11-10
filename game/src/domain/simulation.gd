@@ -16,7 +16,7 @@ static func preview(state: CampaignState, duration: int, cost: int = 1, mileston
 		reason = "Another action is running"
 	elif state.mode != "active" and not (kind == "transfer_probe" and state.mode == "body_dead"):
 		reason = "No living actor"
-	elif kind not in ["practice", "recovery", "transfer_probe", "travel_probe"] or soul_years < 100 or soul_years > 5000 or body_years <= 0 or body_years > 5000:
+	elif kind not in ["practice", "recovery", "transfer_probe", "travel_probe", "travel"] or soul_years < 100 or soul_years > 5000 or body_years <= 0 or body_years > 5000:
 		reason = "Invalid method parameters"
 	elif not milestone.is_empty() and kind != "practice":
 		reason = "Only the practice fixture can grant a milestone"
@@ -131,6 +131,8 @@ static func complete(state: CampaignState, action: CampaignState.Action) -> void
 			state.soul.first_milestones[action.milestone] = state.day
 			state.soul.limit_years = maxi(state.soul.limit_years, action.soul_years)
 			state.record("first_milestone:" + action.milestone)
+	if action.kind == "travel":
+		SedgeWorld.arrive(state)
 	action.status = "complete"
 	state.record("completed:" + action.id)
 
