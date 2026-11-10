@@ -18,3 +18,18 @@ theme/default_font_multichannel_signed_distance_field=true
 [rendering]
 renderer/rendering_method="forward_plus"
 environment/defaults/default_clear_color=Color(0.035, 0.055, 0.075, 1)
+
+[input]
+move_up={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":87)]}
+move_down={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":83)]}
+move_left={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":65)]}
+move_right={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":68)]}
+orbit_left={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":4194319)]}
+orbit_right={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":4194321)]}
+sprint={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":4194325)]}
+use={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":69)]}
+journal={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":74)]}
+sedge_menu={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":4194305)]}
+orbit_drag={"deadzone":0.2,"events":[Object(InputEventMouseButton,"button_index":2)]}
+zoom_in={"deadzone":0.2,"events":[Object(InputEventMouseButton,"button_index":4)]}
+zoom_out={"deadzone":0.2,"events":[Object(InputEventMouseButton,"button_index":5)]}

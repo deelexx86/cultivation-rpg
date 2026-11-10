@@ -1,0 +1,184 @@
+{
+  "source_commit": "7678c8a1289ce9472b62e5429bcd7f62875d576a",
+  "date": "2026-11-10",
+  "platform": "Windows 11 x86-64, AMD Radeon RX 580 2048SP",
+  "godot": "4.8.beta3.official.c51ff06e8",
+  "clean_checkout": "P2_CLEAN_CHECKOUT_PASS",
+  "logs": {
+    "asset-rebuild.log": {
+      "sha256": "76aa5d604e0041d0b2a68c14f72d44acb9a06e9aa9d89b090d36f618ec4e3bff",
+      "markers": [
+        "P0_ASSET_REBUILD_PASS"
+      ]
+    },
+    "design.log": {
+      "sha256": "d08919d53449bb31b4ce9861b579b57179999bc57bb28467f95bfe82baaa1760",
+      "markers": [
+        "Errors: 0"
+      ]
+    },
+    "export-forward_plus.log": {
+      "sha256": "30ca1b5ec6281dcee8e522b794f1203ab8f994bf9ed410f9475a7e97cef77686",
+      "markers": [
+        "P0_SMOKE_PASS animation_advanced=true"
+      ]
+    },
+    "export-gl_compatibility.log": {
+      "sha256": "82bd94bafd525194d355f3656b457537dd1e2127dc977aa972f1a77c67dec81d",
+      "markers": [
+        "P0_SMOKE_PASS animation_advanced=true"
+      ]
+    },
+    "export.log": {
+      "sha256": "78ee294d0a4cbc4ca02dd12cd1d11d9b61748306a65020fb092311d2a9ccfb6f",
+      "markers": []
+    },
+    "headless-startup.log": {
+      "sha256": "4f26959767c4d78e5c20cf91134ee10293a7a51943a23123b5c2feaca343de64",
+      "markers": [
+        "P0_SMOKE_PASS animation_advanced=true"
+      ]
+    },
+    "import.log": {
+      "sha256": "f74606dddcd41b73dcfd62b3545c562865e3c5f7919a32d5d68bc9f1517ddd38",
+      "markers": []
+    },
+    "p1-crashes.log": {
+      "sha256": "315ce7b89926a814c2a0a08e0f98f22b94ce841a1eef09f5e1914ec4f583245a",
+      "markers": [
+        "P1_CRASH_RECOVERY_PASS:before_write checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:partial_write checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:after_flush checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:after_verify checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:partial_backup checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:after_backup_write checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:after_backup_replace checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:after_main_replace checkpoint=10",
+        "P1_CRASH_PASS stages=8"
+      ]
+    },
+    "p1-demo-headless.log": {
+      "sha256": "6532d618c7a214e45d783912a6df0c580ca94f6e5c28683e12c6eb5b96889d5a",
+      "markers": [
+        "P1_DEMO_PASS date=0020-01-01 progress=7305 spent=1 engine=4.8-beta3 (official) display=headless"
+      ]
+    },
+    "p1-export-forward_plus.log": {
+      "sha256": "d15bd5c8f24c8d27e111f356b85ca1d74973a8c05bafa2f50319f05dda74cf2a",
+      "markers": [
+        "P1_DEMO_PASS date=0020-01-01 progress=7305 spent=1 engine=4.8-beta3 (official) display=Windows"
+      ]
+    },
+    "p1-export-gl_compatibility.log": {
+      "sha256": "2a0f8aeb1300e8688a9a4735b33e63be40370a5972d3d16bc69c8860ae428d57",
+      "markers": [
+        "P1_DEMO_PASS date=0020-01-01 progress=7305 spent=1 engine=4.8-beta3 (official) display=Windows"
+      ]
+    },
+    "p1-project-forward_plus.log": {
+      "sha256": "d15bd5c8f24c8d27e111f356b85ca1d74973a8c05bafa2f50319f05dda74cf2a",
+      "markers": [
+        "P1_DEMO_PASS date=0020-01-01 progress=7305 spent=1 engine=4.8-beta3 (official) display=Windows"
+      ]
+    },
+    "p1-project-gl_compatibility.log": {
+      "sha256": "2a0f8aeb1300e8688a9a4735b33e63be40370a5972d3d16bc69c8860ae428d57",
+      "markers": [
+        "P1_DEMO_PASS date=0020-01-01 progress=7305 spent=1 engine=4.8-beta3 (official) display=Windows"
+      ]
+    },
+    "p1-tests.log": {
+      "sha256": "296eb40d311f5034e2e60daebea935e6752cf8de9645128181e40bd1e63c2139",
+      "markers": [
+        "P1_GROUP_PASS calendar",
+        "P1_GROUP_PASS preview",
+        "P1_GROUP_PASS chronology",
+        "P1_GROUP_PASS life",
+        "P1_GROUP_PASS causality",
+        "P1_GROUP_PASS save",
+        "P1_TEST_PASS checks=182 calendar preview chronology life causality save"
+      ]
+    },
+    "p2-assets.log": {
+      "sha256": "e484517dc09b1742f3694a0ef0c5ee6c9e6bb589d1795878b8b2377a243597da",
+      "markers": [
+        "P2_ASSETS_PASS packs=3 models=20"
+      ]
+    },
+    "p2-export-forward_plus.log": {
+      "sha256": "a06dc6f7eea54592c87d777cfc4e211bddd055820e58a593701861af70573d56",
+      "markers": [
+        "P2_SCENE_PASS"
+      ]
+    },
+    "p2-export-gl_compatibility.log": {
+      "sha256": "debb0c5ecb4ad99fb625b1c4ac60e7bac9e6f79fe04aae4dea7c813e7cdd9ce1",
+      "markers": [
+        "P2_SCENE_PASS"
+      ]
+    },
+    "p2-project-forward_plus.log": {
+      "sha256": "a06dc6f7eea54592c87d777cfc4e211bddd055820e58a593701861af70573d56",
+      "markers": [
+        "P2_SCENE_PASS"
+      ]
+    },
+    "p2-project-gl_compatibility.log": {
+      "sha256": "debb0c5ecb4ad99fb625b1c4ac60e7bac9e6f79fe04aae4dea7c813e7cdd9ce1",
+      "markers": [
+        "P2_SCENE_PASS"
+      ]
+    },
+    "p2-resume-forward_plus.log": {
+      "sha256": "4b547c566d96940b0a6a18eee393314a23ff455c23886cb37361469294a09883",
+      "markers": [
+        "P2_RESUME_PASS"
+      ]
+    },
+    "p2-resume-gl_compatibility.log": {
+      "sha256": "53b92b3d297abb86fd4014015dc68080cfe94c56624115d9433a002faf64e668",
+      "markers": [
+        "P2_RESUME_PASS"
+      ]
+    },
+    "p2-rules.log": {
+      "sha256": "6c83afb3aae8da539bd9d7bea7decb80d7c5aeeb32deba2d2405cc049f0adbf1",
+      "markers": [
+        "P2_RULE_PASS checks=47"
+      ]
+    },
+    "project-forward_plus.log": {
+      "sha256": "30ca1b5ec6281dcee8e522b794f1203ab8f994bf9ed410f9475a7e97cef77686",
+      "markers": [
+        "P0_SMOKE_PASS animation_advanced=true"
+      ]
+    },
+    "project-gl_compatibility.log": {
+      "sha256": "82bd94bafd525194d355f3656b457537dd1e2127dc977aa972f1a77c67dec81d",
+      "markers": [
+        "P0_SMOKE_PASS animation_advanced=true"
+      ]
+    },
+    "tests.log": {
+      "sha256": "b994c748c33adda9c4d3ae1e8c96b0cc98ca657e0b712c6087790ec8bba1839f",
+      "markers": [
+        "P0_TEST_PASS geometry transforms materials animation_samples"
+      ]
+    }
+  },
+  "pe_machine": "0x8664",
+  "export": {
+    "CultivationRPG.exe": "2f099ad62fdef78223c5060ad09073ce1829008e3efab3045a6c93ff4e3e215d",
+    "CultivationRPG.pck": "cb328dfee02014fba4703c3d508c15d2de1a27e51a4a02d6f3d318b28ba06749"
+  },
+  "screenshots": {
+    "export-forward_plus-court.png": "cbaf21357bdeaafae4e9cfb3a8fd07f99ab6af2532cc236602772a873a1d6736",
+    "export-forward_plus-dialogue.png": "ec59a02499718dad8146e4a9fe8e2459bba89fc32fc7f5c4ef7dfa070858a8ca",
+    "export-forward_plus-marsh.png": "b790882c47db3730ad75e2988af2ccc8c2291487cfb8fbcd91c61b6857cf2083",
+    "export-forward_plus-sluice.png": "91fbda4b79abe9fd7bb994844d78caacde67587738e1db68c77ce056da90283b",
+    "export-gl_compatibility-court.png": "ee02d5c59510a6c73f4e432e986675c402c20b61e1d6716abd4265035e1e1d18",
+    "export-gl_compatibility-dialogue.png": "781a1ca1db1f74ace93c89854d23df82df7d895190ce01c05ecb84f0f20282f5",
+    "export-gl_compatibility-marsh.png": "14a5f32ac96fb6b3b0568221ed6a13c7fbc560396bf1ce4a79708d77d5ead5bc",
+    "export-gl_compatibility-sluice.png": "bbb70ed48d47cf9df0dd86798d793fbad99cdf5080662791503904ec964be9f3"
+  }
+}

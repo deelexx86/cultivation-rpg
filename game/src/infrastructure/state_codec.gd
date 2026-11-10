@@ -59,13 +59,21 @@ static func assign_fields(object: RefCounted, data: Dictionary) -> void:
 			object.set(key, data[key])
 
 static func decode(data: Variant) -> CampaignState:
-	if not shape(data, schema()):
+	var spec := schema()
+	if data is Dictionary and data.has("exploration"):
+		spec["exploration"] = SedgeWorld.schema()
+	if not shape(data, spec):
 		return null
 	var state := CampaignState.new()
 	var scalars: Dictionary = data.duplicate(true)
 	for key: String in ["soul", "bodies", "actions", "events", "people", "obligations"]:
 		scalars.erase(key)
 	assign_fields(state, scalars)
+	if not state.exploration.is_empty():
+		for key: String in ["x","z"]:
+			state.exploration[key] = int(state.exploration[key])
+		for key: String in state.exploration.notes:
+			state.exploration.notes[key] = int(state.exploration.notes[key])
 	assign_fields(state.soul, data.soul)
 	for key: String in ["bodies", "actions", "events", "people", "obligations"]:
 		var target: Array = state.get(key)
@@ -119,8 +127,10 @@ static func problems(state: CampaignState) -> PackedStringArray:
 	var running := 0
 	var total_cost := 0
 	for action: CampaignState.Action in state.actions:
-		if action.kind not in ["practice", "recovery", "transfer_probe", "travel_probe"] or action.status not in ["running", "paused", "complete", "stopped"]:
+		if action.kind not in ["practice", "recovery", "transfer_probe", "travel_probe", "travel"] or action.status not in ["running", "paused", "complete", "stopped"]:
 			errors.append("Unknown action kind/status")
+		if action.kind == "travel" and state.exploration.is_empty():
+			errors.append("Playable travel requires an exploration campaign")
 		if action.duration <= 0 or action.duration > 1095728 or action.progress < 0 or action.progress > action.duration or action.cost < 0 or action.soul_years < 100 or action.soul_years > 5000 or action.body_years <= 0 or action.body_years > 5000:
 			errors.append("Invalid action values")
 		if action.status == "complete" and action.progress != action.duration:
@@ -158,5 +168,7 @@ static func problems(state: CampaignState) -> PackedStringArray:
 	for key: String in state.outcomes:
 		if state.outcomes[key] not in [0, 1]:
 			errors.append("Invalid resolved outcome")
+	if not state.exploration.is_empty() and not SedgeWorld.valid(state):
+		errors.append("Invalid White Sedge state")
 	errors.append_array(EventGraph.problems(state))
 	return errors

@@ -18,6 +18,10 @@
 
 Отдельный [технический пакет 0.2.1](docs/technical/README.md) содержит принятые производственные условия, [мастер-план](docs/technical/01-master-plan.md) и [верхнеуровневую архитектуру](docs/technical/02-architecture.md). Он подготовлен по ответам от 8 ноября и принят руководителем проекта 9 ноября 2026 года с целевой веткой Godot 4.8. GDD остаётся источником игровых правил; принятие технических решений не означает выполненных испытаний. P0 provides the executable import/runtime foundation. P1 now adds the scene-independent simulation kernel and diagnostic scenario: see the [P1 contract](docs/technical/05-p1-core-contract.md), [validation and limits](docs/technical/06-p1-validation.md), and [Windows workflow](docs/technical/03-windows-development.md).
 
+## Play the White Sedge opening on Windows
+
+Run `pwsh -File tools/p2.ps1 -Task Demo` from this checkout. The [P2 walkthrough and engineering notes](docs/technical/07-p2-exploration.md) cover the third-person controls, two landings, story branches, save compatibility and reproducible checks.
+
 ## Быстрый старт
 
 1. Прочитать [концепцию и границы](docs/00-vision-and-scope.md), [реестр решений](docs/01-decision-register.md) и [игровой цикл](docs/02-core-loop-and-player-journey.md).

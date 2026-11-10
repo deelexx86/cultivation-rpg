@@ -68,6 +68,7 @@ class WorldEvent extends RefCounted:
 		return {"id": id, "day": day, "kind": kind, "target": target, "value": value, "prerequisites": prerequisites.duplicate(), "requires_flag": requires_flag, "requires_value": requires_value, "requires_person": requires_person, "status": status, "resolved": resolved, "interrupt": interrupt}
 
 var campaign_id: String = "p1-demo"
+var exploration: Dictionary = {}
 var day: int = 0
 var revision: int = 0
 var mode: String = "active"
@@ -132,6 +133,8 @@ func encode() -> Dictionary:
 		for item: RefCounted in get(field):
 			rows.append(item.encode())
 		result[field] = rows
+	if not exploration.is_empty():
+		result["exploration"] = exploration.duplicate(true)
 	return result
 
 func fingerprint() -> String:
