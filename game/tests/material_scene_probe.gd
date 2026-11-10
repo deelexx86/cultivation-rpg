@@ -35,6 +35,17 @@ static func run(h) -> void:
 	var s: SedgeSession = h.session
 	var intact := "--intact-route" in OS.get_cmdline_user_args()
 	var property_check := "--property-route" in OS.get_cmdline_user_args()
+	if "--resume-check" not in OS.get_cmdline_user_args():
+		var before_preview:=s.state.fingerprint()
+		var scroll:=h.panel.get_child(0) as ScrollContainer
+		h.material_ui.guide()
+		await h.get_tree().process_frame
+		scroll.scroll_vertical=200
+		await h.get_tree().process_frame
+		h.material_ui.methods()
+		await h.get_tree().process_frame
+		await h.get_tree().process_frame
+		if not h.verify_scene(scroll.scroll_vertical==0 and s.state.fingerprint()==before_preview,"New panels reset scroll; previews spend nothing"): return
 	if "--resume-check" in OS.get_cmdline_user_args():
 		if not h.verify_scene(s.state.running()!=null and s.state.running().progress==10,"Restored partial practice"): return
 		var order_id: String = s.state.materials.jobs.back().id
@@ -96,6 +107,20 @@ static func run(h) -> void:
 		h.press_choice("Подтвердить способ")
 	if not h.verify_scene(s.state.materials.quartz_left==(0 if property_check else 4) and not h.land.quartz_visuals[4].visible,"Partial quartz changes actual scene"): return
 	if not await near(h,"mentor"): return
+	if "--mortality-route" in OS.get_cmdline_user_args():
+		select_input(h,"order","root_part")
+		var order_id: String=s.state.materials.jobs.back().id
+		h.material_ui.practice(WorldCalendar.ordinal(60)-s.state.day)
+		h.press_choice("Подтвердить практику")
+		h.press_choice("Завершить оставшуюся работу")
+		if not h.verify_scene(not h.land.tutor_alive and not h.land.merchant_alive,"Visible NPC succession follows calendar immediately"): return
+		if not await near(h,"mentor"): return
+		if not h.verify_scene(h.column.get_child(0).text=="Мастерская · новый исполнитель","Dead teacher is replaced by institutional service"): return
+		collect(h,order_id)
+		if not h.verify_scene(not MaterialWorld.available(s.state,"essence").is_empty(),"Institutional result remains collectible after succession"): return
+		print("P3_MORTALITY_PASS")
+		h.leave()
+		return
 	if property_check:
 		h.refresh()
 		if not h.verify_scene(h.player.load_factor==0.55,"Overload applies movement penalty"): return

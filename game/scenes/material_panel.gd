@@ -47,6 +47,11 @@ func mentor() -> void:
 	var options := {"Травничество · 8 камней / 4 года":training.bind("herbalism"),"Алхимия и оба способа · трактат / 6 лет":training.bind("alchemy"),"Обработка и заказы":recipes,"Сравнить способы подготовки":methods}
 	options["Оставить сосуд с содержимым на хранении"] = run.bind("stash","")
 	options["Забрать сосуд с хранения"] = run.bind("retrieve","")
+	if not state().person(MaterialWorld.MENTOR).alive:
+		options.erase("Травничество · 8 камней / 4 года")
+		options.erase("Алхимия и оба способа · трактат / 6 лет")
+		scene.show_panel("Мастерская · новый исполнитель","Шэнь Юй умер. Его личные уроки завершились, но мастерская продолжает принятые заказы по прежним условиям. Материалы и готовые результаты остаются у своих владельцев.",options)
+		return
 	scene.show_panel("Шэнь Юй · зелёный навес","«Знать место мало. Научись видеть живые волокна и структуру породы. Приобретённый трактат ещё нужно освоить».\nОбучение занимает героя. Работа мастерской и выдержка идут параллельно на общей дате. Продажи и уединение не создают новых ресурсов.",options)
 
 func forecast(days: int) -> String:
@@ -173,7 +178,9 @@ func advance(days: int) -> void:
 	if state().running() != null: work()
 	else:
 		scene.land.sync(state())
-		scene.show_panel("Этап завершён","Фактическая дата: %s. Результат, освоение и расходы сохранены." % WorldCalendar.label(state().day),{"Имущество и процессы":inventory,"Вернуться к мастеру":mentor})
+		var description := "Фактическая дата: %s. Результат, освоение и расходы сохранены." % WorldCalendar.label(state().day)
+		if not state().materials.jobs.is_empty() and state().materials.jobs.back().status == "stopped": description = "Работа остановлена на фактической дате %s. Совершённые расходы и частичный прогресс сохранены; неосвоенное знание не выдано. Личный урок не может продолжиться без живого наставника." % WorldCalendar.label(state().day)
+		scene.show_panel("Этап завершён",description,{"Имущество и процессы":inventory,"Вернуться к мастеру":mentor})
 
 func sell_menu() -> void:
 	var options := {}

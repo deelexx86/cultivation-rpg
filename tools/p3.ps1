@@ -43,6 +43,7 @@ if ($Task -in 'Verify','Smoke') {
         Check "p3-export-resume-$renderer" 'P3_RESUME_PASS' @($exe,'--rendering-method',$renderer,'--','--p3','--p3-smoke','--resume-check',"--slot=$exportSlot")
         Check "p3-condense-$renderer" 'P3_CONDENSE_PASS' @($exe,'--rendering-method',$renderer,'--','--p3','--p3-smoke','--intact-route',"--capture=$out/p3-condense-$renderer")
         Check "p3-property-$renderer" 'P3_PROPERTY_PASS' @($exe,'--rendering-method',$renderer,'--','--p3','--p3-smoke','--property-route')
+        Check "p3-mortality-$renderer" 'P3_MORTALITY_PASS' @($exe,'--rendering-method',$renderer,'--','--p3','--p3-smoke','--mortality-route')
     }
 }
 if ($Task -eq 'Verify') { Write-Output 'P3_VERIFY_PASS' }

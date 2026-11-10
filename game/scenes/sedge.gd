@@ -154,6 +154,7 @@ func _process(delta: float) -> void:
 			target = key
 			distance = d
 	hint.text = "E   %s" % NAMES[target] if target != "" else "WASD  Ходьба     Shift  Бег     ← →  Камера     J  Журнал     Esc  Меню"
+	if p3 and target == "mentor" and not session.state.person(MaterialWorld.MENTOR).alive: hint.text = "E   Мастерская · новый исполнитель"
 	hint.visible = not panel.visible
 	if not player.locked:
 		elapsed += delta
@@ -196,6 +197,7 @@ func show_panel(title: String, body: String, options: Dictionary = {}) -> void:
 	button("Закрыть",close_panel)
 	panel.reset_size()
 	panel.show()
+	if p3: (panel.get_child(0) as ScrollContainer).set_deferred("scroll_vertical",0)
 	player.locked = true
 	refresh()
 
