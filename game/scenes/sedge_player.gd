@@ -42,7 +42,8 @@ func _physics_process(delta: float) -> void:
 		motion = Input.get_vector("move_left","move_right","move_up","move_down")
 	var dir := pivot.basis * Vector3(motion.x,0,motion.y)
 	var fast := Input.is_action_pressed("sprint")
-	var speed := 4.6 if fast else 2.25
+	# Nominal stride from the scaled leg swing and the 0.50/0.67 s clips.
+	var speed := 3.38 if fast else 2.2
 	velocity.x = dir.x*speed
 	velocity.z = dir.z*speed
 	velocity.y = -1.0 if is_on_floor() else velocity.y-18*delta

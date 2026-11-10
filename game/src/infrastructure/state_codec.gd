@@ -129,6 +129,8 @@ static func problems(state: CampaignState) -> PackedStringArray:
 	for action: CampaignState.Action in state.actions:
 		if action.kind not in ["practice", "recovery", "transfer_probe", "travel_probe", "travel"] or action.status not in ["running", "paused", "complete", "stopped"]:
 			errors.append("Unknown action kind/status")
+		if action.kind == "travel" and state.exploration.is_empty():
+			errors.append("Playable travel requires an exploration campaign")
 		if action.duration <= 0 or action.duration > 1095728 or action.progress < 0 or action.progress > action.duration or action.cost < 0 or action.soul_years < 100 or action.soul_years > 5000 or action.body_years <= 0 or action.body_years > 5000:
 			errors.append("Invalid action values")
 		if action.status == "complete" and action.progress != action.duration:

@@ -312,6 +312,25 @@ func tour() -> void:
 		if not verify_scene(session.state.exploration.place == "landing" and session.state.day == 5,"Resumed on far bank"): return
 		start_trip(SedgeWorld.route_plan(session.state))
 		if not verify_scene(session.state.exploration.holder == SedgeWorld.LO and session.state.day == 10,"Reentered persisted yard"): return
+		close_panel()
+		player.position = Vector3(0,0.1,-14.2)
+		player.pivot.rotation.y = 0.0
+		Input.action_press("move_up")
+		await get_tree().create_timer(1.45).timeout
+		Input.action_release("move_up")
+		if not verify_scene(player.position.z > -16,"Closed grate blocks entry"): return
+		player.position = Vector3(-3.8,0.1,2.2)
+		interact("merchant")
+		press_choice("Принять его просьбу")
+		close_panel()
+		player.position = Vector3(0,0.1,-14.2)
+		interact("gate")
+		press_choice("Вставить знак в оправу")
+		close_panel()
+		Input.action_press("move_up")
+		await get_tree().create_timer(1.6).timeout
+		Input.action_release("move_up")
+		if not verify_scene(player.position.z < -16.6 and session.state.exploration.gate,"Walk through opened grate"): return
 		print("P2_RESUME_PASS")
 		leave()
 		return
@@ -354,15 +373,15 @@ func tour() -> void:
 		if folder != "" and get_viewport().get_texture().get_image().save_png(folder+"-"+shot+".png") != OK:
 			get_tree().quit(1)
 			return
-	act("accept")
+	press_choice("Я поищу знак")
 	close_panel()
-	for step: Array in [["root","observe"],["root","interpret"],["sign","take"],["merchant","return"]]:
+	for step: Array in [["root","Осмотреть след"],["root","Истолковать признаки"],["sign","Поднять знак"],["merchant","Передать знак"]]:
 		player.position = land.points[step[0]] + Vector3(0,0.1,1.2)
 		await get_tree().physics_frame
 		await get_tree().create_timer(0.18).timeout
 		if not verify_scene(target == step[0],"Proximity "+str(step[0])): return
 		interact(target)
-		act(step[1])
+		press_choice(step[1])
 		close_panel()
 	if not verify_scene(session.state.exploration.holder == SedgeWorld.LO and session.state.day == 0,"Timely return without local calendar cost"): return
 	player.position = land.points["ferry"] + Vector3(0,0.1,1)
@@ -373,6 +392,13 @@ func tour() -> void:
 	if not verify_scene(session.state.day==2 and SedgeWorld.active_trip(session.state).status=="paused","Interrupted ferry"): return
 	print("P2_SCENE_PASS")
 	leave()
+
+func press_choice(text: String) -> void:
+	for control: Node in column.get_children():
+		if control is Button and control.text == text:
+			control.pressed.emit()
+			return
+	verify_scene(false,"Missing dialogue choice: "+text)
 
 func verify_scene(ok: bool, message: String) -> bool:
 	if not ok:

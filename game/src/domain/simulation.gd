@@ -18,6 +18,8 @@ static func preview(state: CampaignState, duration: int, cost: int = 1, mileston
 		reason = "No living actor"
 	elif kind not in ["practice", "recovery", "transfer_probe", "travel_probe", "travel"] or soul_years < 100 or soul_years > 5000 or body_years <= 0 or body_years > 5000:
 		reason = "Invalid method parameters"
+	elif kind == "travel" and state.exploration.is_empty():
+		reason = "No playable route in this campaign"
 	elif not milestone.is_empty() and kind != "practice":
 		reason = "Only the practice fixture can grant a milestone"
 	var obligations: Array[String] = []

@@ -70,7 +70,8 @@ func populate(s: CampaignState) -> void:
 			tint(model(self,NATURE,"rock_tallA",p,Vector3(18,rng.randf_range(10,27),19),angle),Color("#546d71"))
 		else:
 			prop(NATURE,"tree_plateau" if i%3 == 0 else "tree_pineRoundA",p,rng.randf_range(4,10),angle)
-	shape(Vector3(12,-0.035,-3),Vector3(15,0.09,23),Color("#57958c"),true)
+	var flooded: bool = s.exploration.source == "flooded"
+	shape(Vector3(12,-0.035,-3),Vector3(18 if flooded else 15,0.14 if flooded else 0.09,24 if flooded else 23),Color("#57958c"),true)
 	for i in 80:
 		var angle := rng.randf_range(0,TAU)
 		var p := Vector3(12+7*cos(angle),0,-3+11*sin(angle))
@@ -120,7 +121,7 @@ func populate(s: CampaignState) -> void:
 	for x in [-3,3]:
 		prop(TOWN,"lantern",Vector3(x,0,-4),1.9)
 		solid(Vector3(x,1,-4),Vector3(0.5,2,0.5))
-	for i in 7:
+	for i in range(2 if flooded else 7):
 		prop(NATURE,"flower_yellowA",POINTS.root+Vector3(sin(i*2.4)*0.55,0,cos(i*2.4)*0.55),2)
 	for x in [-4,4]:
 		model(self,TOWN,"wall-block",Vector3(x,0,-19),Vector3(2,3.2,7))

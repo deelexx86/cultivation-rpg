@@ -26,6 +26,7 @@ if ($Task -eq 'Demo') {
     exit $LASTEXITCODE
 }
 if ($Task -in 'Verify','Test') {
+    Check 'p2-assets' 'P2_ASSETS_PASS' @($Python,"$PSScriptRoot/verify_sedge_assets.py")
     Check 'p2-rules' 'P2_RULE_PASS' @($engine,'--headless','--path',$game,'--script','res://tests/sedge_tests.gd')
 }
 if ($Task -in 'Verify','Smoke') {
