@@ -162,3 +162,7 @@ Godot 4 и типизированный GDScript приняты. OPEN-14 вкл�
 | OPEN-38 | Карточки здоровья/состояний, способы лечения и изменения срока тела, взаимодействие проклятий с переселением | COMBAT-HEALTH/TIME-BODY и OPEN-05; до соответствующих эффектов. Нет автоматического возрастного ослабления |
 
 OPEN-16 сохраняет конкретные политики повреждений и утраты вещей; причина базового исхода уже определена RES-DEATH. Неопределённость карточки не отменяет принятое правило.
+
+## P1 technical resolution — 2026-11-10
+
+OPEN-01's remaining conventions have an implemented and tested P1 choice: Saturday epoch, February-28 anniversary clamping from the birth origin, expiry first and explicit causal dependencies before action completion. OPEN-10 has an implemented P1 snapshot/recovery choice with one backup, strict versions/invariants and synchronous mutation checkpoints. These engineering details are documented in the [P1 contract](technical/05-p1-core-contract.md), with [evidence and limitations](technical/06-p1-validation.md). This resolves their P1 blocking portion under the current delegation; it does not approve production balance, combat snapshots, future migrations, concurrent writers or hardware power-loss guarantees. The historical OPEN tables above retain their broader stage scope.

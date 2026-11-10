@@ -196,3 +196,7 @@ stateDiagram-v2
 ## Техническое продолжение 2026-11-09
 
 Принятая 9 ноября 2026 года [архитектура](technical/02-architecture.md) конкретизирует технические решения этого документа: разделение состояния и сцен, устойчивые ID, команды, потоки случайности и JSON-снимки первого прототипа. Совпадающие направления приняты в области технического пакета; точная схема, период записи и миграции ещё требуют реализации и проверки.
+
+## P1 implementation supplement — 2026-11-10
+
+The [P1 snapshot contract](technical/05-p1-core-contract.md) now defines schema 1, content identity, checksums plus invariant validation, one previous valid recovery snapshot, synchronous checkpoints at every P1 mutation/boundary, retry after failure and explicit refusal of unsupported schema/content. No changing idle state exists in P1, so movement's periodic save cadence remains for P2. [P1 evidence](technical/06-p1-validation.md) distinguishes application-crash recovery from untested power-loss behavior. Dynamic combat restoration, production inventory, playable transfer and future migration policy remain later-stage work; STATE-09 is unchanged.

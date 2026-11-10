@@ -203,3 +203,7 @@ tools/                     проверки и сборка
 | Социальные критерии и баланс | Малые явные карточки по OPEN; без скрытого принятия формул | До соответствующего функционального сценария |
 
 Документ достаточно конкретен для постановки VS-00 и подготовки детализации VS-01. Он не утверждает, что движок уже испытан, формат сохранения окончателен или карточки поздних стадий готовы. Изменение проверенного технического решения сопровождается результатом испытания и оценкой влияния на контент и сохранения.
+
+## Executable P1 contract — 2026-11-10
+
+The [P1 supplement](05-p1-core-contract.md) specifies the concrete typed records, calendar convention, command receipts, fixed event graph and schema-1 snapshot protocol now implemented. See [P1 evidence](06-p1-validation.md) for executed checks and unsupported scope. This is the tested calendar prototype contract under the accepted architecture, not a final production save format or proof of later combat/flight behavior.
