@@ -45,4 +45,10 @@ On 10 November 2026, executable source `7678c8a1289ce9472b62e5429bcd7f62875d576a
 
 The [validation record](evidence/p2-validation.json) includes the tested revision, log hashes, executable and PCK hashes, PE architecture and original frame hashes. The [Forward+ frames](evidence/p2-forward_plus.jpg) and [Compatibility frames](evidence/p2-gl_compatibility.jpg) show the court, marsh, watermill entrance and Russian dialogue. Compatibility is visibly brighter and shows fine stippling on awnings. Both render paths preserve the wheel silhouette and readable dialogue.
 
-P3 can use the existing source identity, independently dated observations and transaction boundary for its first extraction operation. It still needs to model yield, damage, storage and qualifications for that operation. Independent player comprehension, precise foot-contact measurements, production balance and performance on a second GPU remain unmeasured.
+P3 can use the existing source identity, independently dated observations and transaction boundary for its first extraction operation. It still needs to model yield, damage, storage and qualifications for that operation. Precise foot-contact measurements, production balance and performance on a second GPU remain unmeasured.
+
+## Owner's manual acceptance
+
+The project owner reports independently completing both story scenarios. The owner found character and camera controls comfortable, navigation and interactions clear, and encountered no difficulties. Calendar time and world events worked as expected. The owner found no blocking issues during this manual check.
+
+This is the owner's playtest testimony. The automated checks and their scope are recorded separately above.
