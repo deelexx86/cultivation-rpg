@@ -75,6 +75,8 @@ python tools/validate_design.py
 
 `Test` runs import and the P3 domain suite. `Crash` runs actual hard terminations of writers, not graceful quits or only injected return values. `Verify` includes full P0–P2 verification, release Windows export, P3 rules, crash checks, graphical project/export continuations and both preparation routes. `Smoke` requires an up-to-date export. The clean-checkout script clones committed HEAD into a path containing spaces, rechecks cached archive hashes, freshly extracts tools, imports and exports without copying `.godot` or installed binaries, runs the same verification, and requires a clean Git tree.
 
+After a successful clean run, `python tools/record_p3_validation.py --checkout "<clean checkout path>" --clean-log .artifacts/p3-clean-checkout-final.log` verifies the required logs, crash confirmations, PE architecture and unchanged runtime files. It writes the portable validation record, copies selected original frames and creates local `.artifacts/p3-review-evidence.zip` with sanitized logs and frames. It records results and never substitutes for running the checks.
+
 The graphical probe drives the normal menu callbacks, checks nearby interaction targets, actual movement, source visuals, panel scroll reset and saved state. The first project process exits ten days into cultivation while a paid order is pending. A separately launched Windows export resumes it, completes the order, collects, matures the intermediate in parallel, and saves the smooth plan. Another exported route prepares condensation from an intact root. The property route compares actual movement under load, leaves the vessel in the world and retrieves its unchanged contents. A late-calendar route checks the immediate visible replacement of both mortal NPCs and collection from the surviving workshop. This is automated application testing with inspected frames, not an independent human usability playtest.
 
 A normal, non-smoke launch was also controlled through the Windows UI: mouse scrolling reached the lower help choices, clicking the method comparison opened it at its beginning, and normal window close saved successfully. A second launch continued the same named campaign; its final orderly close advanced snapshot sequence 2 to 3 while day 0 and wallet 80 remained unchanged. This checks ordinary input and closing, not an owner's acceptance of the complete route.
@@ -92,6 +94,21 @@ A normal, non-smoke launch was also controlled through the Windows UI: mouse scr
 
 ## Verification result and P4 handoff
 
-Final committed-source, clean-checkout, export and frame evidence will be recorded here after the verification run. Until then this section is not a completion claim.
+On 11 November 2026, executable source **`2da941960e18eabb20b9686e14a50753e1cc70db`** passed `P3_CLEAN_CHECKOUT_PASS` on Windows 11 / AMD RX 580 2048SP. The clean clone freshly extracted the verified pinned tools, rebuilt the Blender probe, imported, ran all phases, exported Windows x86-64 and finished with an empty Git status. Subsequent changes add only documentation and the evidence-recording helper; its comparison confirms all **107 tracked runtime files** remain byte-identical to the tested source.
+
+| Actual check | Result |
+|---|---|
+| P0 | Source-to-GLB rebuild, import / asset contract / animated startup, Windows release export and both renderers passed |
+| P1 regression | 182 assertions; all 8 actual terminated writers recovered; laboratory and project/export launches passed |
+| P2 regression | Asset membership/hashes, 47 assertions, interrupted ferry continuation, story / key / grate traversal and both renderers passed |
+| P3 domain | **311 assertions**, including split waiting, stock/economy conservation, storage, interrupted learning, active repair, mortal teacher, institutional orders, origin/quality, both material plans and incompatible-schema byte preservation |
+| P3 process crashes | **64 hard terminations and successful continuations**: purchase, extraction, order, active completion, autonomous completion, collection, method choice and sale at all 8 protocol boundaries |
+| P3 Windows application | Project → independent export continuation, standalone export two-launch route, intact-root condensation, actual load/storage traversal and visible mortality/succession passed in Forward+ and Compatibility |
+| Build identity | PE machine **0x8664**; executable and PCK SHA-256 recorded; original-frame hashes and 41 check logs recorded |
+| Documentation | GDD / reference validator passed with zero errors, separately from execution |
+
+The [portable validation record](evidence/p3-validation.json) contains the tested revision, log/asset/build/frame hashes, all 64 crash confirmations and reproduction commands. Selected original frames show [extraction](evidence/p3-root-forward_plus.png), [order terms](evidence/p3-contract-forward_plus.png), [smooth preparation](evidence/p3-prepared-forward_plus.png), [condensation preparation](evidence/p3-condensation-forward_plus.png) and [Compatibility preparation](evidence/p3-prepared-gl_compatibility.png). The local `.artifacts/p3-review-evidence.zip` holds sanitized full logs and selected frames; binaries remain reproducible local build output. The owner has not yet independently accepted P3.
+
+**P3 is ready for independent review. P4 can proceed after acceptance.** All eight requested P3 criteria are covered within this documented prototype scope; full breakthrough execution is deliberately outside this stage.
 
 P4 should add its single combat implementation and technical flight / dynamic recovery probes against this same campaign architecture. P3's reserved material plan is an input to later P5 integration, not an implemented breakthrough. No P3 result establishes combat balance, production balance, a second-machine result, dense-scene performance, power-loss durability or independent owner acceptance.
