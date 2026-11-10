@@ -47,7 +47,7 @@ Windows 11 supersedes the former Ubuntu development preference by the owner’s 
 
 ## Незакрытые условия интервью
 
-- Machine A is now measured: RX 580 2048SP, Windows 11, Ryzen 5 5600 and 64 GB RAM. WMI AdapterRAM is not a reliable dedicated-VRAM measurement; no player minimum is inferred. Machine B remains untested.
+- Machine A is now measured: RX 580 2048SP, Windows 11, Ryzen 5 5600 and 64 GB RAM. DirectX diagnostics report 8,170 MB dedicated GPU memory, unlike the limited WMI AdapterRAM value; no player minimum is inferred. Machine B remains untested.
 - Минимальная конфигурация игрока и целевое разрешение не выбраны. Наличие двух рабочих машин не задаёт системные требования выпуска.
 - Языки игры не указаны. Русский текст прототипа и поддержка перевода через устойчивые ключи — **ACCEPTED** от 9 ноября. Набор языков и озвучивание выбрать до массового текста/записи звука.
 - Steam Deck отдельно не выбран; не включать в обязательную матрицу испытаний.
