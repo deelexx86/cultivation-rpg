@@ -22,6 +22,8 @@
 
 Run `pwsh -File tools/p2.ps1 -Task Demo` from this checkout. The [P2 walkthrough and engineering notes](docs/technical/07-p2-exploration.md) cover the third-person controls, two landings, story branches, save compatibility and reproducible checks.
 
+For resource extraction and material preparation in the same scene, run `pwsh -NoProfile -File tools/p3.ps1 -Task Demo`. The [P3 walkthrough and contract](docs/technical/08-p3-material-preparation.md) cover finite trade, learning, processing, workshop orders, both preparation plans and the separate schema-3 campaign.
+
 ## Быстрый старт
 
 1. Прочитать [концепцию и границы](docs/00-vision-and-scope.md), [реестр решений](docs/01-decision-register.md) и [игровой цикл](docs/02-core-loop-and-player-journey.md).

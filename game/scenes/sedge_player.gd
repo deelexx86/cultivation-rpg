@@ -5,6 +5,7 @@ var pivot := Node3D.new()
 var arm := SpringArm3D.new()
 var actor: Node3D
 var locked := false
+var load_factor := 1.0
 
 func _ready() -> void:
 	var collider := CollisionShape3D.new()
@@ -44,6 +45,7 @@ func _physics_process(delta: float) -> void:
 	var fast := Input.is_action_pressed("sprint")
 	# Nominal stride from the scaled leg swing and the 0.50/0.67 s clips.
 	var speed := 3.38 if fast else 2.2
+	speed *= load_factor
 	velocity.x = dir.x*speed
 	velocity.z = dir.z*speed
 	velocity.y = -1.0 if is_on_floor() else velocity.y-18*delta

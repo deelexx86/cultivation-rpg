@@ -82,6 +82,8 @@ static func apply(s: CampaignState, cmd: String) -> String:
 	var trip := active_trip(s)
 	if s.mode != "active" or (trip != null and cmd != "rope"):
 		return "Сейчас это невозможно."
+	if not s.materials.is_empty() and cmd != "rope" and MaterialWorld.occupied(s):
+		return "Завершите текущее личное действие."
 	if cmd != "rope" and e.place != YARD:
 		return "Вернитесь к торговому двору."
 	match cmd:

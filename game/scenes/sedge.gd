@@ -1,6 +1,6 @@
 extends Node3D
 
-const NAMES := {"merchant":"Торговец", "root":"Бледные цветы", "sign":"Медный блеск", "gate":"Старый затвор", "ferry":"Переправа", "retreat":"Уединение"}
+const NAMES := {"merchant":"Торговец", "root":"Бледные цветы", "sign":"Медный блеск", "gate":"Старый затвор", "ferry":"Переправа", "retreat":"Уединение", "mentor":"Шэнь Юй · обучение и мастерская", "quartz":"Светлая порода", "shop":"Лавка"}
 const NOTES := {"accept":"Ло Вэй просил вернуть знак из водосброса.", "decline":"Я отказалась от просьбы Ло Вэя.", "take":"У старого водосброса найден медный знак.", "return":"Я вернула знак. Ло Вэй дал мне припасы.", "gift":"Ло Вэй доверил мне свой ключ к формации.", "notch":"На обороте знака — насечка с разрывом.", "open":"Знак установлен. Каменная решётка открыта.", "rope":"Я удержала канат. Вода поднялась.", "observe.dry":"Осмотр берега: прозрачные прожилки под сухим илом.", "observe.flooded":"Осмотр берега: корни скрыты под свежей водой.", "interpret.dry":"По прожилкам предполагаю стеклянный корень. Для извлечения нужно травничество.", "interpret.flooded":"После разлива прежний способ осмотра непригоден.", "successor":"Инь Цю сообщил о смерти Ло Вэя. Личного обещания он не давал."}
 var session: SedgeSession
 var land: SedgeLandscape
@@ -13,9 +13,14 @@ var column := VBoxContainer.new()
 var target := ""
 var elapsed := 0.0
 var smoke := false
+var p3 := false
+var material_ui: MaterialPanel
 
 func _ready() -> void:
+	p3 = "--p3" in OS.get_cmdline_user_args()
 	smoke = "--p2-smoke" in OS.get_cmdline_user_args()
+	var p3_smoke := "--p3-smoke" in OS.get_cmdline_user_args()
+	if p3_smoke: smoke = true
 	var id := "white-sedge" if not smoke else "visit-%d-%d" % [OS.get_process_id(),Time.get_ticks_usec()]
 	var base := "user://sedge"
 	for arg in OS.get_cmdline_user_args():
@@ -24,7 +29,8 @@ func _ready() -> void:
 		base = "user://sedge-smoke"
 		for arg in OS.get_cmdline_user_args():
 			if arg.begins_with("--slot="): id = arg.trim_prefix("--slot=")
-	session = SedgeSession.new(SedgeWorld.fresh(id),SnapshotStore.new(base,id,true))
+	if p3: base = "user://sedge-materials-smoke" if smoke else "user://sedge-materials"
+	session = SedgeSession.new(MaterialWorld.fresh(id) if p3 else SedgeWorld.fresh(id),SnapshotStore.new(base,id,true,p3))
 	var storage := session.store
 	if FileAccess.file_exists(storage.path("current.json")) or FileAccess.file_exists(storage.path("previous.json")):
 		if not session.reload():
@@ -63,10 +69,13 @@ func _ready() -> void:
 	add_child(sun)
 	player = SedgePlayer.new()
 	add_child(player)
+	if p3: material_ui = MaterialPanel.new(self)
 	build_ui()
 	enter()
 	restore_action()
-	if smoke: call_deferred("tour")
+	if p3_smoke: call_deferred("material_tour")
+	elif smoke: call_deferred("tour")
+	elif p3 and session.state.materials.items.is_empty(): material_ui.guide()
 
 func enter() -> void:
 	if land != null:
@@ -113,7 +122,15 @@ func build_ui() -> void:
 	panel.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	panel.grow_vertical = Control.GROW_DIRECTION_BOTH
 	panel.add_theme_stylebox_override("panel",style(Color("#182e2ef9"),23))
-	panel.add_child(column)
+	if p3:
+		var scroll := ScrollContainer.new()
+		scroll.custom_minimum_size = Vector2(610,430)
+		scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+		scroll.follow_focus = true
+		column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		panel.add_child(scroll)
+		scroll.add_child(column)
+	else: panel.add_child(column)
 	column.add_theme_constant_override("separation",9)
 	panel.hide()
 
@@ -121,6 +138,10 @@ func refresh() -> void:
 	var s := session.state
 	var name_text := "Торговый двор" if s.exploration.place == "court" else "Дальний берег"
 	heading.text = "Белая осока   /   %s    ·    %s" % [name_text, WorldCalendar.label(s.day)]
+	if p3:
+		heading.text += "\nP3 · Камни: %d  ·  Душа: %d/%d  ·  Тело: %d/%d" % [s.materials.wallet,WorldCalendar.age_years(s.soul.born,s.day),s.soul.limit_years,WorldCalendar.age_years(s.body().born,s.day),s.body().limit_years]
+		player.load_factor = 0.55 if MaterialWorld.weight(s) > int(P3Content.data().carry_grams) else 1.0
+		if player.load_factor < 1.0: heading.text += " · Перегрузка"
 
 func _process(delta: float) -> void:
 	if land == null: return
@@ -162,8 +183,8 @@ func show_panel(title: String, body: String, options: Dictionary = {}) -> void:
 	var content := Label.new()
 	content.text = body
 	content.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	content.custom_minimum_size.x = 470
-	if body.length() > 450:
+	content.custom_minimum_size.x = 570 if p3 else 470
+	if body.length() > 450 and not p3:
 		var scroll := ScrollContainer.new()
 		scroll.custom_minimum_size = Vector2(505,265)
 		column.add_child(scroll)
@@ -185,6 +206,9 @@ func button(label: String, callback: Callable) -> void:
 	column.add_child(control)
 
 func close_panel() -> void:
+	if p3 and session.state.running() != null and session.state.running().kind != "travel":
+		material_ui.work()
+		return
 	panel.hide()
 	player.locked = false
 	if session.dirty: failure()
@@ -207,6 +231,15 @@ func act(command: String) -> void:
 	show_panel("Запись в журнале",NOTES.get(command,NOTES.get(command+"."+str(session.state.exploration.source),"Сведения сохранены.")))
 
 func interact(key: String) -> void:
+	if p3:
+		match key:
+			"mentor":
+				if session.material("visit"): material_ui.mentor()
+				else: failure()
+				return
+			"quartz": material_ui.mineral(); return
+			"root": material_ui.root(); return
+			"shop": material_ui.shop(); return
 	var s := session.state
 	var e := s.exploration
 	match key:
@@ -264,6 +297,12 @@ func retreat(plan: Dictionary) -> void:
 
 func restore_action() -> void:
 	var active := session.state.running()
+	if p3 and active == null and MaterialWorld.occupied(session.state) and SedgeWorld.active_trip(session.state) == null:
+		material_ui.work()
+		return
+	if p3 and active != null and active.kind != "travel":
+		material_ui.work()
+		return
 	if active != null and active.kind == "practice":
 		if not session.advance(active.duration-active.progress):
 			failure()
@@ -295,9 +334,19 @@ func journal() -> void:
 	for k: String in e.notes:
 		var stale: bool = k.ends_with(".dry") and e.source == "flooded" and e.notes.has("observe.flooded")
 		lines.append("%s · %s%s" % [WorldCalendar.label(e.notes[k]),NOTES.get(k,k)," (прежние сведения)" if stale else ""])
+	if p3:
+		for key: String in session.state.materials.notes:
+			lines.append("%s · %s" % [WorldCalendar.label(session.state.materials.notes[key]),"Стеклянный корень распознан духовным обследованием." if key.begins_with("root.") else "Структура глухого кварца распознана." if key.ends_with("recognized") else "В породе замечена духовная аномалия."])
+		for entry: String in session.state.history:
+			if ":material:" in entry:
+				var verb: String = entry.get_slice(":",2)
+				lines.append("%s · %s" % [WorldCalendar.label(int(entry.get_slice(":",0))),{"buy":"Куплено конечное предложение.","extract":"Источник извлечён выбранным способом.","learn":"Начато обучение.","choose":"Обновлён материальный план.","claim":"Результат работы получен.","sell":"Материал продан.","cancel":"Работа прекращена по условиям.","stash":"Сосуд оставлен на хранении.","retrieve":"Сосуд возвращён из хранения."}.get(verb,"Обработка: затраты и сырьё зафиксированы.")])
 	show_panel("Путевой журнал","Записей ещё нет. Найдите торговца у красного навеса." if lines.is_empty() else "\n".join(lines))
 
 func menu() -> void:
+	if p3:
+		show_panel("Белая осока · материальная подготовка","WASD — движение · E — взаимодействие · J — журнал\nПКМ / стрелки — камера · Esc — меню. Обучение и работа расходуют дни только после подтверждения.",{"Имущество и процессы":material_ui.inventory,"Маршрут P3":material_ui.guide,"Сохранить и выйти":leave})
+		return
 	show_panel("Долина Белой Осоки","WASD — движение · Shift — бег · E — взаимодействие\nПКМ и мышь или стрелки — поворот · Колесо — расстояние\nJ — журнал. Осмотр и разговоры не расходуют дни.",{"Журнал":journal,"Сохранить и выйти":leave})
 
 func leave() -> void:
@@ -407,3 +456,6 @@ func verify_scene(ok: bool, message: String) -> bool:
 		push_error(message)
 		get_tree().quit(1)
 	return ok
+
+func material_tour() -> void:
+	await MaterialSceneProbe.run(self)
