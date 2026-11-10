@@ -1,0 +1,22 @@
+{
+  "godot": {
+    "version": "4.8.beta3",
+    "url": "https://github.com/godotengine/godot-builds/releases/download/4.8-beta3/Godot_v4.8-beta3_win64.exe.zip",
+    "algorithm": "sha512",
+    "hash": "ac5efc09870597d65a3d13a886e9163d6aa886bb4bb761a4135d36725f2773dc7cf7d1ec836bb21761a56b0080115feb11cd6252e5ef86a279398a1a2a24271f",
+    "executable": "godot/Godot_v4.8-beta3_win64_console.exe"
+  },
+  "templates": {
+    "version": "4.8.beta3",
+    "url": "https://github.com/godotengine/godot-builds/releases/download/4.8-beta3/Godot_v4.8-beta3_export_templates.tpz",
+    "algorithm": "sha512",
+    "hash": "541950a4a79a68c41109ebfc0278ee6d52396da340dd4702f113d528bd0038df3f8b339f04bf4af8072e837fbfe599556d67181ede1867de058ccd2272734505"
+  },
+  "blender": {
+    "version": "5.2.3",
+    "url": "https://ftp.nluug.nl/pub/graphics/blender/release/Blender5.2/blender-5.2.3-windows-x64.zip",
+    "algorithm": "sha256",
+    "hash": "723f08a4401502561eb763cdeacf8745b31e5f3f154d287d3830d97cf75dc2fb",
+    "executable": "blender/blender-5.2.3-windows-x64/blender.exe"
+  }
+}

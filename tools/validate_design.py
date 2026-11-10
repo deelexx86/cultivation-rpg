@@ -7,6 +7,7 @@ Life boundaries use TIME-08's accepted strict comparison; fixture values remain 
 """
 
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -63,9 +64,12 @@ def local_target(source, target):
 
 def scan_files():
     extensions = {".md", ".json", ".py", ".txt", ".yml", ".yaml", ".toml"}
-    for path in sorted(ROOT.rglob("*")):
-        if not path.is_file() or ".git" in path.relative_to(ROOT).parts:
-            continue
+    paths = []
+    for directory, subdirs, files in os.walk(ROOT):
+        subdirs[:] = [name for name in subdirs if name not in
+                      {".git", ".tools", ".artifacts", ".godot", "__pycache__"}]
+        paths.extend(Path(directory) / name for name in files)
+    for path in sorted(paths):
         if path.suffix not in extensions and path.name not in {".gitignore", ".gitattributes"}:
             continue
         name = path.relative_to(ROOT).as_posix()
