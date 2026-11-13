@@ -12,6 +12,8 @@ func check(ok: bool, label: String) -> void:
 
 func fresh(id: String) -> SedgeSession:
 	var session := SedgeSession.new(MaterialWorld.fresh(id),SnapshotStore.new(home,id,true,true))
+	session.state.exploration.x = MaterialWorld.WORKSHOP_POSITION.x
+	session.state.exploration.z = MaterialWorld.WORKSHOP_POSITION.y
 	check(session.save(),"Initial material save "+id)
 	return session
 
@@ -68,6 +70,12 @@ func run_tests() -> void:
 	check(s.state.materials.wallet == 50,"Finite initial wallet minus kit/vessel/treatise/tuition")
 	check(not s.material("buy","lo.kit"),"No restock by opening shop")
 	check(not s.material("learn","alchemy"),"No repeated learning cost or bonus")
+	var learned_state := s.state.fingerprint()
+	for skill: String in ["herbalism","alchemy"]:
+		check(not s.material("learn",skill) and s.state.fingerprint()==learned_state,"Mastered skill cannot charge money or calendar again: "+skill)
+	s=reload(s)
+	learned_state=s.state.fingerprint()
+	check(not s.material("learn","herbalism") and not s.material("learn","alchemy") and s.state.fingerprint()==learned_state,"Learning remains nonrepeatable after reload")
 	var observed_day := s.state.day
 	var before := s.state.fingerprint()
 	check(not s.material("extract","quartz.core") and s.state.fingerprint()==before,"Impossible core consumes nothing")
@@ -248,12 +256,25 @@ func run_tests() -> void:
 	check(travel.state.day==depart_day+30 and MaterialWorld.job(travel.state,travelling_order).status=="ready" and not MaterialWorld.job(travel.state,travelling_order).known,"Workshop becomes ready on date while hero is away")
 	check(not travel.material("claim",travelling_order),"Cannot collect a remote workshop result")
 	check(travel.depart(SedgeWorld.route_plan(travel.state)) and travel.advance(5),"Return with unchanged completed job")
+	var remote_state := travel.state.fingerprint()
+	check(not travel.material("claim",travelling_order) and travel.state.fingerprint()==remote_state,"Same court is not physical workshop presence")
+	travel=reload(travel)
+	remote_state=travel.state.fingerprint()
+	check(MaterialWorld.claim(travel.state,travelling_order)!="" and travel.state.fingerprint()==remote_state,"Direct domain claim also rejects remote collection after reload")
+	check(travel.checkpoint(Vector3(1,0,2.4)),"Walk to workshop")
 	do(travel,"visit")
 	do(travel,"claim",travelling_order)
 	var spare:=first(travel,"root_part")
 	var wallet_before: int=travel.state.materials.wallet
 	do(travel,"recipe.order",spare)
 	var cancelled_order: String=travel.state.materials.jobs.back().id
+	check(travel.checkpoint(Vector3(0,0,10)),"Leave workshop with pending order")
+	remote_state=travel.state.fingerprint()
+	check(not travel.material("cancel",cancelled_order) and travel.state.fingerprint()==remote_state,"Remote cancellation cannot return physical input")
+	check(MaterialWorld.cancel(travel.state,cancelled_order)!="" and travel.state.fingerprint()==remote_state,"Direct cancellation guard is atomic")
+	travel=reload(travel)
+	check(not travel.material("cancel",cancelled_order),"Reload does not grant remote return rights")
+	check(travel.checkpoint(Vector3(1,0,2.4)),"Return for cancellation")
 	do(travel,"cancel",cancelled_order)
 	check(travel.state.materials.wallet==wallet_before-3 and MaterialWorld.item(travel.state,spare).kind=="root_part" and MaterialWorld.item(travel.state,spare).holder==travel.state.body().id,"Immediate order cancellation returns one raw input, keeps paid fee")
 	# Check malformed state rejection beyond a checksum.

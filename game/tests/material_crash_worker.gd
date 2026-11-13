@@ -18,6 +18,8 @@ func advance(s: CampaignState, days: int) -> void:
 
 func fixture(id: String, kind: String) -> CampaignState:
 	var s := MaterialWorld.fresh(id)
+	s.exploration.x = MaterialWorld.WORKSHOP_POSITION.x
+	s.exploration.z = MaterialWorld.WORKSHOP_POSITION.y
 	if kind=="buy": return s
 	for key: String in ["lo.kit","lo.vessel","lo.treatise"]: command(s,"buy",key)
 	# Explicitly controlled knowledge, without pretending these are playtest steps.

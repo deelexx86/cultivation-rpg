@@ -106,7 +106,7 @@ func populate(s: CampaignState) -> void:
 	if not s.materials.is_empty():
 		points["shop"] = POINTS.merchant
 		points.erase("merchant")
-		points["mentor"] = Vector3(1,0,2.4)
+		points["mentor"] = Vector3(MaterialWorld.WORKSHOP_POSITION.x/100.0,0,MaterialWorld.WORKSHOP_POSITION.y/100.0)
 		points["quartz"] = Vector3(-8,0,-8)
 		stored_vessel = shape(Vector3(2,0.45,4),Vector3(0.55,0.9,0.55),Color("#93b4b0"),true)
 		tutor_alive = s.person(MaterialWorld.MENTOR).alive

@@ -8,6 +8,7 @@ static func near(h, key: String) -> bool:
 	await h.get_tree().physics_frame
 	await h.get_tree().create_timer(0.15).timeout
 	if not h.verify_scene(h.target==key,"P3 proximity "+key): return false
+	if not h.session.checkpoint(h.player.position): return false
 	h.interact(key)
 	return true
 
@@ -88,6 +89,10 @@ static func run(h) -> void:
 		h.press_choice("Начать обучение")
 		h.press_choice("Завершить оставшуюся работу")
 	if not h.verify_scene(s.state.day==WorldCalendar.ordinal(10),"P3 exact education dates"): return
+	h.material_ui.mentor()
+	for control: Node in h.column.get_children():
+		if control is Button and (control.text.begins_with("Травничество") or control.text.begins_with("Алхимия")):
+			if not h.verify_scene(false,"Mastered education is not offered again"): return
 	if not await near(h,"root"): return
 	h.press_choice("Осмотреть физический след")
 	h.interact("root")
@@ -151,6 +156,8 @@ static func run(h) -> void:
 	if intact:
 		h.material_ui.methods()
 		h.press_choice("Подготовить конденсацию")
+		if not h.verify_scene(h.column.get_child(0).text=="P3 завершён · подготовка сохранена","Explicit P3 completion"): return
+		if not h.verify_scene("12 в резерве" in h.column.get_child(1).text and "P5" in h.column.get_child(1).text,"Completion names reserves and P5 boundary"): return
 		if not h.verify_scene(s.state.materials.method=="condense" and s.state.materials.pledged==12,"Condensation plan selected in scene"): return
 		h.material_ui.inventory()
 		await capture(h,"condensation")

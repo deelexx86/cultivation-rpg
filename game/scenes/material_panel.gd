@@ -12,10 +12,16 @@ func item_name(raw: Dictionary) -> String:
 	return "%s №%s" % [LABELS[raw.kind],raw.id.get_slice(".",2)]
 
 func run(command: String, argument: String = "") -> void:
+	if not scene.session.checkpoint(scene.player.position):
+		scene.failure()
+		return
 	if not scene.session.material(command,argument):
 		scene.show_panel("Действие недоступно",scene.session.error)
 		return
 	scene.land.sync(state())
+	if command == "choose" and argument != "":
+		completion()
+		return
 	if state().running() != null:
 		work()
 	else:
@@ -47,12 +53,26 @@ func mentor() -> void:
 	var options := {"Травничество · 8 камней / 4 года":training.bind("herbalism"),"Алхимия и оба способа · трактат / 6 лет":training.bind("alchemy"),"Обработка и заказы":recipes,"Сравнить способы подготовки":methods}
 	options["Оставить сосуд с содержимым на хранении"] = run.bind("stash","")
 	options["Забрать сосуд с хранения"] = run.bind("retrieve","")
+	var learned := PackedStringArray()
+	for key: String in P3Content.data().training:
+		if state().soul.mastery.get(P3Content.data().training[key].mastery,0) > 0:
+			options.erase("Травничество · 8 камней / 4 года" if key == "herbalism" else "Алхимия и оба способа · трактат / 6 лет")
+			learned.append("Травничество — освоено" if key == "herbalism" else "Алхимия и оба способа подготовки — освоены")
 	if not state().person(MaterialWorld.MENTOR).alive:
 		options.erase("Травничество · 8 камней / 4 года")
 		options.erase("Алхимия и оба способа · трактат / 6 лет")
 		scene.show_panel("Мастерская · новый исполнитель","Шэнь Юй умер. Его личные уроки завершились, но мастерская продолжает принятые заказы по прежним условиям. Материалы и готовые результаты остаются у своих владельцев.",options)
 		return
-	scene.show_panel("Шэнь Юй · зелёный навес","«Знать место мало. Научись видеть живые волокна и структуру породы. Приобретённый трактат ещё нужно освоить».\nОбучение занимает героя. Работа мастерской и выдержка идут параллельно на общей дате. Продажи и уединение не создают новых ресурсов.",options)
+	scene.show_panel("Шэнь Юй · зелёный навес","\n".join(learned)+"\n«Знать место мало. Научись видеть живые волокна и структуру породы. Приобретённый трактат ещё нужно освоить».\nОбучение занимает героя. Работа мастерской и выдержка идут параллельно на общей дате.",options)
+
+func completion() -> void:
+	var s := state()
+	var lines := PackedStringArray(["Материальная подготовка завершена. Сценарий P3 пройден.","Способ: "+str({"smooth":"Плавное закрепление","smooth-reserve":"Плавное закрепление с резервом","condense":"Конденсация"}[s.materials.method]),"Зарезервировано:"])
+	for raw: Dictionary in s.materials.items:
+		if raw.reserved == MaterialWorld.PLAN: lines.append("• "+item_name(raw))
+	lines.append("Камни: %d в резерве; %d всего, %d свободно." % [s.materials.pledged,s.materials.wallet,s.materials.wallet-s.materials.pledged])
+	lines.append("План и резервы сохранены. Выполнение прорыва относится к P5 и здесь недоступно. Попытка ещё не начата, материалы не израсходованы, стадия и сроки жизни не изменены. План можно пересмотреть.")
+	scene.show_panel("P3 завершён · подготовка сохранена","\n".join(lines),{"Имущество и процессы":inventory,"Сравнить способы":methods,"Сохранить и выйти":scene.leave})
 
 func forecast(days: int) -> String:
 	var s := state()
@@ -94,6 +114,7 @@ func extraction(method: String) -> void:
 func inventory() -> void:
 	var s := state()
 	var lines := "Камни: %d; свободно %d. Груз %.1f / %.1f кг.\n" % [s.materials.wallet,s.materials.wallet-s.materials.pledged,MaterialWorld.weight(s)/1000.0,P3Content.data().carry_grams/1000.0]
+	if s.materials.method != "": lines = "P3 завершён: материальная подготовка сохранена. Выполнение прорыва — этап P5.\n"+lines
 	for raw: Dictionary in s.materials.items:
 		if raw.holder in ["consumed","merchant"]: continue
 		lines += "%s%s\n" % [item_name(raw)," · зарезервировано" if raw.reserved != "" else " · на хранении" if raw.holder == "court.cache" else ""]

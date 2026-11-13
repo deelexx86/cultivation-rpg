@@ -5,6 +5,11 @@ const ROOT := "vs.glass_root.001"
 const QUARTZ := "vs.dull_quartz.001"
 const MENTOR := "shen-yu"
 const PLAN := "preparation"
+const WORKSHOP_POSITION := Vector2i(100,240) # Saved centimetres; same point as the scene.
+const WORKSHOP_REACH := 285
+
+static func at_workshop(s: CampaignState) -> bool:
+	return s.exploration.place == SedgeWorld.YARD and Vector2(s.exploration.x,s.exploration.z).distance_to(Vector2(WORKSHOP_POSITION)) <= WORKSHOP_REACH
 
 static func schema() -> Dictionary:
 	return {"profile":"str", "wallet":"int", "paid":"int", "earned":"int", "serial":"int", "root":"str", "quartz_left":"int", "stock":{"*":"int"}, "notes":{"*":"int"}, "items":[item_schema()], "jobs":[job_schema()], "method":"str", "pledged":"int"}
@@ -254,6 +259,7 @@ static func next_boundary(s: CampaignState, boundary: int) -> int:
 static func claim(s: CampaignState, id: String) -> String:
 	var row := job(s,id)
 	if row.is_empty() or row.customer != s.body().id or row.status != "ready": return "Нет доступного результата этого заказа."
+	if row.executor == "workshop" and not at_workshop(s): return "Для получения материалов посетите мастерскую у зелёного навеса."
 	# A personal maturation still occupies its own vessel until collection.
 	release_equipment(s,row)
 	if not room(s,row.outputs.size()): return "Освободите подходящий сосуд для результата."
@@ -268,6 +274,7 @@ static func claim(s: CampaignState, id: String) -> String:
 static func cancel(s: CampaignState, id: String) -> String:
 	var row := job(s,id)
 	if row.is_empty() or row.customer != s.body().id or row.status != "running" or row.recipe.begins_with("learn.") or P3Content.data().recipes[row.recipe].mode == "active": return "Активную работу можно сохранить; безопасной отмены нет."
+	if row.executor == "workshop" and not at_workshop(s): return "Для возврата материалов посетите мастерскую у зелёного навеса."
 	release_equipment(s,row)
 	if not room(s,row.inputs.size() if row.executor == "workshop" else 0): return "Нужен свободный сосуд для возвращаемого сырья."
 	for input_id: String in row.inputs:
@@ -314,6 +321,7 @@ static func choose(s: CampaignState, method: String) -> String:
 
 static func apply(s: CampaignState, command: String, argument: String = "") -> String:
 	if s.materials.is_empty() or s.mode != "active" or occupied(s) or s.exploration.place != SedgeWorld.YARD: return "Завершите текущую работу или вернитесь во двор."
+	if command in ["visit","stash","retrieve","recipe.order"] and not at_workshop(s): return "Посетите мастерскую у зелёного навеса."
 	var result := ""
 	match command:
 		"buy": result = buy(s,argument)
