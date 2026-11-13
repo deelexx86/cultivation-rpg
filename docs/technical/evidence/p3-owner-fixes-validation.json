@@ -1,0 +1,147 @@
+{
+  "date": "2026-11-13",
+  "source_commit": "8134b14332feab18a19a729d231457acd752e824",
+  "command": "pwsh -NoProfile -File tools/p3.ps1 -Task Verify",
+  "result": "P3_VERIFY_PASS",
+  "p3_assertions": 328,
+  "p3_forced_terminations": 64,
+  "logs": {
+    "p1-tests.log": {
+      "sha256": "296eb40d311f5034e2e60daebea935e6752cf8de9645128181e40bd1e63c2139",
+      "markers": [
+        "P1_GROUP_PASS calendar",
+        "P1_GROUP_PASS preview",
+        "P1_GROUP_PASS chronology",
+        "P1_GROUP_PASS life",
+        "P1_GROUP_PASS causality",
+        "P1_GROUP_PASS save",
+        "P1_TEST_PASS checks=182 calendar preview chronology life causality save"
+      ]
+    },
+    "p1-crashes.log": {
+      "sha256": "00f1dfe2215afb3bab88da8a6359679c39166ef2ac13441213e810186754bc45",
+      "markers": [
+        "P1_CRASH_RECOVERY_PASS:before_write checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:partial_write checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:after_flush checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:after_verify checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:partial_backup checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:after_backup_write checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:after_backup_replace checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:after_main_replace checkpoint=10",
+        "P1_CRASH_PASS stages=8"
+      ]
+    },
+    "p2-rules.log": {
+      "sha256": "6c83afb3aae8da539bd9d7bea7decb80d7c5aeeb32deba2d2405cc049f0adbf1",
+      "markers": [
+        "P2_RULE_PASS checks=47"
+      ]
+    },
+    "p3-rules.log": {
+      "sha256": "50afc0171c23aa109cff47b5feae904a21cdaa7f43242669b70da847cfbe1045",
+      "markers": [
+        "P3_RULE_PASS checks=328"
+      ]
+    },
+    "p3-crashes.log": {
+      "sha256": "8758358b6f55b7c28be7764a0846e6158e47b7733e59efdf282d38d8b800e94f",
+      "markers": [
+        "P3_CRASH_KIND_PASS buy stages=8",
+        "P3_CRASH_KIND_PASS extract stages=8",
+        "P3_CRASH_KIND_PASS order stages=8",
+        "P3_CRASH_KIND_PASS active stages=8",
+        "P3_CRASH_KIND_PASS finish stages=8",
+        "P3_CRASH_KIND_PASS claim stages=8",
+        "P3_CRASH_KIND_PASS choose stages=8",
+        "P3_CRASH_KIND_PASS sell stages=8",
+        "P3_CRASH_PASS terminations=64"
+      ]
+    },
+    "p3-project-forward_plus.log": {
+      "sha256": "a9c9e4e0d1f0abcac49741630d2349ce907328623eeb069c7cd5351b2c702add",
+      "markers": [
+        "P3_SCENE_PASS day=3663 partial_practice=10"
+      ]
+    },
+    "p3-resume-forward_plus.log": {
+      "sha256": "6bbf018fb43c4aa6090808c095b8fa06868f5796ac4a9fc2a263640957640d02",
+      "markers": [
+        "P3_RESUME_PASS day=3713 wallet=47"
+      ]
+    },
+    "p3-export-forward_plus.log": {
+      "sha256": "a9c9e4e0d1f0abcac49741630d2349ce907328623eeb069c7cd5351b2c702add",
+      "markers": [
+        "P3_SCENE_PASS day=3663 partial_practice=10"
+      ]
+    },
+    "p3-export-resume-forward_plus.log": {
+      "sha256": "6bbf018fb43c4aa6090808c095b8fa06868f5796ac4a9fc2a263640957640d02",
+      "markers": [
+        "P3_RESUME_PASS day=3713 wallet=47"
+      ]
+    },
+    "p3-condense-forward_plus.log": {
+      "sha256": "bc4a97f5b6dedefa01de2d904bb879b92dbac5138f6e52bf964714b4d4b425ee",
+      "markers": [
+        "P3_CONDENSE_PASS day=3653"
+      ]
+    },
+    "p3-property-forward_plus.log": {
+      "sha256": "da8f9b972c52275d93313331e9a905a90ad0f8a6574ea32805f1a698857e4c6f",
+      "markers": [
+        "P3_PROPERTY_PASS"
+      ]
+    },
+    "p3-mortality-forward_plus.log": {
+      "sha256": "ceb89a0d3896187b03e2ad499746e183b19b957fa80b306cb6c881d657e0144c",
+      "markers": [
+        "P3_MORTALITY_PASS"
+      ]
+    },
+    "p3-project-gl_compatibility.log": {
+      "sha256": "110c295e64489b67b5ecdbd4b712bb4ef61c0e3d11c655deeea4da181db1749f",
+      "markers": [
+        "P3_SCENE_PASS day=3663 partial_practice=10"
+      ]
+    },
+    "p3-resume-gl_compatibility.log": {
+      "sha256": "6f9185f0a0254f202af8589ef47539effd18791d7a9eae152fb0d8bc82474f97",
+      "markers": [
+        "P3_RESUME_PASS day=3713 wallet=47"
+      ]
+    },
+    "p3-export-gl_compatibility.log": {
+      "sha256": "110c295e64489b67b5ecdbd4b712bb4ef61c0e3d11c655deeea4da181db1749f",
+      "markers": [
+        "P3_SCENE_PASS day=3663 partial_practice=10"
+      ]
+    },
+    "p3-export-resume-gl_compatibility.log": {
+      "sha256": "6f9185f0a0254f202af8589ef47539effd18791d7a9eae152fb0d8bc82474f97",
+      "markers": [
+        "P3_RESUME_PASS day=3713 wallet=47"
+      ]
+    },
+    "p3-condense-gl_compatibility.log": {
+      "sha256": "135d2fe87f7cda78e36df2d9e017c166cc8cb40f97d4c40271535c54700ef33a",
+      "markers": [
+        "P3_CONDENSE_PASS day=3653"
+      ]
+    },
+    "p3-property-gl_compatibility.log": {
+      "sha256": "1edd6e03085451d08ff98f9fd0f957ecc8b1f872a982c1a024f6b4c230703c80",
+      "markers": [
+        "P3_PROPERTY_PASS"
+      ]
+    },
+    "p3-mortality-gl_compatibility.log": {
+      "sha256": "05da8b75536d99b30662f992976f5cdd30d2b1818478730e01ce87c3bf6a02c1",
+      "markers": [
+        "P3_MORTALITY_PASS"
+      ]
+    }
+  },
+  "scope": "Full P0-P3 verification, rebuilt Windows export, Forward+ and Compatibility. No new clean-checkout claim; earlier clean-checkout evidence remains historical."
+}
