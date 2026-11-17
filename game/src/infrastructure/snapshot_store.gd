@@ -8,6 +8,7 @@ const MAX_BYTES := 16777216
 const STAGES: Array[String] = ["before_write", "partial_write", "after_flush", "after_verify", "partial_backup", "after_backup_write", "after_backup_replace", "after_main_replace"]
 
 var exploration_slot: bool
+var material_slot: bool
 var directory: String
 var campaign_id: String
 var sequence: int = 0
@@ -16,8 +17,9 @@ var last_error: String = ""
 var fail_at: String = ""
 var crash_at: String = ""
 
-func _init(base: String, id: String, for_exploration: bool = false) -> void:
+func _init(base: String, id: String, for_exploration: bool = false, for_materials: bool = false) -> void:
 	exploration_slot = for_exploration
+	material_slot = for_materials
 	campaign_id = id
 	var valid_id := RegEx.new()
 	valid_id.compile("^[a-zA-Z0-9_-]{1,64}$")
@@ -43,6 +45,8 @@ static func pack(state: CampaignState, number: int) -> String:
 	var header := {"schema": SCHEMA, "content": CONTENT, "build": BUILD, "campaign_id": state.campaign_id, "sequence": number, "rng_algorithm": "sha256-keyed-v1"}
 	if not state.exploration.is_empty():
 		header.merge({"schema": 2, "content": "white-sedge-1", "build": "p2"}, true)
+	if not state.materials.is_empty():
+		header.merge({"schema": 3, "content": "white-sedge-materials-1", "build": "p3"}, true)
 	return JSON.stringify({"header": header, "payload": payload, "checksum": digest(header, payload)})
 
 static func digest(header: Dictionary, payload: String) -> String:
@@ -81,7 +85,9 @@ func read_file(file_path: String) -> Dictionary:
 	var header: Dictionary = envelope.header
 	if digest(header, payload) != envelope.checksum:
 		return {"error": "Snapshot checksum mismatch"}
-	if int(header.schema) != (2 if exploration_slot else SCHEMA) or header.content != ("white-sedge-1" if exploration_slot else CONTENT) or header.rng_algorithm != "sha256-keyed-v1":
+	var expected_schema := 3 if material_slot else (2 if exploration_slot else SCHEMA)
+	var expected_content := "white-sedge-materials-1" if material_slot else ("white-sedge-1" if exploration_slot else CONTENT)
+	if int(header.schema) != expected_schema or header.content != expected_content or header.rng_algorithm != "sha256-keyed-v1":
 		return {"error": "Unsupported snapshot schema/content/RNG; migration required", "incompatible": true}
 	if header.campaign_id != campaign_id or int(header.sequence) < 1:
 		return {"error": "Snapshot identity/sequence mismatch"}
@@ -90,6 +96,8 @@ func read_file(file_path: String) -> Dictionary:
 	var state := StateCodec.decode(json.data)
 	if state == null or state.campaign_id != campaign_id or state.exploration.is_empty() == exploration_slot:
 		return {"error": "Snapshot state invariant violation"}
+	if state.materials.is_empty() == material_slot:
+		return {"error": "Snapshot material family mismatch"}
 	return {"error": "", "state": state, "sequence": int(header.sequence), "source": source}
 
 func write_file(file_path: String, source: String) -> bool:

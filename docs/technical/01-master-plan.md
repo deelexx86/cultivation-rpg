@@ -115,3 +115,7 @@ P0 implementation and measured results are recorded in the [validation report](0
 ## P1 implementation update — 2026-11-10
 
 The [P1 contract](05-p1-core-contract.md) now provides the executable state/calendar/action/event/snapshot foundation. The [P1 validation report](06-p1-validation.md) is the authority for its actual completion evidence and the P2 transition. Earlier future-tense descriptions in this plan are the original accepted design baseline; they are not current test results. P2 can build the small scene, dated knowledge, route and first narrative consequence on this kernel after its stated verification gate. No later-stage gameplay is included merely because a controlled fixture checks one of its time invariants.
+
+## P3 implementation update — 2026-11-11
+
+The [P3 walkthrough and validation contract](08-p3-material-preparation.md) describe resource extraction, finite property and trade, processing, common-calendar workshop orders and two material preparation plans in the existing P2 scene. It is the authority for the actual verification result and remaining limits. P4 adds the accepted combat and technical flight/recovery work after independent review; executing the first great transition remains P5.

@@ -1,0 +1,819 @@
+{
+  "source_commit": "2da941960e18eabb20b9686e14a50753e1cc70db",
+  "base_commit": "ecdd3be645f34bd61a8953d479623af2e675580d",
+  "date": "2026-11-11",
+  "platform": "Windows 11 x86-64, AMD RX 580 2048SP",
+  "godot": "4.8.beta3.official.c51ff06e8",
+  "clean_checkout": "P3_CLEAN_CHECKOUT_PASS",
+  "commands": [
+    "pwsh -NoProfile -File tools/p3.ps1 -Task Verify",
+    "pwsh -NoProfile -File tools/verify_clean_checkout.ps1 -Phase P3",
+    "python tools/validate_design.py"
+  ],
+  "logs": {
+    "asset-rebuild.log": {
+      "sha256": "4713184dae873c056b8136ff35a4cdd1f7b5245112bea3dfbc22e3c3383c11be",
+      "markers": [
+        "P0_ASSET_REBUILD_PASS"
+      ]
+    },
+    "tests.log": {
+      "sha256": "b994c748c33adda9c4d3ae1e8c96b0cc98ca657e0b712c6087790ec8bba1839f",
+      "markers": [
+        "P0_TEST_PASS geometry transforms materials animation_samples"
+      ]
+    },
+    "headless-startup.log": {
+      "sha256": "4f26959767c4d78e5c20cf91134ee10293a7a51943a23123b5c2feaca343de64",
+      "markers": [
+        "P0_SMOKE_PASS animation_advanced=true"
+      ]
+    },
+    "design.log": {
+      "sha256": "9bac4bd9f7d55ae5e5b45d283290d829be5a058cf93e33124bc6b003211cdf90",
+      "markers": [
+        "checks=2066, text_files=80, markdown_files=56, local_links=639, json_files=11, milestones=16, checkpoints=32",
+        "Errors: 0"
+      ]
+    },
+    "import.log": {
+      "sha256": "6bb8c623874415128f46efbbf6093ffecb3c488b6e882a8ef5ecbcf197f89dde",
+      "markers": []
+    },
+    "export.log": {
+      "sha256": "b2d4563b5c5fc123b6befd41c92547e5fb0d567bd011375801081cd6a6307894",
+      "markers": []
+    },
+    "p1-tests.log": {
+      "sha256": "296eb40d311f5034e2e60daebea935e6752cf8de9645128181e40bd1e63c2139",
+      "markers": [
+        "P1_GROUP_PASS calendar",
+        "P1_GROUP_PASS preview",
+        "P1_GROUP_PASS chronology",
+        "P1_GROUP_PASS life",
+        "P1_GROUP_PASS causality",
+        "P1_GROUP_PASS save",
+        "P1_TEST_PASS checks=182 calendar preview chronology life causality save"
+      ]
+    },
+    "p1-crashes.log": {
+      "sha256": "242c6d1d05c587f8f85cd7aa3c4123b89f910708a52a062a12e565eb8243ef22",
+      "markers": [
+        "P1_CRASH_RECOVERY_PASS:before_write checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:partial_write checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:after_flush checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:after_verify checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:partial_backup checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:after_backup_write checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:after_backup_replace checkpoint=5",
+        "P1_CRASH_RECOVERY_PASS:after_main_replace checkpoint=10",
+        "P1_CRASH_PASS stages=8"
+      ]
+    },
+    "p1-demo-headless.log": {
+      "sha256": "6532d618c7a214e45d783912a6df0c580ca94f6e5c28683e12c6eb5b96889d5a",
+      "markers": [
+        "P1_DEMO_PASS date=0020-01-01 progress=7305 spent=1 engine=4.8-beta3 (official) display=headless"
+      ]
+    },
+    "p2-assets.log": {
+      "sha256": "e484517dc09b1742f3694a0ef0c5ee6c9e6bb589d1795878b8b2377a243597da",
+      "markers": [
+        "P2_ASSETS_PASS packs=3 models=20"
+      ]
+    },
+    "p2-rules.log": {
+      "sha256": "6c83afb3aae8da539bd9d7bea7decb80d7c5aeeb32deba2d2405cc049f0adbf1",
+      "markers": [
+        "P2_RULE_PASS checks=47"
+      ]
+    },
+    "p3-rules.log": {
+      "sha256": "621e7300354d0b380145adb0433113cd0f151dd266f7386481fca524c74627a7",
+      "markers": [
+        "P3_RULE_PASS checks=311"
+      ]
+    },
+    "p3-crashes.log": {
+      "sha256": "a9ff1e20880fb53837b1ccbd0e87dd4164020377099909e1872cdc73154c62fd",
+      "markers": [
+        "P3_CRASH_KIND_PASS buy stages=8",
+        "P3_CRASH_KIND_PASS extract stages=8",
+        "P3_CRASH_KIND_PASS order stages=8",
+        "P3_CRASH_KIND_PASS active stages=8",
+        "P3_CRASH_KIND_PASS finish stages=8",
+        "P3_CRASH_KIND_PASS claim stages=8",
+        "P3_CRASH_KIND_PASS choose stages=8",
+        "P3_CRASH_KIND_PASS sell stages=8",
+        "P3_CRASH_PASS terminations=64"
+      ]
+    },
+    "project-forward_plus.log": {
+      "sha256": "30ca1b5ec6281dcee8e522b794f1203ab8f994bf9ed410f9475a7e97cef77686",
+      "markers": [
+        "P0_SMOKE_PASS animation_advanced=true"
+      ]
+    },
+    "p1-project-forward_plus.log": {
+      "sha256": "d15bd5c8f24c8d27e111f356b85ca1d74973a8c05bafa2f50319f05dda74cf2a",
+      "markers": [
+        "P1_DEMO_PASS date=0020-01-01 progress=7305 spent=1 engine=4.8-beta3 (official) display=Windows"
+      ]
+    },
+    "p2-project-forward_plus.log": {
+      "sha256": "a06dc6f7eea54592c87d777cfc4e211bddd055820e58a593701861af70573d56",
+      "markers": [
+        "P2_SCENE_PASS"
+      ]
+    },
+    "export-forward_plus.log": {
+      "sha256": "30ca1b5ec6281dcee8e522b794f1203ab8f994bf9ed410f9475a7e97cef77686",
+      "markers": [
+        "P0_SMOKE_PASS animation_advanced=true"
+      ]
+    },
+    "p1-export-forward_plus.log": {
+      "sha256": "d15bd5c8f24c8d27e111f356b85ca1d74973a8c05bafa2f50319f05dda74cf2a",
+      "markers": [
+        "P1_DEMO_PASS date=0020-01-01 progress=7305 spent=1 engine=4.8-beta3 (official) display=Windows"
+      ]
+    },
+    "p2-export-forward_plus.log": {
+      "sha256": "a06dc6f7eea54592c87d777cfc4e211bddd055820e58a593701861af70573d56",
+      "markers": [
+        "P2_SCENE_PASS"
+      ]
+    },
+    "p2-resume-forward_plus.log": {
+      "sha256": "4b547c566d96940b0a6a18eee393314a23ff455c23886cb37361469294a09883",
+      "markers": [
+        "P2_RESUME_PASS"
+      ]
+    },
+    "p3-project-forward_plus.log": {
+      "sha256": "a9c9e4e0d1f0abcac49741630d2349ce907328623eeb069c7cd5351b2c702add",
+      "markers": [
+        "P3_SCENE_PASS day=3663 partial_practice=10"
+      ]
+    },
+    "p3-resume-forward_plus.log": {
+      "sha256": "6bbf018fb43c4aa6090808c095b8fa06868f5796ac4a9fc2a263640957640d02",
+      "markers": [
+        "P3_RESUME_PASS day=3713 wallet=47"
+      ]
+    },
+    "p3-export-forward_plus.log": {
+      "sha256": "a9c9e4e0d1f0abcac49741630d2349ce907328623eeb069c7cd5351b2c702add",
+      "markers": [
+        "P3_SCENE_PASS day=3663 partial_practice=10"
+      ]
+    },
+    "p3-export-resume-forward_plus.log": {
+      "sha256": "6bbf018fb43c4aa6090808c095b8fa06868f5796ac4a9fc2a263640957640d02",
+      "markers": [
+        "P3_RESUME_PASS day=3713 wallet=47"
+      ]
+    },
+    "p3-condense-forward_plus.log": {
+      "sha256": "bc4a97f5b6dedefa01de2d904bb879b92dbac5138f6e52bf964714b4d4b425ee",
+      "markers": [
+        "P3_CONDENSE_PASS day=3653"
+      ]
+    },
+    "p3-property-forward_plus.log": {
+      "sha256": "da8f9b972c52275d93313331e9a905a90ad0f8a6574ea32805f1a698857e4c6f",
+      "markers": [
+        "P3_PROPERTY_PASS"
+      ]
+    },
+    "p3-mortality-forward_plus.log": {
+      "sha256": "ceb89a0d3896187b03e2ad499746e183b19b957fa80b306cb6c881d657e0144c",
+      "markers": [
+        "P3_MORTALITY_PASS"
+      ]
+    },
+    "project-gl_compatibility.log": {
+      "sha256": "82bd94bafd525194d355f3656b457537dd1e2127dc977aa972f1a77c67dec81d",
+      "markers": [
+        "P0_SMOKE_PASS animation_advanced=true"
+      ]
+    },
+    "p1-project-gl_compatibility.log": {
+      "sha256": "2a0f8aeb1300e8688a9a4735b33e63be40370a5972d3d16bc69c8860ae428d57",
+      "markers": [
+        "P1_DEMO_PASS date=0020-01-01 progress=7305 spent=1 engine=4.8-beta3 (official) display=Windows"
+      ]
+    },
+    "p2-project-gl_compatibility.log": {
+      "sha256": "debb0c5ecb4ad99fb625b1c4ac60e7bac9e6f79fe04aae4dea7c813e7cdd9ce1",
+      "markers": [
+        "P2_SCENE_PASS"
+      ]
+    },
+    "export-gl_compatibility.log": {
+      "sha256": "82bd94bafd525194d355f3656b457537dd1e2127dc977aa972f1a77c67dec81d",
+      "markers": [
+        "P0_SMOKE_PASS animation_advanced=true"
+      ]
+    },
+    "p1-export-gl_compatibility.log": {
+      "sha256": "2a0f8aeb1300e8688a9a4735b33e63be40370a5972d3d16bc69c8860ae428d57",
+      "markers": [
+        "P1_DEMO_PASS date=0020-01-01 progress=7305 spent=1 engine=4.8-beta3 (official) display=Windows"
+      ]
+    },
+    "p2-export-gl_compatibility.log": {
+      "sha256": "debb0c5ecb4ad99fb625b1c4ac60e7bac9e6f79fe04aae4dea7c813e7cdd9ce1",
+      "markers": [
+        "P2_SCENE_PASS"
+      ]
+    },
+    "p2-resume-gl_compatibility.log": {
+      "sha256": "53b92b3d297abb86fd4014015dc68080cfe94c56624115d9433a002faf64e668",
+      "markers": [
+        "P2_RESUME_PASS"
+      ]
+    },
+    "p3-project-gl_compatibility.log": {
+      "sha256": "110c295e64489b67b5ecdbd4b712bb4ef61c0e3d11c655deeea4da181db1749f",
+      "markers": [
+        "P3_SCENE_PASS day=3663 partial_practice=10"
+      ]
+    },
+    "p3-resume-gl_compatibility.log": {
+      "sha256": "6f9185f0a0254f202af8589ef47539effd18791d7a9eae152fb0d8bc82474f97",
+      "markers": [
+        "P3_RESUME_PASS day=3713 wallet=47"
+      ]
+    },
+    "p3-export-gl_compatibility.log": {
+      "sha256": "110c295e64489b67b5ecdbd4b712bb4ef61c0e3d11c655deeea4da181db1749f",
+      "markers": [
+        "P3_SCENE_PASS day=3663 partial_practice=10"
+      ]
+    },
+    "p3-export-resume-gl_compatibility.log": {
+      "sha256": "6f9185f0a0254f202af8589ef47539effd18791d7a9eae152fb0d8bc82474f97",
+      "markers": [
+        "P3_RESUME_PASS day=3713 wallet=47"
+      ]
+    },
+    "p3-condense-gl_compatibility.log": {
+      "sha256": "135d2fe87f7cda78e36df2d9e017c166cc8cb40f97d4c40271535c54700ef33a",
+      "markers": [
+        "P3_CONDENSE_PASS day=3653"
+      ]
+    },
+    "p3-property-gl_compatibility.log": {
+      "sha256": "1edd6e03085451d08ff98f9fd0f957ecc8b1f872a982c1a024f6b4c230703c80",
+      "markers": [
+        "P3_PROPERTY_PASS"
+      ]
+    },
+    "p3-mortality-gl_compatibility.log": {
+      "sha256": "05da8b75536d99b30662f992976f5cdd30d2b1818478730e01ce87c3bf6a02c1",
+      "markers": [
+        "P3_MORTALITY_PASS"
+      ]
+    }
+  },
+  "runtime_files": {
+    "game/assets/p0_probe.glb": "5e2791b6f290fd21c43e4d0e7b29bd588e81facd50cd7b6d6b5f59b75b0766da",
+    "game/assets/p0_probe.glb.import": "d435748db36b421561f937bc386370c215b5a623621a1fc401226dddd6949b38",
+    "game/assets/sedge/fantasy-town-kit/License.txt": "18d8ea2482514302551bd99db6ab0fff24c75ec88f4d950a92e94afe9d0ed8a8",
+    "game/assets/sedge/fantasy-town-kit/Textures/colormap.png": "4aac939dc33195e35caf8c382ee3cb170054da763577f22d3c22692ec6afccdf",
+    "game/assets/sedge/fantasy-town-kit/Textures/colormap.png.import": "f9ccd31763ea55769ecd524faf0d2ea60e74147c8b937de19066cdccb1ed5ab1",
+    "game/assets/sedge/fantasy-town-kit/cart.glb": "63503cd0a7398310e01aabc8e3663f711a7517394d23d179d0695157fee99d40",
+    "game/assets/sedge/fantasy-town-kit/cart.glb.import": "b6315f4fa16a37518464f8c15e5aa9c1c527980bac8008476b9afb1fc7aa481b",
+    "game/assets/sedge/fantasy-town-kit/lantern.glb": "f270637e3083d6e84a30626ee05df2b09597a642985a7f5c3e4ab5bb1c7a8d55",
+    "game/assets/sedge/fantasy-town-kit/lantern.glb.import": "b513dc05933ed5850bb59ca16099baa27dd53988d2ca1f0a0380328d6915ef69",
+    "game/assets/sedge/fantasy-town-kit/pillar-stone.glb": "1eda742ccbc67ead6edead25c687f55d8671b88786b9e23c08ae7982bccb4b7c",
+    "game/assets/sedge/fantasy-town-kit/pillar-stone.glb.import": "634aaf20e5a556c7bb1f1aacc777608b8e64effcd4fef3e1637b965f280b31b7",
+    "game/assets/sedge/fantasy-town-kit/roof-point.glb": "a7dfd157128e04105e976d7a47f772e95e4bd9f3d73b87a00b43861f406b94f8",
+    "game/assets/sedge/fantasy-town-kit/roof-point.glb.import": "fb9c8c8f05a3efabfeb706a58a4af3e10bd8e4c080c271a813a3f630baab1ed5",
+    "game/assets/sedge/fantasy-town-kit/stall-bench.glb": "5a4b379488241394916991c4b482ec4863c05bb548ca8751f5c3935f1f6e5b9c",
+    "game/assets/sedge/fantasy-town-kit/stall-bench.glb.import": "a6f460049426cc15de88011dccee4a471d5878ac53310debe4891e785baea266",
+    "game/assets/sedge/fantasy-town-kit/stall-green.glb": "2da2f7b31cde5d943d7c08c457bbb39797ef0a607921fde0b8455f338ce40205",
+    "game/assets/sedge/fantasy-town-kit/stall-green.glb.import": "6004cc87793c99d02b695d54c56c3315cfabddb0bf69934561a70626f0cbe2cd",
+    "game/assets/sedge/fantasy-town-kit/stall-red.glb": "aa20a630f417032c46aaefbc779fd2b3355b451bf05d31acc36fd664146866b1",
+    "game/assets/sedge/fantasy-town-kit/stall-red.glb.import": "096636edbb98e1878cae3a22014d529588e138dc5da48f860fd81e73a4e556a5",
+    "game/assets/sedge/fantasy-town-kit/wall-block.glb": "daa35e5b32d7941f3dc61f64f6f9630b70441478d652989cd6c02a908b84af86",
+    "game/assets/sedge/fantasy-town-kit/wall-block.glb.import": "a09a4f862093e2481f346a0e0bb3f708533184fd8bc51f49555530577d3a3acc",
+    "game/assets/sedge/fantasy-town-kit/watermill.glb": "177e76c12f43845303638d1375c323675c3937b053b8762042fe19d3d7d27c5d",
+    "game/assets/sedge/fantasy-town-kit/watermill.glb.import": "c71810f7e3b16bf40a9a06a61348a3533cf02d9acf5a3e0998170b89a87023d8",
+    "game/assets/sedge/mini-characters/License.txt": "fb3f811d4c4c37472f8d2ad3fc127453093c2b36f91cf6081320ac9ef7f25820",
+    "game/assets/sedge/mini-characters/Textures/colormap.png": "3aba07b39c13e9fa9a02cba6246fdd9d711bb15702e00e10ad84595b25452f95",
+    "game/assets/sedge/mini-characters/Textures/colormap.png.import": "07e018d5023b33076e6887a3e19605ecd83bab7257fb718bd22e717f855ad8bf",
+    "game/assets/sedge/mini-characters/character-female-b.glb": "3a0e6c3e431ae9d2016c2c9a91ec3abe8bb45243016a5cae80cbde0b61f8f2a9",
+    "game/assets/sedge/mini-characters/character-female-b.glb.import": "2d9413045e040b51c3460da6b879dcaeb5d32730a65dfd3b527711dfb9583800",
+    "game/assets/sedge/mini-characters/character-male-b.glb": "81464391ab3291bc78d23c33d5a5313cfab43469285a8e1f02b974aecbd4f943",
+    "game/assets/sedge/mini-characters/character-male-b.glb.import": "283eda9caca639fd6b32f29d4122c87031c0b40697f5ce6cbd0d83ecf10eed32",
+    "game/assets/sedge/mini-characters/character-male-f.glb": "83fa60802557199778ab606e5ee3b2da2140ef35839ac4fb557ef95dbac9c5d4",
+    "game/assets/sedge/mini-characters/character-male-f.glb.import": "c0fc962b08c1030750a44890381e186b080695f1dd03aa315e0087906626c482",
+    "game/assets/sedge/nature-kit/License.txt": "5c063f83e0422114f703fc6bbe23010f32b12d132b93578fa776289c0d334675",
+    "game/assets/sedge/nature-kit/canoe.glb": "ad9c7a315f55accbce8d1ee3dc853f919f01f97ab4e3096bb235d1815aed6941",
+    "game/assets/sedge/nature-kit/canoe.glb.import": "c6916c90cc8a6d36fac2e523bef3c758e6ef33dabe8f28bbcaa1ca67e79f3cf9",
+    "game/assets/sedge/nature-kit/flower_yellowA.glb": "8a3b08cd2ca411c21f9c581d5bda651d78b13c50cba45ad8fa0389398ead6d1d",
+    "game/assets/sedge/nature-kit/flower_yellowA.glb.import": "a196bd913bcc70e803ce850681a3d942d717a3b4539b6bd13fbfe0e0ccbaa8fc",
+    "game/assets/sedge/nature-kit/grass.glb": "260e41d3e5f2472492ed7b475c5b92a30b13ce2bad408535b5ff50574d4575e7",
+    "game/assets/sedge/nature-kit/grass.glb.import": "93ddac7f3b89d5408e669397f2361ba35baef47d09ca6cfae330d4fd53eb36a3",
+    "game/assets/sedge/nature-kit/plant_flatTall.glb": "b192523736f32754788de4dc7a5dcf30a58322b260ec8969120c91432a10b633",
+    "game/assets/sedge/nature-kit/plant_flatTall.glb.import": "99a7f580fcc1e01715bdd8e71a46372ec90db1e83d3b8c93a38ed21788a947f7",
+    "game/assets/sedge/nature-kit/rock_largeA.glb": "6dd15390fd96501dcd1454765a17ba61dbbd8d47705dfe5149c8dd92b353ce25",
+    "game/assets/sedge/nature-kit/rock_largeA.glb.import": "b9acf9cb87ddd5b5f060289340a8511b39b99617b754cc6dbbabd7e30a49fa5b",
+    "game/assets/sedge/nature-kit/rock_tallA.glb": "88250f236a3b75f8b55c1d8afb6af020f8a91b1e81f9fb51f7ef513420d45a2d",
+    "game/assets/sedge/nature-kit/rock_tallA.glb.import": "27e5f5249689c3960cf6a64c5e268083cce91a432b5802fcd34232c11d0e3f22",
+    "game/assets/sedge/nature-kit/tree_pineRoundA.glb": "7dc9711f31585eafdcb965d0649c30af5e19f2def1955f7a915081d30759ef8e",
+    "game/assets/sedge/nature-kit/tree_pineRoundA.glb.import": "3e502ae84c0aba9d520920f513105ad2d7868560b94edc8666e52ee601db25c6",
+    "game/assets/sedge/nature-kit/tree_plateau.glb": "7f19e347ff28703dd9e5fcce89b920156e291fbdb19331a57cb31a95c73e1322",
+    "game/assets/sedge/nature-kit/tree_plateau.glb.import": "9374b9307e4d839cb7596a5540bfdaf14a50b1c8629f735d8a178a3dc5b1bf32",
+    "game/content/p1_fixture.gd": "989eb155f87cca1095dffd0e6d6adf6ae44e3777f275518fa7fab47433118cd8",
+    "game/content/p1_fixture.gd.uid": "c9d9235a1ab74e07dbcab4c1d4952dc2f775842d2bc0895ad03cb260731fc060",
+    "game/content/p3.json": "87293ed9290100b165a8b8ccc674f56ac0a2eb1fd9256e05b432d84a85c013b5",
+    "game/content/p3_content.gd": "58289601f1b993ce1b50dbb59ec676850e5129af7b4d7c28cc2afa8910c1888a",
+    "game/content/p3_content.gd.uid": "5228d85dc642896a745f1f00b2bf3aedb916a03a516e5fe3511603c04fecffb4",
+    "game/export_presets.cfg": "9840e5b14a068a5f8d8689ae90db96541f5bdc6707c8aed2a4ac603175f7931f",
+    "game/project.godot": "b321899f3f7fa37b474abf2218dfdb76deac5d65ec4ab9ee2a291500c3762f86",
+    "game/scenes/foundation.gd": "e3edd4f934fd28d44d7a3d0501452bf4da68c12bf4548844e4863a4cbb66be43",
+    "game/scenes/foundation.gd.uid": "979e6e290483342bbd002e4aeadf7c950024323f8436e712cf9c912399c24d26",
+    "game/scenes/foundation.tscn": "440fa5549a5df9f9170dcbb8a5240b879a3f236830cd55a6bf1f941cada68f71",
+    "game/scenes/material_panel.gd": "75c86f15dfd23a9b5b5e0379a32ca1530369124057d69f005bb7aa5478efd8ea",
+    "game/scenes/material_panel.gd.uid": "99dc5c5893954fbd76348baafa80569fb3561327565ea800d2075da8dfe5202d",
+    "game/scenes/p1_demo.gd": "60ab4b0b24ea98438df4abf8f92131308f1a4e3c4f22a898af100ee0861e6ad5",
+    "game/scenes/p1_demo.gd.uid": "bf6e5ca01a4e21dc6a968ab468c8c5c050629f5a7503d578e112cba786312475",
+    "game/scenes/p1_demo.tscn": "52fb739661b685d7c747d053c216cbdfdb02433f5384a80914a5055258306b53",
+    "game/scenes/sedge.gd": "c9a61b9747ed1435d0cd37014c3c2590dbeda253e48739896dff5788875e67b7",
+    "game/scenes/sedge.gd.uid": "7f0f3f4c503c4a64e70612e62e35f8f9071d44667078e5adf04092a0b3cc001e",
+    "game/scenes/sedge.tscn": "32275a3fad859c069c7867350ce52008de1b6a2d91ff78b5a17d46fe8a503a01",
+    "game/scenes/sedge_landscape.gd": "7d40ca4e51e464f72646ba31471928a14eb2a01199daa83a4794717a5476c5ab",
+    "game/scenes/sedge_landscape.gd.uid": "cdc6dfafd4bf191687d3668c784fea6831bebad409d9e13fccb2e81df65eeb27",
+    "game/scenes/sedge_player.gd": "d92f87789f48b2ae5c24006b51aae4b641cb98acc826ae156ccfdf00cbbaa4f1",
+    "game/scenes/sedge_player.gd.uid": "088fec95e3f351b562540b300c418141b8772b1971f374ae9bcaa8eef047ec03",
+    "game/src/application/campaign_session.gd": "57cfcba23687fcf3e9c1321e2ef2529cd495981a0dd70e3d8850d21681d4e2e5",
+    "game/src/application/campaign_session.gd.uid": "ea377d8eea7fbc7b1fc6e34a8a668501b40c6eac26795c6b751dd2257d2b730c",
+    "game/src/application/sedge_session.gd": "0386f0b1997962981fb86860083d964f488f84f543443fc97b95fd64080a45fd",
+    "game/src/application/sedge_session.gd.uid": "6f5902ce1ffcff5aa7e5d2cf95439b7b73f9ad2e0b10d6d21ab09d9604d07285",
+    "game/src/domain/campaign_state.gd": "95a8d188e00e60a9939cbaec69216d5950e1cc2d9d026379be8678604cf48189",
+    "game/src/domain/campaign_state.gd.uid": "1e00471aafed57df5a4801f0d59e8d8d7d5ba847f4459eab8c76db24c3c9d28c",
+    "game/src/domain/event_graph.gd": "79fb42c2cf48b2b5eae8411fd692c79c15c7f416498d28cd1b66b029a43ffb71",
+    "game/src/domain/event_graph.gd.uid": "2f1e2758430daa8569a909f061ff878861fafd5e06aae6731ede11a6c3d5029a",
+    "game/src/domain/material_world.gd": "8911145dd19c3d5b71c851a37a02a274208cefbde153b1ebef337fc1775f6d72",
+    "game/src/domain/material_world.gd.uid": "b266bbdd2fae595612845177f87881116783070a09d5185cc3933b016202792a",
+    "game/src/domain/sedge_world.gd": "64abf38bd4613f1816a0248699c7f68db9fb4ade8d71f130eaadda42b678ef2c",
+    "game/src/domain/sedge_world.gd.uid": "a2986d79b100494b24548d5224126f86381ba38c7f33c1fd5f3e0a5da8afa914",
+    "game/src/domain/simulation.gd": "49dfc4183d2de41c8ad683e25533da7a76a33030b2b3123af1f688256f672895",
+    "game/src/domain/simulation.gd.uid": "4340206eea8852fa45a2010d8e74bfcc95545529bbc8db09bd62a3cc4ac6301c",
+    "game/src/domain/world_calendar.gd": "ffc2ff1537c9af17b2fe96f7ba18d428a76a60174c649de224c597fb63a05a9a",
+    "game/src/domain/world_calendar.gd.uid": "1112732537c82ec43afbf49b372f2f9abc0c06b5e293597f74f0a0a04b94bb93",
+    "game/src/infrastructure/snapshot_store.gd": "80d7249dd0432a16b92453b80b56c32c6414a5d72228f609a7417e7b4b3ee48a",
+    "game/src/infrastructure/snapshot_store.gd.uid": "cf81328ce049d5c85cdf66062fbf294ef68d61be9ef8a1579f7ab4ce1781d47b",
+    "game/src/infrastructure/state_codec.gd": "fc9e9ab1f7e512f583fb17616dcd61ce8ebcda5c7e80d29e2fe7e02873dca8f8",
+    "game/src/infrastructure/state_codec.gd.uid": "ecb855818af70dd9758d8efd9879228c0b2ae688bcc95902b81791a686adf5e3",
+    "game/tests/asset_contract.gd": "9e7b6fefbd666c794fd159eff27c14fa559e3b3e3ba69a188f25e057ab7635bf",
+    "game/tests/asset_contract.gd.uid": "4a0470c79d5f1f68dd8783c3843d81155bfa2d58359c96e174cbdb51d70266b6",
+    "game/tests/material_crash_worker.gd": "51bb6813208d9056396435bcd8eb9e70a531c362f51637295e9319ee23742303",
+    "game/tests/material_crash_worker.gd.uid": "1346e5f073a817f5b2600371761931f8468b3549453fd3df4c5ab6c18359ea48",
+    "game/tests/material_scene_probe.gd": "c409ec94fe08057ce93d11c21b432301929b4503534e8671e0aa4dad2c2e3fe3",
+    "game/tests/material_scene_probe.gd.uid": "8da0fd8eed9918b92ef663d688df54e37464c019b132351f26b890a5c6e5f7fd",
+    "game/tests/material_tests.gd": "b218b4f8195b62ebc27b78f975f5668af5a43b3478ea4660ec3e3da0fa92d6ee",
+    "game/tests/material_tests.gd.uid": "4da8a640fdca4a44cc082e1d940e561f64ba8f2977725121da54085d6f1a54ec",
+    "game/tests/p1_crash_worker.gd": "4fb291b029be8ee08b801b4998b098686f3381e420e15fa3779c7f5461dace25",
+    "game/tests/p1_crash_worker.gd.uid": "1f2d1cc628c75b9cf5f3eb00ce2cf850424121469209ff7d9b3fbbffc187c55a",
+    "game/tests/p1_tests.gd": "9f048c34c39200d9e3db4f6f4bb717d84bcb00cbb6b294a31c63fdabc54e1eb5",
+    "game/tests/p1_tests.gd.uid": "11212bc31d07f840ea3a150c515306e2f8b47673b2d0d575c6dbdbeed6933db2",
+    "game/tests/run_tests.gd": "47d410fe5592a483c1c11088188c550174673a1e33992c8f691775d7cca0d961",
+    "game/tests/run_tests.gd.uid": "ebf727897981170a639de7c56e8382df009a9030bcdc949ab55ef6c8f92a0e75",
+    "game/tests/sedge_tests.gd": "07258a15c37e5fb85d1982c8fa79e7c975d0543185860cf99ce7669647e72f6b",
+    "game/tests/sedge_tests.gd.uid": "d1636dd1fc37c9f4da02cdcd2e5b35bd5b0185b5992582aa6c72d9457c30b46a"
+  },
+  "crash_cases": [
+    {
+      "case": "active-after_backup_replace",
+      "writer_sha256": "e8e2c3e6d0d469fe7ba9e02d3a36755662881a2d9f7cec32cfce374d68e09335",
+      "recovery_sha256": "8d6885aa01d8ecd53dc42ebdd4dd9e614c3e095f100dc1647765331eb36e5ac3",
+      "result": "P3_CRASH_RECOVERY_PASS:active:after_backup_replace sequence=2"
+    },
+    {
+      "case": "active-after_backup_write",
+      "writer_sha256": "6dbac4acdde20328ff6efeeb9edaa6117156e1228041c9b040e72f4b383e0cf6",
+      "recovery_sha256": "fa6886618f88e1548c728d027288c436dafc2210ea4f337c8f5a91c5ca6422aa",
+      "result": "P3_CRASH_RECOVERY_PASS:active:after_backup_write sequence=2"
+    },
+    {
+      "case": "active-after_flush",
+      "writer_sha256": "9c15a4966ca2f42b19dadf23f1ec8f80e0137369e27c350a43fcd7feb79b3c02",
+      "recovery_sha256": "c359bf87df8a54d5aa2aafba556583f4096e2d50603a1408426290f402d087fd",
+      "result": "P3_CRASH_RECOVERY_PASS:active:after_flush sequence=2"
+    },
+    {
+      "case": "active-after_main_replace",
+      "writer_sha256": "e33567f00884cf92ac7e7b7dbcabe65fbc0dd1a2815e58d465fb281c88714f99",
+      "recovery_sha256": "4e52d7e29661bbe527579895028d60a734cfe4d03b65de63274f0ce6d06235bf",
+      "result": "P3_CRASH_RECOVERY_PASS:active:after_main_replace sequence=2"
+    },
+    {
+      "case": "active-after_verify",
+      "writer_sha256": "5f378728d5ff60c4d16d74c3c086f61a5a3ea1e38f97eda2c8935fc6eb0c4a89",
+      "recovery_sha256": "7c5d5aa718737a4b32449ef34721e102cf4017033ce8eb5b785f743c1fa2f370",
+      "result": "P3_CRASH_RECOVERY_PASS:active:after_verify sequence=2"
+    },
+    {
+      "case": "active-before_write",
+      "writer_sha256": "aadb450107cb77f2c9da5ebd06add6a3d41ee319ecd321e71830e83410ddcc31",
+      "recovery_sha256": "c0eaa5759312b6be94d87bb70d7ce9b1216efd80a3ef3868c98f3d3377669afb",
+      "result": "P3_CRASH_RECOVERY_PASS:active:before_write sequence=2"
+    },
+    {
+      "case": "active-partial_backup",
+      "writer_sha256": "1c765c76a9b4cdbe72c3e610a0b5f992e8185060fc9f1eca6c53c5d384386db2",
+      "recovery_sha256": "ac2a98190346c3865bf87168ff9efabe1870a488834fe602aab7e37e1e15a8d5",
+      "result": "P3_CRASH_RECOVERY_PASS:active:partial_backup sequence=2"
+    },
+    {
+      "case": "active-partial_write",
+      "writer_sha256": "5b664c65b305c0125362dc5a2fa1376eb4ce10f2f4af46dfe4b8aa6ad5a2825e",
+      "recovery_sha256": "d9bf7dbc57649c9ff5b055b376bd705a34c42e7277fa54f9556ad9aa24c561ca",
+      "result": "P3_CRASH_RECOVERY_PASS:active:partial_write sequence=2"
+    },
+    {
+      "case": "buy-after_backup_replace",
+      "writer_sha256": "e8e2c3e6d0d469fe7ba9e02d3a36755662881a2d9f7cec32cfce374d68e09335",
+      "recovery_sha256": "f36c91f983a6c8f9e224c5c17157358916562113f2f4ff61d825496d55a2ee54",
+      "result": "P3_CRASH_RECOVERY_PASS:buy:after_backup_replace sequence=2"
+    },
+    {
+      "case": "buy-after_backup_write",
+      "writer_sha256": "6dbac4acdde20328ff6efeeb9edaa6117156e1228041c9b040e72f4b383e0cf6",
+      "recovery_sha256": "3ecf8707ebd43e2f28ba8867a32255106a7b80cfd70676a8b5f619efd041fa1e",
+      "result": "P3_CRASH_RECOVERY_PASS:buy:after_backup_write sequence=2"
+    },
+    {
+      "case": "buy-after_flush",
+      "writer_sha256": "9c15a4966ca2f42b19dadf23f1ec8f80e0137369e27c350a43fcd7feb79b3c02",
+      "recovery_sha256": "450f30068cfec2dc51f2ec517885ad6c22074013469b1fbf2097b9703b3b465e",
+      "result": "P3_CRASH_RECOVERY_PASS:buy:after_flush sequence=2"
+    },
+    {
+      "case": "buy-after_main_replace",
+      "writer_sha256": "e33567f00884cf92ac7e7b7dbcabe65fbc0dd1a2815e58d465fb281c88714f99",
+      "recovery_sha256": "6f5b5bf95b7eb2ea969b4c188bfe5b1b736aa92be5ff7ea172882bd7ec621d26",
+      "result": "P3_CRASH_RECOVERY_PASS:buy:after_main_replace sequence=2"
+    },
+    {
+      "case": "buy-after_verify",
+      "writer_sha256": "5f378728d5ff60c4d16d74c3c086f61a5a3ea1e38f97eda2c8935fc6eb0c4a89",
+      "recovery_sha256": "c0f239a80889bc966f0f74e73262ade7bb6c6ddbe2d81ff03256f8750405c063",
+      "result": "P3_CRASH_RECOVERY_PASS:buy:after_verify sequence=2"
+    },
+    {
+      "case": "buy-before_write",
+      "writer_sha256": "aadb450107cb77f2c9da5ebd06add6a3d41ee319ecd321e71830e83410ddcc31",
+      "recovery_sha256": "e536d81c4e407ac83a2a4f0afb38a6e88ce4535be07757263338c156bb1099f7",
+      "result": "P3_CRASH_RECOVERY_PASS:buy:before_write sequence=2"
+    },
+    {
+      "case": "buy-partial_backup",
+      "writer_sha256": "1c765c76a9b4cdbe72c3e610a0b5f992e8185060fc9f1eca6c53c5d384386db2",
+      "recovery_sha256": "d046d6b509b17d16b9df37b1113ef7c27427b62b5edc553b54ec808e6911f531",
+      "result": "P3_CRASH_RECOVERY_PASS:buy:partial_backup sequence=2"
+    },
+    {
+      "case": "buy-partial_write",
+      "writer_sha256": "5b664c65b305c0125362dc5a2fa1376eb4ce10f2f4af46dfe4b8aa6ad5a2825e",
+      "recovery_sha256": "3f5a30f07919bfe75d82402e904bc04a90255469f6894900ce6613d3e378e147",
+      "result": "P3_CRASH_RECOVERY_PASS:buy:partial_write sequence=2"
+    },
+    {
+      "case": "choose-after_backup_replace",
+      "writer_sha256": "e8e2c3e6d0d469fe7ba9e02d3a36755662881a2d9f7cec32cfce374d68e09335",
+      "recovery_sha256": "3aa8a92244068a12a15b3d6d7d1ee004bf6090b113d77701a0561edbb767b5ca",
+      "result": "P3_CRASH_RECOVERY_PASS:choose:after_backup_replace sequence=2"
+    },
+    {
+      "case": "choose-after_backup_write",
+      "writer_sha256": "6dbac4acdde20328ff6efeeb9edaa6117156e1228041c9b040e72f4b383e0cf6",
+      "recovery_sha256": "7927e1478d7394983735a7bf1837e28175250c956e4b0ad17c75a35ea84125a8",
+      "result": "P3_CRASH_RECOVERY_PASS:choose:after_backup_write sequence=2"
+    },
+    {
+      "case": "choose-after_flush",
+      "writer_sha256": "9c15a4966ca2f42b19dadf23f1ec8f80e0137369e27c350a43fcd7feb79b3c02",
+      "recovery_sha256": "f4edb812d32f642ce5e4fc7a6800d213ebbfce2925dbbbd732cd9a7eb6c4886e",
+      "result": "P3_CRASH_RECOVERY_PASS:choose:after_flush sequence=2"
+    },
+    {
+      "case": "choose-after_main_replace",
+      "writer_sha256": "e33567f00884cf92ac7e7b7dbcabe65fbc0dd1a2815e58d465fb281c88714f99",
+      "recovery_sha256": "320d15c2975cdf61619647dbca19e4020c11f2b4fe2c19416612ccbd099f13b4",
+      "result": "P3_CRASH_RECOVERY_PASS:choose:after_main_replace sequence=2"
+    },
+    {
+      "case": "choose-after_verify",
+      "writer_sha256": "5f378728d5ff60c4d16d74c3c086f61a5a3ea1e38f97eda2c8935fc6eb0c4a89",
+      "recovery_sha256": "f2e15a51bca15fed6ab070451473e8b18dba7c4a800c51a9d1b253fb6df2b79c",
+      "result": "P3_CRASH_RECOVERY_PASS:choose:after_verify sequence=2"
+    },
+    {
+      "case": "choose-before_write",
+      "writer_sha256": "aadb450107cb77f2c9da5ebd06add6a3d41ee319ecd321e71830e83410ddcc31",
+      "recovery_sha256": "1b859d749270bdc23b3c8f1789e4df05f8bca8ab6147e4cb71e915a856c49328",
+      "result": "P3_CRASH_RECOVERY_PASS:choose:before_write sequence=2"
+    },
+    {
+      "case": "choose-partial_backup",
+      "writer_sha256": "1c765c76a9b4cdbe72c3e610a0b5f992e8185060fc9f1eca6c53c5d384386db2",
+      "recovery_sha256": "2c9500dba3dd3e6742210477328b53531cdfdf320387955f0841ca1d0d09c6a5",
+      "result": "P3_CRASH_RECOVERY_PASS:choose:partial_backup sequence=2"
+    },
+    {
+      "case": "choose-partial_write",
+      "writer_sha256": "5b664c65b305c0125362dc5a2fa1376eb4ce10f2f4af46dfe4b8aa6ad5a2825e",
+      "recovery_sha256": "8a3f15919e47493117fa1928a31cdf6ac5619796274840914ffd08759e943a57",
+      "result": "P3_CRASH_RECOVERY_PASS:choose:partial_write sequence=2"
+    },
+    {
+      "case": "claim-after_backup_replace",
+      "writer_sha256": "e8e2c3e6d0d469fe7ba9e02d3a36755662881a2d9f7cec32cfce374d68e09335",
+      "recovery_sha256": "9e171089ef9d0796492946b493c8f74baa4443baa71d4d8cdc04f6c991c79b24",
+      "result": "P3_CRASH_RECOVERY_PASS:claim:after_backup_replace sequence=2"
+    },
+    {
+      "case": "claim-after_backup_write",
+      "writer_sha256": "6dbac4acdde20328ff6efeeb9edaa6117156e1228041c9b040e72f4b383e0cf6",
+      "recovery_sha256": "c2467244bb817d452ebcf69bee604e7fab28026032d179ac807f1178e6315ae6",
+      "result": "P3_CRASH_RECOVERY_PASS:claim:after_backup_write sequence=2"
+    },
+    {
+      "case": "claim-after_flush",
+      "writer_sha256": "9c15a4966ca2f42b19dadf23f1ec8f80e0137369e27c350a43fcd7feb79b3c02",
+      "recovery_sha256": "1de0fb502e65a0d0efcfb61c0a0a9e5be1f65392eaaef9425bcf692f9f70b20a",
+      "result": "P3_CRASH_RECOVERY_PASS:claim:after_flush sequence=2"
+    },
+    {
+      "case": "claim-after_main_replace",
+      "writer_sha256": "e33567f00884cf92ac7e7b7dbcabe65fbc0dd1a2815e58d465fb281c88714f99",
+      "recovery_sha256": "2005f16dfee713008b37c83572b8005268de944d620a4bc5c3eefb273837fd29",
+      "result": "P3_CRASH_RECOVERY_PASS:claim:after_main_replace sequence=2"
+    },
+    {
+      "case": "claim-after_verify",
+      "writer_sha256": "5f378728d5ff60c4d16d74c3c086f61a5a3ea1e38f97eda2c8935fc6eb0c4a89",
+      "recovery_sha256": "e24ee90c97a483f74fe0db983d0a7975037601161061b4993bdd9a81287868b0",
+      "result": "P3_CRASH_RECOVERY_PASS:claim:after_verify sequence=2"
+    },
+    {
+      "case": "claim-before_write",
+      "writer_sha256": "aadb450107cb77f2c9da5ebd06add6a3d41ee319ecd321e71830e83410ddcc31",
+      "recovery_sha256": "1c0c7f97696e6a3a59aa930dcc822b5aa9244d70d944cf50bf4115011e7ef022",
+      "result": "P3_CRASH_RECOVERY_PASS:claim:before_write sequence=2"
+    },
+    {
+      "case": "claim-partial_backup",
+      "writer_sha256": "1c765c76a9b4cdbe72c3e610a0b5f992e8185060fc9f1eca6c53c5d384386db2",
+      "recovery_sha256": "f7de4af7d1af80a2f8a75482951d33081a909399c910d321a33eb3b28a9f1699",
+      "result": "P3_CRASH_RECOVERY_PASS:claim:partial_backup sequence=2"
+    },
+    {
+      "case": "claim-partial_write",
+      "writer_sha256": "5b664c65b305c0125362dc5a2fa1376eb4ce10f2f4af46dfe4b8aa6ad5a2825e",
+      "recovery_sha256": "613824c8385e11c7579c7f0b2d299bca315606e7de6d1f3bcad93ee3af0c9be5",
+      "result": "P3_CRASH_RECOVERY_PASS:claim:partial_write sequence=2"
+    },
+    {
+      "case": "extract-after_backup_replace",
+      "writer_sha256": "e8e2c3e6d0d469fe7ba9e02d3a36755662881a2d9f7cec32cfce374d68e09335",
+      "recovery_sha256": "bc3e7419e27c9086aea897cb8365837f0981ea491b810639c0ff90ad06a095a9",
+      "result": "P3_CRASH_RECOVERY_PASS:extract:after_backup_replace sequence=2"
+    },
+    {
+      "case": "extract-after_backup_write",
+      "writer_sha256": "6dbac4acdde20328ff6efeeb9edaa6117156e1228041c9b040e72f4b383e0cf6",
+      "recovery_sha256": "b6e78a93d7e7bc8fbad88ee033a3df8f8e1bfa2d94229e921179f9f0f2e7071a",
+      "result": "P3_CRASH_RECOVERY_PASS:extract:after_backup_write sequence=2"
+    },
+    {
+      "case": "extract-after_flush",
+      "writer_sha256": "9c15a4966ca2f42b19dadf23f1ec8f80e0137369e27c350a43fcd7feb79b3c02",
+      "recovery_sha256": "8b5c5c234e836760907e22a163656b0c90ab333530d86453c0a8f6fd18fac2e9",
+      "result": "P3_CRASH_RECOVERY_PASS:extract:after_flush sequence=2"
+    },
+    {
+      "case": "extract-after_main_replace",
+      "writer_sha256": "e33567f00884cf92ac7e7b7dbcabe65fbc0dd1a2815e58d465fb281c88714f99",
+      "recovery_sha256": "9cfb69d727ec23cb1190072fb6f458a11f1a76f9c4fe5c2877c99ce1481581f7",
+      "result": "P3_CRASH_RECOVERY_PASS:extract:after_main_replace sequence=2"
+    },
+    {
+      "case": "extract-after_verify",
+      "writer_sha256": "5f378728d5ff60c4d16d74c3c086f61a5a3ea1e38f97eda2c8935fc6eb0c4a89",
+      "recovery_sha256": "18938fe6f60967d335b4ac758e99233566cebf94a312ffcb12590929ea3c470d",
+      "result": "P3_CRASH_RECOVERY_PASS:extract:after_verify sequence=2"
+    },
+    {
+      "case": "extract-before_write",
+      "writer_sha256": "aadb450107cb77f2c9da5ebd06add6a3d41ee319ecd321e71830e83410ddcc31",
+      "recovery_sha256": "1fa7e635774ffb19e5f8f7930fde4cda2742b79b8cec156a9882262ffac323f8",
+      "result": "P3_CRASH_RECOVERY_PASS:extract:before_write sequence=2"
+    },
+    {
+      "case": "extract-partial_backup",
+      "writer_sha256": "1c765c76a9b4cdbe72c3e610a0b5f992e8185060fc9f1eca6c53c5d384386db2",
+      "recovery_sha256": "b19f2c0da15f558c2baa7ffd37ebbc6b4c8666ccad19971b6008b3b1fa416779",
+      "result": "P3_CRASH_RECOVERY_PASS:extract:partial_backup sequence=2"
+    },
+    {
+      "case": "extract-partial_write",
+      "writer_sha256": "5b664c65b305c0125362dc5a2fa1376eb4ce10f2f4af46dfe4b8aa6ad5a2825e",
+      "recovery_sha256": "400f7fc0f301faae6f2fa77c894ef159f3f17c71a1931e78bfc655010be61bbc",
+      "result": "P3_CRASH_RECOVERY_PASS:extract:partial_write sequence=2"
+    },
+    {
+      "case": "finish-after_backup_replace",
+      "writer_sha256": "e8e2c3e6d0d469fe7ba9e02d3a36755662881a2d9f7cec32cfce374d68e09335",
+      "recovery_sha256": "b3b6a5ea75729e7213948ad4eaada26cfd22d3f6296c488f03298a712e2d9820",
+      "result": "P3_CRASH_RECOVERY_PASS:finish:after_backup_replace sequence=2"
+    },
+    {
+      "case": "finish-after_backup_write",
+      "writer_sha256": "6dbac4acdde20328ff6efeeb9edaa6117156e1228041c9b040e72f4b383e0cf6",
+      "recovery_sha256": "f8ec62082717f341f96f81a8b805d2926fe6a5078e19371564e6dc13eb828c73",
+      "result": "P3_CRASH_RECOVERY_PASS:finish:after_backup_write sequence=2"
+    },
+    {
+      "case": "finish-after_flush",
+      "writer_sha256": "9c15a4966ca2f42b19dadf23f1ec8f80e0137369e27c350a43fcd7feb79b3c02",
+      "recovery_sha256": "f18c429dcfc704cc9b281606cb96d9cf099c1d1f9ffb45623ac94e5ced3eb108",
+      "result": "P3_CRASH_RECOVERY_PASS:finish:after_flush sequence=2"
+    },
+    {
+      "case": "finish-after_main_replace",
+      "writer_sha256": "e33567f00884cf92ac7e7b7dbcabe65fbc0dd1a2815e58d465fb281c88714f99",
+      "recovery_sha256": "9dac89e136d76fa48996c2a19699016e4799cbe5c61e4f0c9a9d3dc036037abb",
+      "result": "P3_CRASH_RECOVERY_PASS:finish:after_main_replace sequence=2"
+    },
+    {
+      "case": "finish-after_verify",
+      "writer_sha256": "5f378728d5ff60c4d16d74c3c086f61a5a3ea1e38f97eda2c8935fc6eb0c4a89",
+      "recovery_sha256": "27a11bfdd38d8e2a2f9fa45522abe435e37fd25890de615b6270054373e858d2",
+      "result": "P3_CRASH_RECOVERY_PASS:finish:after_verify sequence=2"
+    },
+    {
+      "case": "finish-before_write",
+      "writer_sha256": "aadb450107cb77f2c9da5ebd06add6a3d41ee319ecd321e71830e83410ddcc31",
+      "recovery_sha256": "41b6ac99f04b54f2c223d78ccf6b3e527d2233e42bd8ae265b0a49ee034b7bd6",
+      "result": "P3_CRASH_RECOVERY_PASS:finish:before_write sequence=2"
+    },
+    {
+      "case": "finish-partial_backup",
+      "writer_sha256": "1c765c76a9b4cdbe72c3e610a0b5f992e8185060fc9f1eca6c53c5d384386db2",
+      "recovery_sha256": "35e2f894f81dce4ed1fe087b3779df625a66f4ea461e1b8c416e3337405121fe",
+      "result": "P3_CRASH_RECOVERY_PASS:finish:partial_backup sequence=2"
+    },
+    {
+      "case": "finish-partial_write",
+      "writer_sha256": "5b664c65b305c0125362dc5a2fa1376eb4ce10f2f4af46dfe4b8aa6ad5a2825e",
+      "recovery_sha256": "991eec7e9fc1586af229bfe40ca79513263a2aab1d4fe1b3b26d24eab2d107f4",
+      "result": "P3_CRASH_RECOVERY_PASS:finish:partial_write sequence=2"
+    },
+    {
+      "case": "order-after_backup_replace",
+      "writer_sha256": "e8e2c3e6d0d469fe7ba9e02d3a36755662881a2d9f7cec32cfce374d68e09335",
+      "recovery_sha256": "d0301d9a1041dcf9706719062b359d2f690a2282b7471ff539c86d32af631364",
+      "result": "P3_CRASH_RECOVERY_PASS:order:after_backup_replace sequence=2"
+    },
+    {
+      "case": "order-after_backup_write",
+      "writer_sha256": "6dbac4acdde20328ff6efeeb9edaa6117156e1228041c9b040e72f4b383e0cf6",
+      "recovery_sha256": "4d883001d157b733602a4e5d5a8573e69de5745a1bc0e1901c9d7084f55a651c",
+      "result": "P3_CRASH_RECOVERY_PASS:order:after_backup_write sequence=2"
+    },
+    {
+      "case": "order-after_flush",
+      "writer_sha256": "9c15a4966ca2f42b19dadf23f1ec8f80e0137369e27c350a43fcd7feb79b3c02",
+      "recovery_sha256": "92f32be60372f0acc47103cc1ecc61683ea5e44ddb2cd53f0ab881b0a4c6f188",
+      "result": "P3_CRASH_RECOVERY_PASS:order:after_flush sequence=2"
+    },
+    {
+      "case": "order-after_main_replace",
+      "writer_sha256": "e33567f00884cf92ac7e7b7dbcabe65fbc0dd1a2815e58d465fb281c88714f99",
+      "recovery_sha256": "74cda58f5f766fbdfe09cf6d981a050a4ade672dbb8789fda523ac0c871d67c7",
+      "result": "P3_CRASH_RECOVERY_PASS:order:after_main_replace sequence=2"
+    },
+    {
+      "case": "order-after_verify",
+      "writer_sha256": "5f378728d5ff60c4d16d74c3c086f61a5a3ea1e38f97eda2c8935fc6eb0c4a89",
+      "recovery_sha256": "618974dad973284164d6e0abd6c8038830104ebaf3d26bbfe225b80b98bc4330",
+      "result": "P3_CRASH_RECOVERY_PASS:order:after_verify sequence=2"
+    },
+    {
+      "case": "order-before_write",
+      "writer_sha256": "aadb450107cb77f2c9da5ebd06add6a3d41ee319ecd321e71830e83410ddcc31",
+      "recovery_sha256": "868173d82162f26b95864962fbb4f92e7ea4009b948ee95c75ffccbc106dd241",
+      "result": "P3_CRASH_RECOVERY_PASS:order:before_write sequence=2"
+    },
+    {
+      "case": "order-partial_backup",
+      "writer_sha256": "1c765c76a9b4cdbe72c3e610a0b5f992e8185060fc9f1eca6c53c5d384386db2",
+      "recovery_sha256": "792b6c2aeb828e12a52f2f8514a1f2c280abdba19b199adde00c00b60e387a9c",
+      "result": "P3_CRASH_RECOVERY_PASS:order:partial_backup sequence=2"
+    },
+    {
+      "case": "order-partial_write",
+      "writer_sha256": "5b664c65b305c0125362dc5a2fa1376eb4ce10f2f4af46dfe4b8aa6ad5a2825e",
+      "recovery_sha256": "d475128e696055f02fe68e57f6feca0a0aa95037c9d652d3d46496838ea48e79",
+      "result": "P3_CRASH_RECOVERY_PASS:order:partial_write sequence=2"
+    },
+    {
+      "case": "sell-after_backup_replace",
+      "writer_sha256": "e8e2c3e6d0d469fe7ba9e02d3a36755662881a2d9f7cec32cfce374d68e09335",
+      "recovery_sha256": "a5dac4c6cb0104fb12b4140254873b44e9c5b6fb810fafd1c18097463559a361",
+      "result": "P3_CRASH_RECOVERY_PASS:sell:after_backup_replace sequence=2"
+    },
+    {
+      "case": "sell-after_backup_write",
+      "writer_sha256": "6dbac4acdde20328ff6efeeb9edaa6117156e1228041c9b040e72f4b383e0cf6",
+      "recovery_sha256": "1538f492e8269ff63b1a8f76d87ac72ff0469f6bc0ace914105b82a9faec9be5",
+      "result": "P3_CRASH_RECOVERY_PASS:sell:after_backup_write sequence=2"
+    },
+    {
+      "case": "sell-after_flush",
+      "writer_sha256": "9c15a4966ca2f42b19dadf23f1ec8f80e0137369e27c350a43fcd7feb79b3c02",
+      "recovery_sha256": "738ad451cedf367a4e7513c9e2e0e95fdbba5b8fafdbd50279dcdf6007407247",
+      "result": "P3_CRASH_RECOVERY_PASS:sell:after_flush sequence=2"
+    },
+    {
+      "case": "sell-after_main_replace",
+      "writer_sha256": "e33567f00884cf92ac7e7b7dbcabe65fbc0dd1a2815e58d465fb281c88714f99",
+      "recovery_sha256": "b3ef5d8acdef323c749413935102886a16c72de3cbedc3c0a45352659a73be23",
+      "result": "P3_CRASH_RECOVERY_PASS:sell:after_main_replace sequence=2"
+    },
+    {
+      "case": "sell-after_verify",
+      "writer_sha256": "5f378728d5ff60c4d16d74c3c086f61a5a3ea1e38f97eda2c8935fc6eb0c4a89",
+      "recovery_sha256": "fbb545a21f03ced38f192f7abb9004770b94ad5c8f625e68fa260526831cefb1",
+      "result": "P3_CRASH_RECOVERY_PASS:sell:after_verify sequence=2"
+    },
+    {
+      "case": "sell-before_write",
+      "writer_sha256": "aadb450107cb77f2c9da5ebd06add6a3d41ee319ecd321e71830e83410ddcc31",
+      "recovery_sha256": "1c5dbc9f728abafef650888b30e7328cbe6251734ef901c20be8d86650852749",
+      "result": "P3_CRASH_RECOVERY_PASS:sell:before_write sequence=2"
+    },
+    {
+      "case": "sell-partial_backup",
+      "writer_sha256": "1c765c76a9b4cdbe72c3e610a0b5f992e8185060fc9f1eca6c53c5d384386db2",
+      "recovery_sha256": "d78f00eb4b2c0fffbbb671abacf65e4264f3e409d5670d62e30be7227b30f8c6",
+      "result": "P3_CRASH_RECOVERY_PASS:sell:partial_backup sequence=2"
+    },
+    {
+      "case": "sell-partial_write",
+      "writer_sha256": "5b664c65b305c0125362dc5a2fa1376eb4ce10f2f4af46dfe4b8aa6ad5a2825e",
+      "recovery_sha256": "4bb334fe4bc40cf50aeab4b9bfc1be24df051a417b5fb1bf4626518ebe49dae6",
+      "result": "P3_CRASH_RECOVERY_PASS:sell:partial_write sequence=2"
+    }
+  ],
+  "screenshots": {
+    "p3-condense-forward_plus-condensation.png": "cc1d23f91cef5ae1bb30aafbdb023caeb5dafcfa1e76aa740926c1617217536a",
+    "p3-condense-forward_plus-extraction.png": "6af4ffb5e5b938984757d5071d4789bc5dc632ae5acd2a90e28c88075464c739",
+    "p3-condense-gl_compatibility-condensation.png": "f268a8a5606882d7b5f0cbdab7d2dd3c0625e5668d1508d0ded6a8eafe0f14b8",
+    "p3-condense-gl_compatibility-extraction.png": "92f4a3b57bb50aa6abb308c0a95480ae2abcca14de8ea4b8b86145619c25f22c",
+    "p3-project-forward_plus-contract.png": "71349013a572c33af392f4c5ea93214b53a678a766f507d9295eec1174ee3639",
+    "p3-project-forward_plus-extraction.png": "30f967acc6d517cd71a33489bc1d40c16b5874e9e1d4751f41a2f4bc6139bdcf",
+    "p3-project-forward_plus-unfinished.png": "eaa39133d3c1494ab4fc17c9442ff76ff5b295d340f8997b0279468ee2a20606",
+    "p3-project-gl_compatibility-contract.png": "ada84c34d4e70a9e825aed37f6a58ff7fac189be4f2205336a04b8b4047b77b8",
+    "p3-project-gl_compatibility-extraction.png": "2075eeb6148d80c4b3aa1db92eccf3a843b36b151de601409b4f853502194895",
+    "p3-project-gl_compatibility-unfinished.png": "3a0b8fb4f0477f0d3c4f656d879781c72becee7a7cb4d6bbe09d039eb4584005",
+    "p3-resume-forward_plus-methods.png": "bff964f7505e097fffd4e9a0ea6111ce25f93416a3b79d903e300f8b3e179a3c",
+    "p3-resume-forward_plus-prepared.png": "886abedb5aaf565387a099106ac576e0573a0db578d13e133884359d5071e425",
+    "p3-resume-gl_compatibility-methods.png": "15fb16a9237413376056cbcab8069603fb232a937f68832226ebfa5616a7cc6a",
+    "p3-resume-gl_compatibility-prepared.png": "6843be706c18f5baff1c75a5e539dbe4e8a7f4d79ba1616d8d0af0fd7dd15ee4"
+  },
+  "normal_ui_check": {
+    "entry": "tools/p3.ps1 -Task Demo -Campaign p3-input-review",
+    "observed": [
+      "Mouse scroll reached lower help choices",
+      "Clicked comparison opened from its beginning",
+      "Relaunch continued the same campaign",
+      "Normal window close: exit 0; sequence 2 -> 3; day 0, wallet 80 unchanged"
+    ],
+    "scope": "Agent-controlled Windows UI check; not independent owner acceptance"
+  },
+  "limits": [
+    "No actual breakthrough or life-limit grant",
+    "No reincarnation rights / combat / flight",
+    "No production balance, second GPU, dense-scene performance or power-loss proof",
+    "Schema 3 uses a separate slot; P2-to-P3 migration is not provided"
+  ],
+  "pe_machine": "0x8664",
+  "export": {
+    "CultivationRPG.exe": "2f099ad62fdef78223c5060ad09073ce1829008e3efab3045a6c93ff4e3e215d",
+    "CultivationRPG.pck": "f5036342df3ff9355ababe586f167054ce28d718c363d2850db65a6c7ed7b7b3"
+  },
+  "committed_frames": {
+    "p3-root-forward_plus.png": "p3-project-forward_plus-extraction.png",
+    "p3-contract-forward_plus.png": "p3-project-forward_plus-contract.png",
+    "p3-prepared-forward_plus.png": "p3-resume-forward_plus-prepared.png",
+    "p3-condensation-forward_plus.png": "p3-condense-forward_plus-condensation.png",
+    "p3-prepared-gl_compatibility.png": "p3-resume-gl_compatibility-prepared.png"
+  }
+}

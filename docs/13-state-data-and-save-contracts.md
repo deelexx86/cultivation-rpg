@@ -200,3 +200,7 @@ stateDiagram-v2
 ## P1 implementation supplement — 2026-11-10
 
 The [P1 snapshot contract](technical/05-p1-core-contract.md) now defines schema 1, content identity, checksums plus invariant validation, one previous valid recovery snapshot, synchronous checkpoints at every P1 mutation/boundary, retry after failure and explicit refusal of unsupported schema/content. No changing idle state exists in P1, so movement's periodic save cadence remains for P2. [P1 evidence](technical/06-p1-validation.md) distinguishes application-crash recovery from untested power-loss behavior. Dynamic combat restoration, production inventory, playable transfer and future migration policy remain later-stage work; STATE-09 is unchanged.
+
+## P3 implementation supplement — 2026-11-11
+
+The [P3 material/save contract](technical/08-p3-material-preparation.md) extends the P2 campaign with explicitly owned material instances, provenance, exclusive reservations and shared-calendar processes. Schema 3 uses a separate campaign family and refuses older schemas in place; existing P1/P2 entry points remain supported. P2-to-P3 migration is not supplied. This is an implementation of the accepted behavior above, not a change to STATE-09 or a claim that combat or reincarnation recovery is complete.

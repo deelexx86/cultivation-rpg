@@ -1,6 +1,13 @@
 class_name SedgeSession
 extends CampaignSession
 
+func material(command: String, argument: String = "") -> bool:
+	if dirty:
+		error = "Retry failed save before material operations"
+		return false
+	var candidate := StateCodec.clone(state)
+	return commit(candidate, MaterialWorld.apply(candidate,command,argument))
+
 func act(command: String) -> bool:
 	if dirty: return false
 	var candidate := StateCodec.clone(state)

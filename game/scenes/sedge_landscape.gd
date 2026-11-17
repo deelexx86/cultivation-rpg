@@ -8,6 +8,13 @@ const POINTS := {"merchant":Vector3(-4,0,1), "root":Vector3(6,0,-5), "sign":Vect
 var points: Dictionary = {}
 var gate: Node3D
 var coin: Node3D
+var root_visual: Node3D
+var quartz_visuals: Array[Node3D] = []
+var stored_vessel: Node3D
+var merchant_actor: Node3D
+var tutor_actor: Node3D
+var merchant_alive := true
+var tutor_alive := true
 
 static func model(parent: Node3D, pack: String, id: String, pos: Vector3, size_factor: Vector3, angle: float = 0) -> Node3D:
 	var scene := load("res://assets/sedge/%s/%s.glb" % [pack,id]) as PackedScene
@@ -96,6 +103,21 @@ func populate(s: CampaignState) -> void:
 		solid(Vector3(-3,0.6,0),Vector3(1.5,1.2,3))
 		return
 	points = POINTS.duplicate()
+	if not s.materials.is_empty():
+		points["shop"] = POINTS.merchant
+		points.erase("merchant")
+		points["mentor"] = Vector3(MaterialWorld.WORKSHOP_POSITION.x/100.0,0,MaterialWorld.WORKSHOP_POSITION.y/100.0)
+		points["quartz"] = Vector3(-8,0,-8)
+		stored_vessel = shape(Vector3(2,0.45,4),Vector3(0.55,0.9,0.55),Color("#93b4b0"),true)
+		tutor_alive = s.person(MaterialWorld.MENTOR).alive
+		tutor_actor = prop(PEOPLE,"character-male-f" if tutor_alive else "character-male-b",points.mentor,2.4,-0.8)
+		play_clip(tutor_actor,"idle")
+		solid(points.mentor+Vector3.UP*0.7,Vector3(0.65,1.4,0.65))
+		for i in 6:
+			var chip := shape(points.quartz+Vector3(sin(i*2.4)*0.65,0.2+i*0.045,cos(i*2.4)*0.65),Vector3(0.45,0.65,0.45),Color("#c2d8d1"))
+			chip.rotation_degrees = Vector3(i*9,i*33,i*13)
+			quartz_visuals.append(chip)
+		prop(NATURE,"rock_largeA",points.quartz,2.7)
 	shape(Vector3(-2,-0.02,3),Vector3(15,0.07,14),Color("#c0aa85"),true)
 	shape(Vector3(0,-0.02,-8),Vector3(4,0.055,23),Color("#b8ac90"))
 	for x in [-7,4]:
@@ -106,8 +128,9 @@ func populate(s: CampaignState) -> void:
 		solid(Vector3(x,0.3,z+2),Vector3(1.9,0.6,0.55))
 	prop(TOWN,"cart",Vector3(-7,0,6),2.4,0.4)
 	solid(Vector3(-7,0.6,6),Vector3(1.9,1.2,3))
-	var npc := prop(PEOPLE,"character-male-b" if s.person(SedgeWorld.LO).alive else "character-male-f",POINTS.merchant,2.4,0.8)
-	play_clip(npc,"idle")
+	merchant_alive = s.person(SedgeWorld.LO).alive
+	merchant_actor = prop(PEOPLE,"character-male-b" if merchant_alive else "character-male-f",POINTS.merchant,2.4,0.8)
+	play_clip(merchant_actor,"idle")
 	solid(POINTS.merchant+Vector3.UP*0.7,Vector3(0.65,1.4,0.65))
 	for i in 75:
 		var pos := Vector3(rng.randf_range(-13,3),0,rng.randf_range(-16,-3))
@@ -121,8 +144,10 @@ func populate(s: CampaignState) -> void:
 	for x in [-3,3]:
 		prop(TOWN,"lantern",Vector3(x,0,-4),1.9)
 		solid(Vector3(x,1,-4),Vector3(0.5,2,0.5))
+	root_visual = Node3D.new()
+	add_child(root_visual)
 	for i in range(2 if flooded else 7):
-		prop(NATURE,"flower_yellowA",POINTS.root+Vector3(sin(i*2.4)*0.55,0,cos(i*2.4)*0.55),2)
+		prop(NATURE,"flower_yellowA",POINTS.root+Vector3(sin(i*2.4)*0.55,0,cos(i*2.4)*0.55),2).reparent(root_visual)
 	for x in [-4,4]:
 		model(self,TOWN,"wall-block",Vector3(x,0,-19),Vector3(2,3.2,7))
 		solid(Vector3(x,1.6,-19),Vector3(2,3.2,7))
@@ -156,6 +181,23 @@ func populate(s: CampaignState) -> void:
 	sync(s)
 
 func sync(s: CampaignState) -> void:
+	if is_instance_valid(merchant_actor) and merchant_alive != s.person(SedgeWorld.LO).alive:
+		merchant_alive = s.person(SedgeWorld.LO).alive
+		merchant_actor.queue_free()
+		merchant_actor = prop(PEOPLE,"character-male-b" if merchant_alive else "character-male-f",POINTS.merchant,2.4,0.8)
+		play_clip(merchant_actor,"idle")
+	if not s.materials.is_empty():
+		if is_instance_valid(tutor_actor) and tutor_alive != s.person(MaterialWorld.MENTOR).alive:
+			tutor_alive = s.person(MaterialWorld.MENTOR).alive
+			tutor_actor.queue_free()
+			tutor_actor = prop(PEOPLE,"character-male-f" if tutor_alive else "character-male-b",points.mentor,2.4,-0.8)
+			play_clip(tutor_actor,"idle")
+		if is_instance_valid(stored_vessel):
+			stored_vessel.visible = false
+			for raw: Dictionary in s.materials.items:
+				if raw.kind == "vessel" and raw.holder == "court.cache": stored_vessel.visible = true
+		if is_instance_valid(root_visual): root_visual.visible = s.materials.root == "standing"
+		for i in quartz_visuals.size(): quartz_visuals[i].visible = i < int(s.materials.quartz_left)
 	if is_instance_valid(coin):
 		coin.visible = s.exploration.holder == "spillway"
 		gate.position.y = -4.0 if s.exploration.gate else 0.0

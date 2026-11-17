@@ -14,9 +14,11 @@ static func preview(state: CampaignState, duration: int, cost: int = 1, mileston
 		reason = "Insufficient supplies"
 	elif state.running() != null:
 		reason = "Another action is running"
+	elif not state.materials.is_empty() and MaterialWorld.occupied(state):
+		reason = "Resolve the interrupted personal action first"
 	elif state.mode != "active" and not (kind == "transfer_probe" and state.mode == "body_dead"):
 		reason = "No living actor"
-	elif kind not in ["practice", "recovery", "transfer_probe", "travel_probe", "travel"] or soul_years < 100 or soul_years > 5000 or body_years <= 0 or body_years > 5000:
+	elif kind not in ["practice", "recovery", "transfer_probe", "travel_probe", "travel", "study", "craft"] or soul_years < 100 or soul_years > 5000 or body_years <= 0 or body_years > 5000:
 		reason = "Invalid method parameters"
 	elif kind == "travel" and state.exploration.is_empty():
 		reason = "No playable route in this campaign"
@@ -135,6 +137,8 @@ static func complete(state: CampaignState, action: CampaignState.Action) -> void
 			state.record("first_milestone:" + action.milestone)
 	if action.kind == "travel":
 		SedgeWorld.arrive(state)
+	if action.kind in ["study","craft"]:
+		MaterialWorld.finish(state,action.id)
 	action.status = "complete"
 	state.record("completed:" + action.id)
 
@@ -149,7 +153,7 @@ static func next_boundary(state: CampaignState, budget: int) -> int:
 	for event: CampaignState.WorldEvent in state.events:
 		if event.status == "pending":
 			boundary = mini(boundary, event.day)
-	return boundary
+	return MaterialWorld.next_boundary(state,boundary)
 
 static func step(state: CampaignState, budget: int) -> String:
 	if budget < 0 or budget > 1095728:
@@ -170,6 +174,7 @@ static func step(state: CampaignState, budget: int) -> String:
 	expire(state)
 	for event: CampaignState.WorldEvent in EventGraph.due(state):
 		apply_event(state, event)
+	MaterialWorld.settle(state)
 	complete(state, action)
 	state.revision += 1
 	return ""

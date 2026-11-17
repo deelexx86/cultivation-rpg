@@ -1,0 +1,28 @@
+{
+  "profile": "white-sedge-materials-1",
+  "wallet": 80,
+  "vessel_capacity": 8,
+  "carry_grams": 6500,
+  "offers": {
+    "lo.kit": {"kind":"kit", "price":4, "count":1},
+    "lo.vessel": {"kind":"vessel", "price":6, "count":1},
+    "lo.treatise": {"kind":"treatise", "price":12, "count":1},
+    "yin.stabilizer": {"kind":"stabilizer", "price":8, "count":2},
+    "yin.pill": {"kind":"pill", "price":14, "count":1}
+  },
+  "training": {
+    "herbalism": {"years":4, "price":8, "mastery":"herbalism.glass-root"},
+    "alchemy": {"years":6, "price":0, "mastery":"alchemy.materials"}
+  },
+  "recipes": {
+    "divide": {"input":"root", "output":"root_part", "quantity":2, "days":1, "fee":0, "mode":"active"},
+    "stabilize": {"input":"root_part", "output":"essence", "quantity":1, "days":2, "fee":0, "mode":"active"},
+    "force": {"input":"root_part", "output":"unstable_essence", "quantity":1, "days":1, "fee":0, "mode":"active"},
+    "repair": {"input":"unstable_essence", "output":"essence", "quantity":1, "days":3, "fee":1, "mode":"active"},
+    "mature": {"input":"essence", "output":"stabilizer", "quantity":1, "days":30, "fee":0, "mode":"autonomous"},
+    "clean": {"input":"tainted_quartz", "output":"quartz", "quantity":1, "days":1, "fee":0, "mode":"active"},
+    "order": {"input":"root_part", "output":"essence", "quantity":1, "days":30, "fee":3, "mode":"workshop"}
+  },
+  "sell": {"root":12, "root_part":4, "quartz":2, "tainted_quartz":1, "essence":5, "unstable_essence":2, "stabilizer":6, "pill":10},
+  "weights": {"kit":2000, "vessel":1000, "treatise":400, "root":1500, "root_part":750, "quartz":500, "tainted_quartz":500, "essence":300, "unstable_essence":300, "spent_essence":300, "stabilizer":200, "pill":100}
+}

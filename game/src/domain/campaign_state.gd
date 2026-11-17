@@ -69,6 +69,7 @@ class WorldEvent extends RefCounted:
 
 var campaign_id: String = "p1-demo"
 var exploration: Dictionary = {}
+var materials: Dictionary = {}
 var day: int = 0
 var revision: int = 0
 var mode: String = "active"
@@ -135,6 +136,8 @@ func encode() -> Dictionary:
 		result[field] = rows
 	if not exploration.is_empty():
 		result["exploration"] = exploration.duplicate(true)
+	if not materials.is_empty():
+		result["materials"] = materials.duplicate(true)
 	return result
 
 func fingerprint() -> String:

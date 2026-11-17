@@ -3,7 +3,7 @@
 param(
     [string]$Python = 'python',
     [string]$Branch = '',
-    [ValidateSet('P0','P1','P2')][string]$Phase = 'P0'
+    [ValidateSet('P0','P1','P2','P3')][string]$Phase = 'P0'
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
