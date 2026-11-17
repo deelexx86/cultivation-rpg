@@ -1,0 +1,98 @@
+Source: fbac7cc00d82547c50b51780e9c21df0d05bddae
+Command: pwsh -NoProfile -File tools/verify_clean_checkout.ps1 -Phase P3 -Branch work/p3-material-preparation
+Unfiltered transcript SHA-256: 26e0e061d0a636756aed7536098909915a859a8655ffefa38f36909e5cacfc08
+Selected output in execution order; local checkout path replaced with <checkout>.
+
+P0_ASSET_REBUILD_PASS
+P0_TEST_PASS geometry transforms materials animation_samples
+P0_SMOKE_PASS animation_advanced=true
+checks=2090, text_files=83, markdown_files=56, local_links=648, json_files=13, milestones=16, checkpoints=32
+Errors: 0
+Vulkan 1.3.260 - Forward+ - Using Device #0: AMD - AMD Radeon RX 580 2048SP
+P0_SMOKE_PASS animation_advanced=true
+Vulkan 1.3.260 - Forward+ - Using Device #0: AMD - AMD Radeon RX 580 2048SP
+P0_SMOKE_PASS animation_advanced=true
+OpenGL API 3.3.0 Core Profile Context 26.5.2.260413 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon RX 580 2048SP
+P0_SMOKE_PASS animation_advanced=true
+OpenGL API 3.3.0 Core Profile Context 26.5.2.260413 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon RX 580 2048SP
+P0_SMOKE_PASS animation_advanced=true
+P1_GROUP_PASS calendar
+P1_GROUP_PASS preview
+P1_GROUP_PASS chronology
+P1_GROUP_PASS life
+P1_GROUP_PASS causality
+P1_GROUP_PASS save
+P1_TEST_PASS checks=182 calendar preview chronology life causality save
+P1_CRASH_RECOVERY_PASS:before_write checkpoint=5
+P1_CRASH_RECOVERY_PASS:partial_write checkpoint=5
+P1_CRASH_RECOVERY_PASS:after_flush checkpoint=5
+P1_CRASH_RECOVERY_PASS:after_verify checkpoint=5
+P1_CRASH_RECOVERY_PASS:partial_backup checkpoint=5
+P1_CRASH_RECOVERY_PASS:after_backup_write checkpoint=5
+P1_CRASH_RECOVERY_PASS:after_backup_replace checkpoint=5
+P1_CRASH_RECOVERY_PASS:after_main_replace checkpoint=10
+P1_CRASH_PASS stages=8 evidence=<checkout>\.artifacts\crashes-1794947857031508000
+P1_DEMO_PASS date=0020-01-01 progress=7305 spent=1 engine=4.8-beta3 (official) display=headless
+Vulkan 1.3.260 - Forward+ - Using Device #0: AMD - AMD Radeon RX 580 2048SP
+P1_DEMO_PASS date=0020-01-01 progress=7305 spent=1 engine=4.8-beta3 (official) display=Windows
+Vulkan 1.3.260 - Forward+ - Using Device #0: AMD - AMD Radeon RX 580 2048SP
+P1_DEMO_PASS date=0020-01-01 progress=7305 spent=1 engine=4.8-beta3 (official) display=Windows
+OpenGL API 3.3.0 Core Profile Context 26.5.2.260413 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon RX 580 2048SP
+P1_DEMO_PASS date=0020-01-01 progress=7305 spent=1 engine=4.8-beta3 (official) display=Windows
+OpenGL API 3.3.0 Core Profile Context 26.5.2.260413 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon RX 580 2048SP
+P1_DEMO_PASS date=0020-01-01 progress=7305 spent=1 engine=4.8-beta3 (official) display=Windows
+P1_VERIFY_PASS
+P2_ASSETS_PASS packs=3 models=20
+P2_RULE_PASS checks=47
+Vulkan 1.3.260 - Forward+ - Using Device #0: AMD - AMD Radeon RX 580 2048SP
+P2_SCENE_PASS
+Vulkan 1.3.260 - Forward+ - Using Device #0: AMD - AMD Radeon RX 580 2048SP
+P2_RESUME_PASS
+Vulkan 1.3.260 - Forward+ - Using Device #0: AMD - AMD Radeon RX 580 2048SP
+P2_SCENE_PASS
+OpenGL API 3.3.0 Core Profile Context 26.5.2.260413 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon RX 580 2048SP
+P2_SCENE_PASS
+OpenGL API 3.3.0 Core Profile Context 26.5.2.260413 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon RX 580 2048SP
+P2_RESUME_PASS
+OpenGL API 3.3.0 Core Profile Context 26.5.2.260413 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon RX 580 2048SP
+P2_SCENE_PASS
+P3_RULE_PASS checks=337
+P3_CRASH_KIND_PASS buy stages=8
+P3_CRASH_KIND_PASS extract stages=8
+P3_CRASH_KIND_PASS order stages=8
+P3_CRASH_KIND_PASS active stages=8
+P3_CRASH_KIND_PASS finish stages=8
+P3_CRASH_KIND_PASS claim stages=8
+P3_CRASH_KIND_PASS choose stages=8
+P3_CRASH_KIND_PASS sell stages=8
+P3_CRASH_PASS terminations=64 evidence=<checkout>\.artifacts\material-crashes-1794947915281765500
+Vulkan 1.3.260 - Forward+ - Using Device #0: AMD - AMD Radeon RX 580 2048SP
+P3_SCENE_PASS day=3663 partial_practice=10
+Vulkan 1.3.260 - Forward+ - Using Device #0: AMD - AMD Radeon RX 580 2048SP
+P3_RESUME_PASS day=3713 wallet=47
+Vulkan 1.3.260 - Forward+ - Using Device #0: AMD - AMD Radeon RX 580 2048SP
+P3_SCENE_PASS day=3663 partial_practice=10
+Vulkan 1.3.260 - Forward+ - Using Device #0: AMD - AMD Radeon RX 580 2048SP
+P3_RESUME_PASS day=3713 wallet=47
+Vulkan 1.3.260 - Forward+ - Using Device #0: AMD - AMD Radeon RX 580 2048SP
+P3_CONDENSE_PASS day=3653
+Vulkan 1.3.260 - Forward+ - Using Device #0: AMD - AMD Radeon RX 580 2048SP
+P3_PROPERTY_PASS
+Vulkan 1.3.260 - Forward+ - Using Device #0: AMD - AMD Radeon RX 580 2048SP
+P3_MORTALITY_PASS
+OpenGL API 3.3.0 Core Profile Context 26.5.2.260413 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon RX 580 2048SP
+P3_SCENE_PASS day=3663 partial_practice=10
+OpenGL API 3.3.0 Core Profile Context 26.5.2.260413 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon RX 580 2048SP
+P3_RESUME_PASS day=3713 wallet=47
+OpenGL API 3.3.0 Core Profile Context 26.5.2.260413 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon RX 580 2048SP
+P3_SCENE_PASS day=3663 partial_practice=10
+OpenGL API 3.3.0 Core Profile Context 26.5.2.260413 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon RX 580 2048SP
+P3_RESUME_PASS day=3713 wallet=47
+OpenGL API 3.3.0 Core Profile Context 26.5.2.260413 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon RX 580 2048SP
+P3_CONDENSE_PASS day=3653
+OpenGL API 3.3.0 Core Profile Context 26.5.2.260413 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon RX 580 2048SP
+P3_PROPERTY_PASS
+OpenGL API 3.3.0 Core Profile Context 26.5.2.260413 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon RX 580 2048SP
+P3_MORTALITY_PASS
+P3_VERIFY_PASS
+P3_CLEAN_CHECKOUT_PASS <checkout>
