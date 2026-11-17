@@ -63,6 +63,10 @@ func _initialize() -> void:
 
 func run_tests() -> void:
 	var s := fresh("damaged")
+	check(s.checkpoint(Vector3(0,0,7)), "Leave the awning before the first lesson")
+	var before_lesson := s.state.fingerprint()
+	check(not s.material("learn","herbalism") and s.state.fingerprint()==before_lesson, "An absent teacher cannot start tuition or charge the player")
+	check(s.checkpoint(Vector3(1,0,2.4)), "Return for in-person tuition")
 	check(not s.material("extract","root.whole"),"Location without kit and qualification insufficient")
 	prepare(s)
 	# prepare's reload creates a new session; read its committed continuation.
@@ -263,6 +267,12 @@ func run_tests() -> void:
 	check(MaterialWorld.claim(travel.state,travelling_order)!="" and travel.state.fingerprint()==remote_state,"Direct domain claim also rejects remote collection after reload")
 	check(travel.checkpoint(Vector3(1,0,2.4)),"Walk to workshop")
 	do(travel,"visit")
+	check(MaterialWorld.job(travel.state,travelling_order).known,"Visit discloses readiness")
+	check(travel.checkpoint(Vector3(0,0,7)),"Leave after learning that the order is ready")
+	travel=reload(travel)
+	remote_state=travel.state.fingerprint()
+	check(not travel.material("claim",travelling_order) and travel.state.fingerprint()==remote_state,"A known ready order stays in workshop custody after leaving and reloading")
+	check(travel.checkpoint(Vector3(1,0,2.4)),"Return for the known result")
 	do(travel,"claim",travelling_order)
 	var spare:=first(travel,"root_part")
 	var wallet_before: int=travel.state.materials.wallet

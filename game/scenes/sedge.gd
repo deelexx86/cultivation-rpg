@@ -236,8 +236,7 @@ func interact(key: String) -> void:
 	if p3:
 		match key:
 			"mentor":
-				if session.material("visit"): material_ui.mentor()
-				else: failure()
+				material_ui.run("visit")
 				return
 			"quartz": material_ui.mineral(); return
 			"root": material_ui.root(); return

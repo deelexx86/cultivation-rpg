@@ -2,15 +2,71 @@ class_name MaterialSceneProbe
 extends RefCounted
 ## Drives the normal scene's menu callbacks; separate processes share the slot.
 
+static func send_key(code: Key, pressed: bool) -> void:
+	var event := InputEventKey.new()
+	event.physical_keycode = code
+	event.keycode = code
+	event.pressed = pressed
+	Input.parse_input_event(event)
+	Input.flush_buffered_events()
+
+static func walk_to(h, key: String) -> bool:
+	var held := {}
+	var keys := [KEY_A, KEY_D, KEY_W, KEY_S]
+	var destination: Vector3 = h.land.points[key]
+	for tick in 900:
+		var delta: Vector3 = destination - h.player.position
+		if h.target == key and delta.length() < 2.4: break
+		var needed := [delta.x < -0.25, delta.x > 0.25, delta.z < -0.25, delta.z > 0.25]
+		for i in keys.size():
+			if needed[i] != held.get(keys[i],false):
+				send_key(keys[i],needed[i])
+				held[keys[i]] = needed[i]
+		await h.get_tree().physics_frame
+	for code: Key in held:
+		if held[code]: send_key(code,false)
+	return h.verify_scene(h.target == key and h.player.position.distance_to(destination) < 2.4,"Walked to "+key)
+
 static func near(h, key: String) -> bool:
-	h.close_panel()
-	h.player.position = h.land.points[key]+Vector3(0,0.1,1.3)
-	await h.get_tree().physics_frame
-	await h.get_tree().create_timer(0.15).timeout
+	if "--intact-route" in OS.get_cmdline_user_args():
+		if h.panel.visible:
+			send_key(KEY_ESCAPE,true)
+			send_key(KEY_ESCAPE,false)
+			await h.get_tree().process_frame
+		if not await walk_to(h,key): return false
+	else:
+		h.close_panel()
+		h.player.position = h.land.points[key]+Vector3(0,0.1,1.3)
+		await h.get_tree().physics_frame
+		await h.get_tree().create_timer(0.15).timeout
 	if not h.verify_scene(h.target==key,"P3 proximity "+key): return false
-	if not h.session.checkpoint(h.player.position): return false
-	h.interact(key)
-	return true
+	send_key(KEY_E,true)
+	send_key(KEY_E,false)
+	await h.get_tree().process_frame
+	return h.verify_scene(h.panel.visible,"Interaction key opens "+key)
+
+static func click_choice(h, label: String) -> void:
+	for child: Node in h.column.get_children():
+		if not child is Button or child.text != label: continue
+		await h.get_tree().process_frame
+		await h.get_tree().process_frame
+		var scroll: ScrollContainer = h.panel.get_child(0)
+		scroll.ensure_control_visible(child)
+		await h.get_tree().process_frame
+		var point: Vector2 = child.get_global_rect().get_center()
+		if not h.verify_scene(scroll.get_global_rect().has_point(point),"Button visible: "+label): return
+		var motion := InputEventMouseMotion.new()
+		motion.position = point
+		h.get_viewport().push_input(motion,true)
+		for down: bool in [true,false]:
+			var event := InputEventMouseButton.new()
+			event.position = point
+			event.button_index = MOUSE_BUTTON_LEFT
+			event.pressed = down
+			h.get_viewport().push_input(event,true)
+		await h.get_tree().process_frame
+		return
+	h.verify_scene(false,"Missing button: "+label)
 
 static func capture(h, label: String) -> void:
 	for argument: String in OS.get_cmdline_user_args():
@@ -30,6 +86,17 @@ static func collect(h, id: String) -> void:
 	h.material_ui.processes()
 	var row := MaterialWorld.job(h.session.state,id)
 	h.press_choice("Получить: "+str(MaterialPanel.RECIPES[row.recipe])+" №"+id.get_slice(".",2))
+
+static func open_processes_away(h) -> void:
+	# Leave before the periodic position checkpoint, then use the ordinary inventory menu.
+	h.close_panel()
+	h.player.position = Vector3(0,0.1,7)
+	await h.get_tree().physics_frame
+	send_key(KEY_ESCAPE,true)
+	send_key(KEY_ESCAPE,false)
+	await h.get_tree().process_frame
+	await click_choice(h,"Имущество и процессы")
+	await click_choice(h,"Текущие процессы")
 
 static func run(h) -> void:
 	await h.get_tree().create_timer(0.35).timeout
@@ -53,8 +120,16 @@ static func run(h) -> void:
 		var start_day := s.state.day-10
 		h.press_choice("Завершить оставшуюся работу")
 		if not h.verify_scene(s.state.day==start_day+30 and MaterialWorld.job(s.state,order_id).status=="ready","Common calendar completion"): return
+		await click_choice(h,"Вернуться к мастеру")
+		if not h.verify_scene(MaterialWorld.job(s.state,order_id).known,"Returning to the present workshop discloses order readiness"): return
+		var before_claim: Dictionary = s.state.materials.duplicate(true)
+		await open_processes_away(h)
+		var claim_label := "Получить: Заказать стабилизацию №"+order_id.get_slice(".",2)
+		await click_choice(h,claim_label)
+		if not h.verify_scene(h.column.get_child(0).text=="Действие недоступно" and s.state.materials==before_claim,"Inventory cannot remotely hand over a known result"): return
 		if not await near(h,"mentor"): return
-		collect(h,order_id)
+		await click_choice(h,"Мои заказы")
+		await click_choice(h,claim_label)
 		select_input(h,"mature","essence")
 		var maturity_id: String = s.state.materials.jobs.back().id
 		h.material_ui.processes()
@@ -66,6 +141,7 @@ static func run(h) -> void:
 		await capture(h,"methods")
 		h.press_choice("Подготовить плавный способ")
 		if not h.verify_scene(s.state.materials.method=="smooth" and s.state.materials.pledged==8 and s.state.body().milestone=="initial","Saved preparation without a breakthrough"): return
+		if not h.verify_scene("8 в резерве" in h.column.get_child(1).text and "P5" in h.column.get_child(1).text,"Smooth completion names its own budget and stage boundary"): return
 		h.material_ui.inventory()
 		await capture(h,"prepared")
 		if not h.verify_scene(s.reload() and s.state.materials.method=="smooth","Reload selected method"): return
@@ -82,34 +158,35 @@ static func run(h) -> void:
 	for offer: String in ["lo.kit","lo.vessel","lo.treatise"]:
 		if not await near(h,"shop"): return
 		var def: Dictionary = P3Content.data().offers[offer]
-		h.press_choice("Купить: %s · %d" % [MaterialPanel.LABELS[def.kind],def.price])
+		await click_choice(h,"Купить: %s · %d" % [MaterialPanel.LABELS[def.kind],def.price])
 	for key: String in ["herbalism","alchemy"]:
 		if not await near(h,"mentor"): return
-		h.press_choice("Травничество · 8 камней / 4 года" if key=="herbalism" else "Алхимия и оба способа · трактат / 6 лет")
-		h.press_choice("Начать обучение")
-		h.press_choice("Завершить оставшуюся работу")
+		await click_choice(h,"Травничество · 8 камней / 4 года" if key=="herbalism" else "Алхимия и оба способа · трактат / 6 лет")
+		await click_choice(h,"Начать обучение")
+		await click_choice(h,"Завершить оставшуюся работу")
 	if not h.verify_scene(s.state.day==WorldCalendar.ordinal(10),"P3 exact education dates"): return
-	h.material_ui.mentor()
+	await click_choice(h,"Вернуться к мастеру")
+	if not h.verify_scene("Травничество — освоено" in h.column.get_child(1).text and "Алхимия и оба способа подготовки — освоены" in h.column.get_child(1).text,"Both mastered qualifications are visible"): return
 	for control: Node in h.column.get_children():
 		if control is Button and (control.text.begins_with("Травничество") or control.text.begins_with("Алхимия")):
 			if not h.verify_scene(false,"Mastered education is not offered again"): return
 	if not await near(h,"root"): return
-	h.press_choice("Осмотреть физический след")
-	h.interact("root")
-	h.press_choice("Духовное обследование и распознавание")
-	h.interact("root")
+	await click_choice(h,"Осмотреть физический след")
+	if not await near(h,"root"): return
+	await click_choice(h,"Духовное обследование и распознавание")
+	if not await near(h,"root"): return
 	await capture(h,"extraction")
-	h.press_choice("Попытаться извлечь целиком · риск повреждения" if intact else "Бережно отделить части · без живого контура")
-	h.press_choice("Подтвердить способ")
+	await click_choice(h,"Попытаться извлечь целиком · риск повреждения" if intact else "Бережно отделить части · без живого контура")
+	await click_choice(h,"Подтвердить способ")
 	if not h.verify_scene(s.state.materials.root==("intact" if intact else "parts") and not h.land.root_visual.visible,"Extracted root changes actual scene"): return
 	if not await near(h,"quartz"): return
-	h.press_choice("Осмотреть / распознать породу")
-	h.interact("quartz")
-	h.press_choice("Осмотреть / распознать породу")
+	await click_choice(h,"Осмотреть / распознать породу")
+	if not await near(h,"quartz"): return
+	await click_choice(h,"Осмотреть / распознать породу")
 	for i in (6 if property_check else 2):
-		h.interact("quartz")
-		h.press_choice("Выделить наружный фрагмент")
-		h.press_choice("Подтвердить способ")
+		if not await near(h,"quartz"): return
+		await click_choice(h,"Выделить наружный фрагмент")
+		await click_choice(h,"Подтвердить способ")
 	if not h.verify_scene(s.state.materials.quartz_left==(0 if property_check else 4) and not h.land.quartz_visuals[4].visible,"Partial quartz changes actual scene"): return
 	if not await near(h,"mentor"): return
 	if "--mortality-route" in OS.get_cmdline_user_args():
@@ -154,12 +231,13 @@ static func run(h) -> void:
 		h.leave()
 		return
 	if intact:
-		h.material_ui.methods()
-		h.press_choice("Подготовить конденсацию")
+		await click_choice(h,"Сравнить способы подготовки")
+		await click_choice(h,"Подготовить конденсацию")
 		if not h.verify_scene(h.column.get_child(0).text=="P3 завершён · подготовка сохранена","Explicit P3 completion"): return
 		if not h.verify_scene("12 в резерве" in h.column.get_child(1).text and "P5" in h.column.get_child(1).text,"Completion names reserves and P5 boundary"): return
 		if not h.verify_scene(s.state.materials.method=="condense" and s.state.materials.pledged==12,"Condensation plan selected in scene"): return
-		h.material_ui.inventory()
+		await capture(h,"completion")
+		await click_choice(h,"Имущество и процессы")
 		await capture(h,"condensation")
 		if not h.verify_scene(s.reload() and s.state.materials.method=="condense","Condensation plan reloaded"): return
 		print("P3_CONDENSE_PASS day=",s.state.day)
@@ -171,7 +249,14 @@ static func run(h) -> void:
 	h.press_choice(h.material_ui.item_name(MaterialWorld.item(s.state,part)))
 	await capture(h,"contract")
 	h.press_choice("Подтвердить работу")
-	h.material_ui.processes()
+	var order: Dictionary = s.state.materials.jobs.back()
+	var before_cancel: Dictionary = s.state.materials.duplicate(true)
+	await open_processes_away(h)
+	await click_choice(h,"Отменить: Заказать стабилизацию №"+str(order.id).get_slice(".",2))
+	await click_choice(h,"Подтвердить отмену")
+	if not h.verify_scene(h.column.get_child(0).text=="Действие недоступно" and s.state.materials==before_cancel,"Remote cancellation via inventory cannot return raw material"): return
+	if not await near(h,"mentor"): return
+	await click_choice(h,"Мои заказы")
 	h.press_choice("Практиковаться 30 дней параллельно")
 	h.press_choice("Подтвердить практику")
 	for i in 10: h.press_choice("Продвинуть 1 день")

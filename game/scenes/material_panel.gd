@@ -19,6 +19,9 @@ func run(command: String, argument: String = "") -> void:
 		scene.show_panel("Действие недоступно",scene.session.error)
 		return
 	scene.land.sync(state())
+	if command == "visit":
+		mentor()
+		return
 	if command == "choose" and argument != "":
 		completion()
 		return
@@ -51,6 +54,10 @@ func shop() -> void:
 
 func mentor() -> void:
 	var options := {"Травничество · 8 камней / 4 года":training.bind("herbalism"),"Алхимия и оба способа · трактат / 6 лет":training.bind("alchemy"),"Обработка и заказы":recipes,"Сравнить способы подготовки":methods}
+	for row: Dictionary in state().materials.jobs:
+		if row.executor == "workshop" and row.status in ["running","ready"]:
+			options["Мои заказы"] = processes
+			break
 	options["Оставить сосуд с содержимым на хранении"] = run.bind("stash","")
 	options["Забрать сосуд с хранения"] = run.bind("retrieve","")
 	var learned := PackedStringArray()
@@ -63,7 +70,10 @@ func mentor() -> void:
 		options.erase("Алхимия и оба способа · трактат / 6 лет")
 		scene.show_panel("Мастерская · новый исполнитель","Шэнь Юй умер. Его личные уроки завершились, но мастерская продолжает принятые заказы по прежним условиям. Материалы и готовые результаты остаются у своих владельцев.",options)
 		return
-	scene.show_panel("Шэнь Юй · зелёный навес","\n".join(learned)+"\n«Знать место мало. Научись видеть живые волокна и структуру породы. Приобретённый трактат ещё нужно освоить».\nОбучение занимает героя. Работа мастерской и выдержка идут параллельно на общей дате.",options)
+	if state().soul.mastery.get("alchemy.materials",0) == 0:
+		learned.append("«По трактату я научу тебя обрабатывать сырьё и готовиться к переходу».")
+	learned.append("Работа мастерской и выдержка идут параллельно на общей дате.")
+	scene.show_panel("Шэнь Юй · зелёный навес","\n".join(learned),options)
 
 func completion() -> void:
 	var s := state()
@@ -201,7 +211,9 @@ func advance(days: int) -> void:
 		scene.land.sync(state())
 		var description := "Фактическая дата: %s. Результат, освоение и расходы сохранены." % WorldCalendar.label(state().day)
 		if not state().materials.jobs.is_empty() and state().materials.jobs.back().status == "stopped": description = "Работа остановлена на фактической дате %s. Совершённые расходы и частичный прогресс сохранены; неосвоенное знание не выдано. Личный урок не может продолжиться без живого наставника." % WorldCalendar.label(state().day)
-		scene.show_panel("Этап завершён",description,{"Имущество и процессы":inventory,"Вернуться к мастеру":mentor})
+		var options := {"Имущество и процессы":inventory}
+		if scene.target == "mentor": options["Вернуться к мастеру"] = run.bind("visit")
+		scene.show_panel("Этап завершён",description,options)
 
 func sell_menu() -> void:
 	var options := {}

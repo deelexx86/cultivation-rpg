@@ -148,6 +148,7 @@ static func occupied(s: CampaignState) -> bool:
 
 static func start(s: CampaignState, recipe: String, input_id: String) -> String:
 	var learn := recipe.begins_with("learn.")
+	if (learn or recipe == "order") and not at_workshop(s): return "Посетите мастерскую у зелёного навеса."
 	var def: Dictionary
 	var inputs: Array[String] = []
 	var equipment_ids: Array[String] = []
@@ -321,7 +322,7 @@ static func choose(s: CampaignState, method: String) -> String:
 
 static func apply(s: CampaignState, command: String, argument: String = "") -> String:
 	if s.materials.is_empty() or s.mode != "active" or occupied(s) or s.exploration.place != SedgeWorld.YARD: return "Завершите текущую работу или вернитесь во двор."
-	if command in ["visit","stash","retrieve","recipe.order"] and not at_workshop(s): return "Посетите мастерскую у зелёного навеса."
+	if command in ["visit","stash","retrieve"] and not at_workshop(s): return "Посетите мастерскую у зелёного навеса."
 	var result := ""
 	match command:
 		"buy": result = buy(s,argument)
