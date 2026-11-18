@@ -3,6 +3,9 @@ extends Node3D
 const AssetContract = preload("res://tests/asset_contract.gd")
 
 func _ready() -> void:
+	if "--p4" in OS.get_cmdline_user_args():
+		get_tree().change_scene_to_file.call_deferred("res://scenes/combat_stand.tscn")
+		return
 	if "--p2" in OS.get_cmdline_user_args() or "--p3" in OS.get_cmdline_user_args():
 		get_tree().change_scene_to_file.call_deferred("res://scenes/sedge.tscn")
 		return

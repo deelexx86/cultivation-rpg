@@ -42,31 +42,7 @@ func _ready() -> void:
 		get_tree().quit(1)
 		return
 	get_tree().auto_accept_quit = false
-	var env := Environment.new()
-	var sky := Sky.new()
-	var sky_material := ProceduralSkyMaterial.new()
-	sky_material.sky_top_color = Color("#668a94")
-	sky_material.sky_horizon_color = Color("#e2d8b6")
-	sky_material.ground_horizon_color = sky_material.sky_horizon_color
-	sky.sky_material = sky_material
-	env.sky = sky
-	env.background_mode = Environment.BG_SKY
-	env.background_color = Color("#b9d5cb")
-	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = Color("#e0e7da")
-	env.ambient_light_energy = 0.46 if RenderingServer.get_current_rendering_method() == "forward_plus" else 0.32
-	env.fog_enabled = true
-	env.fog_light_color = Color("#b3ccbe")
-	env.fog_density = 0.012
-	var world := WorldEnvironment.new()
-	world.environment = env
-	add_child(world)
-	var sun := DirectionalLight3D.new()
-	sun.rotation_degrees = Vector3(-46,-32,0)
-	sun.light_color = Color("#ffebce")
-	sun.light_energy = 0.88 if RenderingServer.get_current_rendering_method() == "forward_plus" else 0.49
-	sun.shadow_enabled = true
-	add_child(sun)
+	SedgeLandscape.light(self)
 	player = SedgePlayer.new()
 	add_child(player)
 	if p3: material_ui = MaterialPanel.new(self)

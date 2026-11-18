@@ -64,6 +64,8 @@ static func decode(data: Variant) -> CampaignState:
 		spec["exploration"] = SedgeWorld.schema()
 	if data is Dictionary and data.has("materials"):
 		spec["materials"] = MaterialWorld.schema()
+	if data is Dictionary and data.has("combat"):
+		spec["combat"] = CombatState.schema()
 	if not shape(data, spec):
 		return null
 	var state := CampaignState.new()
@@ -73,6 +75,8 @@ static func decode(data: Variant) -> CampaignState:
 	assign_fields(state, scalars)
 	if not state.materials.is_empty():
 		state.materials = P3Content.integers(state.materials)
+	if not state.combat.is_empty():
+		state.combat = P3Content.integers(state.combat)
 	if not state.exploration.is_empty():
 		for key: String in ["x","z"]:
 			state.exploration[key] = int(state.exploration[key])
@@ -178,5 +182,7 @@ static func problems(state: CampaignState) -> PackedStringArray:
 		errors.append("Invalid White Sedge state")
 	if not state.materials.is_empty():
 		errors.append_array(MaterialWorld.problems(state))
+	if not state.combat.is_empty() and not CombatState.valid(state):
+		errors.append("Invalid VS-04 dynamic state")
 	errors.append_array(EventGraph.problems(state))
 	return errors
