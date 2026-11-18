@@ -115,14 +115,14 @@ def actor(data, name=HERO):
 
 
 class Game:
-    def __init__(self, command, directory, tag, renderer, rank, slot=None):
+    def __init__(self, command, directory, tag, renderer, rank, slot=None, extra_args=()):
         self.slot = slot or f"p4-{uuid4().hex[:16]}"
         self.path = directory / f"{tag}.json"
         self.log = directory / f"{tag}.log"
         self.output = self.log.open("wb")
         self.process = subprocess.Popen(
             [*command, "--rendering-method", renderer, "--position", "120,80", "--",
-             "--p4", f"--rank={rank}", f"--campaign={self.slot}", f"--p4-probe={self.path}"],
+             "--p4", f"--rank={rank}", f"--campaign={self.slot}", f"--p4-probe={self.path}", *extra_args],
             stdout=self.output, stderr=subprocess.STDOUT,
         )
         self.data = {}

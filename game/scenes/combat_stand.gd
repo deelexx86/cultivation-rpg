@@ -41,6 +41,8 @@ var frames: Array[float] = []
 var capture_requested := false
 var capture_serial := 0
 var step_samples: Array[int] = []
+var motion_probe := ""
+var motion_samples: Array = []
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -56,6 +58,8 @@ func _ready() -> void:
 			id = arg.trim_prefix("--campaign=")
 		elif arg.begins_with("--p4-probe="):
 			probe = arg.trim_prefix("--p4-probe=")
+		elif arg.begins_with("--p4-motion="):
+			motion_probe = arg.trim_prefix("--p4-motion=")
 	if rank not in P4Content.RANKS:
 		push_error("Unknown P4 rank: " + rank)
 		get_tree().quit(1)
@@ -70,6 +74,8 @@ func _ready() -> void:
 		push_error(session.error)
 		get_tree().quit(1)
 		return
+	if probe != "" and motion_probe != "":
+		RenderingServer.frame_post_draw.connect(record_motion)
 	DisplayServer.window_set_title("Cultivation RPG · P4 · " + id)
 	get_tree().auto_accept_quit = false
 	SedgeLandscape.light(stage)
@@ -343,6 +349,31 @@ func _process(delta: float) -> void:
 		await RenderingServer.frame_post_draw
 		capture_serial += 1
 		get_viewport().get_texture().get_image().save_png("%s.%02d.png" % [probe, capture_serial])
+
+func record_motion() -> void:
+	if not world_meshes.has(P4Content.YOUNG) or motion_samples.size() >= 2400:
+		return
+	var c := session.state.combat
+	var camera := get_viewport().get_camera_3d()
+	var hero := player.actor.global_position
+	var opponent: Node3D = world_meshes[P4Content.YOUNG].model
+	if c.projectiles.is_empty() or not shot_meshes.has(c.projectiles[0].id):
+		return
+	var shot: MeshInstance3D = shot_meshes[c.projectiles[0].id]
+	var landmark := camera.unproject_position(Vector3(1.8, 1.0, -12.0))
+	var missile := camera.unproject_position(shot.global_position)
+	var enemy := camera.unproject_position(opponent.global_position + Vector3.UP)
+	var hero_screen := camera.unproject_position(hero + Vector3.UP)
+	motion_samples.append([
+		Time.get_ticks_usec(), c.tick, c.credit, c.perception, Engine.get_physics_frames(),
+		xyz(hero), xyz(opponent.global_position), xyz(shot.global_position), xyz(camera.global_position),
+		[landmark.x, landmark.y], [missile.x, missile.y], [enemy.x, enemy.y], [hero_screen.x, hero_screen.y],
+		c.actors[HERO].pos.duplicate(), c.actors[P4Content.YOUNG].pos.duplicate(), c.projectiles[0].pos.duplicate(),
+		get_tree().paused
+	])
+
+func xyz(point: Vector3) -> Array[float]:
+	return [point.x, point.y, point.z]
 
 func write_probe() -> void:
 	var buttons := {}
@@ -765,6 +796,12 @@ func leave() -> void:
 		return
 	pause("manual")
 	if checkpoint():
+		if not motion_samples.is_empty():
+			var trace := FileAccess.open(motion_probe, FileAccess.WRITE)
+			if trace == null:
+				push_error("Cannot write P4 motion trace")
+			else:
+				trace.store_string(JSON.stringify(motion_samples, "", true, true))
 		get_tree().quit()
 
 func _input(event: InputEvent) -> void:
