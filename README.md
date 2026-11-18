@@ -24,6 +24,8 @@ Run `pwsh -File tools/p2.ps1 -Task Demo` from this checkout. The [P2 walkthrough
 
 For resource extraction and material preparation in the same scene, run `pwsh -NoProfile -File tools/p3.ps1 -Task Demo`. The [P3 walkthrough and contract](docs/technical/08-p3-material-preparation.md) cover finite trade, learning, processing, workshop orders, both preparation plans and the separate schema-3 campaign.
 
+For the playable combat and flight prototype, run `pwsh -NoProfile -File tools/p4.ps1 -Task Demo`. The [P4 walkthrough and contract](docs/technical/09-p4-combat-flight.md) describe the four stage profiles, combat controls, continuation and Windows verification.
+
 ## Быстрый старт
 
 1. Прочитать [концепцию и границы](docs/00-vision-and-scope.md), [реестр решений](docs/01-decision-register.md) и [игровой цикл](docs/02-core-loop-and-player-journey.md).

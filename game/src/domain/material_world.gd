@@ -79,11 +79,16 @@ static func room(s: CampaignState, count: int) -> bool:
 		if row.container == vessel and row.holder != "consumed": used += 1
 	return used + count <= int(P3Content.data().vessel_capacity)
 
+static func item_weight(kind: String, combat: bool) -> int:
+	if combat and kind in ["bone_plate", "horn_plate"]:
+		return 350 if kind == "bone_plate" else 650
+	return P3Content.data().weights.get(kind, -1)
+
 static func weight(s: CampaignState) -> int:
 	var total := 0
 	for row: Dictionary in s.materials.items:
 		if row.holder == s.body().id or (row.holder.begins_with("p3.job.") and job(s,row.holder).get("executor","") == "self"):
-			total += int(P3Content.data().weights[row.kind])
+			total += item_weight(row.kind, not s.combat.is_empty())
 	return total
 
 static func buy(s: CampaignState, offer: String) -> String:
@@ -376,7 +381,7 @@ static func problems(s: CampaignState) -> PackedStringArray:
 	var purchases := {}
 	var sales := 0
 	for raw: Dictionary in m.items:
-		if ids.has(raw.id) or raw.id == "" or not P3Content.data().weights.has(raw.kind): errors.append("Invalid/duplicate material item")
+		if ids.has(raw.id) or raw.id == "" or item_weight(raw.kind, not s.combat.is_empty()) < 0: errors.append("Invalid/duplicate material item")
 		ids[raw.id] = true
 		if raw.parents.is_empty():
 			if raw.origin == ROOT: root_units += 1
@@ -389,7 +394,8 @@ static func problems(s: CampaignState) -> PackedStringArray:
 			else: sales += int(P3Content.data().sell[raw.kind])
 		if raw.created < 0 or raw.created > s.day or raw.age < 0 or (raw.origin == ROOT and raw.age != 600) or raw.purity not in ["clean","tainted"] or raw.energy not in ["retained","reduced","unstable"] or raw.integrity not in ["whole","part","damaged"]: errors.append("Invalid material provenance/quality")
 		if raw.owner != ("merchant" if raw.holder == "merchant" else s.body().id): errors.append("Invalid material ownership")
-		if raw.origin not in [ROOT,QUARTZ] and not P3Content.data().offers.has(raw.origin.trim_prefix("shop.")): errors.append("Unknown material origin")
+		var combat_material: bool = not s.combat.is_empty() and ((raw.origin == P4Content.YOUNG and raw.kind == "bone_plate") or (raw.origin == P4Content.HORNED and raw.kind == "horn_plate"))
+		if not combat_material and raw.origin not in [ROOT,QUARTZ] and not P3Content.data().offers.has(raw.origin.trim_prefix("shop.")): errors.append("Unknown material origin")
 		if raw.container != "" and (item(s,raw.container).get("kind","") != "vessel" or raw.holder in ["consumed","merchant"]): errors.append("Invalid container linkage")
 		if raw.container != "":
 			var vessel := item(s,raw.container)
@@ -404,7 +410,7 @@ static func problems(s: CampaignState) -> PackedStringArray:
 		if raw.holder.begins_with("p3.job."):
 			var work := job(s,raw.holder)
 			if work.is_empty() or (raw.id not in work.inputs and raw.id not in work.outputs): errors.append("Orphaned workshop item")
-		elif raw.holder not in [s.body().id,"consumed","merchant","court.cache"]: errors.append("Unknown material holder")
+		elif raw.holder not in [s.body().id,"consumed","merchant","court.cache"] and not (raw.holder == "p4.corpse" and not s.combat.is_empty() and not s.body().alive): errors.append("Unknown material holder")
 	var jobs := {}
 	var expenses := 0
 	for key: String in P3Content.data().offers:

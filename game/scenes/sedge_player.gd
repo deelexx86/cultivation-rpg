@@ -5,6 +5,7 @@ var pivot := Node3D.new()
 var arm := SpringArm3D.new()
 var actor: Node3D
 var locked := false
+var external_motion := false
 var load_factor := 1.0
 
 func _ready() -> void:
@@ -37,6 +38,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("zoom_out"): arm.spring_length = minf(7,arm.spring_length+0.5)
 
 func _physics_process(delta: float) -> void:
+	if external_motion: return
 	var motion := Vector2.ZERO
 	if not locked:
 		pivot.rotate_y(Input.get_axis("orbit_right","orbit_left")*delta*1.9)

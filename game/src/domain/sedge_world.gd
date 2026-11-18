@@ -62,7 +62,11 @@ static func arrive(s: CampaignState) -> void:
 static func route_plan(s: CampaignState) -> Dictionary:
 	return Simulation.preview(s, ROUTE_BASE + FLOOD_DELAY, 0, "", 100, 100, "travel")
 
-static func depart(s: CampaignState, plan: Dictionary) -> String:
+static func depart(s: CampaignState, plan: Dictionary, by_air: bool = false) -> String:
+	if by_air and (s.combat.is_empty() or CombatWorld.flight_mode(s.combat) == ""):
+		return "Для перелёта нужен пригодный полёт."
+	if by_air and s.combat.actors[P4Content.HERO].qi < 6000:
+		return "Для перелёта нужно 6 Ци."
 	if not s.exploration.journey.is_empty() or plan != route_plan(s):
 		return "Обновите прогноз пути."
 	var id := "ferry.%d" % s.revision
@@ -70,7 +74,14 @@ static func depart(s: CampaignState, plan: Dictionary) -> String:
 	if result != "":
 		return result
 	s.exploration.journey = id
-	if s.event("ferryman") == null:
+	if by_air:
+		s.combat.actors[P4Content.HERO].qi -= 6000
+		s.record("route:flight:" + id)
+		if s.event(P4Content.AMBUSH) == null:
+			var ambush := P1Fixture.event(P4Content.AMBUSH, s.day + 2, "call")
+			ambush.interrupt = true
+			s.events.append(ambush)
+	elif s.event("ferryman") == null:
 		var encounter := P1Fixture.event("ferryman", s.day + 2, "call")
 		encounter.interrupt = true
 		s.events.append(encounter)

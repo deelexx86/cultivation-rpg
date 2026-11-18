@@ -1,0 +1,537 @@
+{
+  "date": "2026-11-18",
+  "validated_commit": "173ec1fdb0f229b14b8a35dcb13b3c1de359426c",
+  "base_commit": "7cb223a",
+  "engine": "4.8.beta3.official.c51ff06e8",
+  "machine": {
+    "os": "Windows 11 Home x64 build 26200",
+    "cpu": "AMD Ryzen 5 5600",
+    "gpu": "AMD Radeon RX 580 2048SP",
+    "driver": "31.0.21925.1001",
+    "desktop_hz": 144
+  },
+  "clean_checkout": {
+    "command": "pwsh -NoProfile -File tools/verify_clean_checkout.ps1 -Phase P4 -Branch work/p4-combat-flight",
+    "verified_tool_archives": true,
+    "fresh_import": true,
+    "clean_after_verification": true,
+    "marker": "P4_CLEAN_CHECKOUT_PASS"
+  },
+  "checks": {
+    "gdd_errors": 0,
+    "p1_assertions": 182,
+    "p1_process_terminations": 8,
+    "p2_assertions": 47,
+    "p3_assertions": 337,
+    "p3_process_terminations": 64,
+    "p4_assertions": 78
+  },
+  "export": {
+    "CultivationRPG.exe": {
+      "bytes": 104852480,
+      "sha256": "2f099ad62fdef78223c5060ad09073ce1829008e3efab3045a6c93ff4e3e215d"
+    },
+    "CultivationRPG.pck": {
+      "bytes": 563688,
+      "sha256": "9cef21625df9fe87c5354e2ce0c1c49a12185a14472cd587de56a55b68296b6a"
+    },
+    "pe_machine": "0x8664"
+  },
+  "native_windows_input": {
+    "forward_plus": {
+      "young": {
+        "controls": "forward_plus-young.json.01.png",
+        "metrics": {
+          "frame_ms": {
+            "count": 1027,
+            "median": 6.944,
+            "p95": 6.944,
+            "max": 133.202
+          },
+          "physics_and_projection_us": {
+            "count": 436,
+            "median": 182.5,
+            "p95": 279,
+            "max": 9905
+          },
+          "resolution": [
+            960,
+            640
+          ],
+          "video_bytes": 177717744,
+          "working_set": {
+            "current_bytes": 398995456,
+            "peak_bytes": 403238912
+          },
+          "last_checkpoint_us": 7509,
+          "geometry_load_us": 214514
+        }
+      },
+      "core": {
+        "active": "forward_plus-core.json.01.png",
+        "paused": "forward_plus-core.json.02.png",
+        "phase": {
+          "tick": 183,
+          "credit": 1,
+          "wards": 2,
+          "hits": 0,
+          "projectiles": [
+            {
+              "direction": [
+                985,
+                -69,
+                -157
+              ],
+              "id": 1,
+              "key": "bolt",
+              "life": 111,
+              "owner": "hero",
+              "pos": [
+                592,
+                6498,
+                -8320
+              ],
+              "target": "stand.air"
+            }
+          ],
+          "perception": true,
+          "hero": {
+            "action": {
+              "center": [
+                7996,
+                5978,
+                -9497
+              ],
+              "direction": [
+                973,
+                6,
+                -229
+              ],
+              "key": "bolt",
+              "rest": 21,
+              "target": "stand.air",
+              "wind": 0
+            },
+            "alert": false,
+            "armor": 0,
+            "damaged": false,
+            "face": [
+              973,
+              0,
+              -229
+            ],
+            "flight": "self",
+            "heavy_hits": 0,
+            "hp": 100,
+            "injury": false,
+            "loot": "",
+            "pos": [
+              0,
+              5758,
+              -8224
+            ],
+            "qi": 80709,
+            "shield": 40,
+            "shield_ticks": 371,
+            "stagger": 0,
+            "velocity": [
+              0,
+              0,
+              0
+            ]
+          },
+          "air": {
+            "action": {
+              "center": [
+                0,
+                2327,
+                -4013
+              ],
+              "direction": [
+                -772,
+                -352,
+                529
+              ],
+              "key": "spit",
+              "rest": 0,
+              "target": "hero",
+              "wind": 38
+            },
+            "alert": true,
+            "armor": 0,
+            "damaged": false,
+            "face": [
+              -825,
+              0,
+              566
+            ],
+            "flight": "self",
+            "heavy_hits": 0,
+            "hp": 55,
+            "injury": false,
+            "loot": "",
+            "pos": [
+              7996,
+              5198,
+              -9497
+            ],
+            "qi": 0,
+            "shield": 0,
+            "shield_ticks": 0,
+            "stagger": 0,
+            "velocity": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "metrics": {
+          "frame_ms": {
+            "count": 680,
+            "median": 6.944,
+            "p95": 6.944,
+            "max": 133.333
+          },
+          "physics_and_projection_us": {
+            "count": 291,
+            "median": 150,
+            "p95": 249,
+            "max": 8266
+          },
+          "resolution": [
+            960,
+            640
+          ],
+          "video_bytes": 177968960,
+          "working_set": {
+            "current_bytes": 372346880,
+            "peak_bytes": 376655872
+          },
+          "last_checkpoint_us": 8081,
+          "geometry_load_us": 112880
+        },
+        "restored": "forward_plus-resume.json.01.png",
+        "resumed_hit": {
+          "tick": 230,
+          "air_hp": 37,
+          "hit_count": 1,
+          "wards": 2
+        },
+        "sphere": "forward_plus-resume.json.02.png"
+      },
+      "foundation": {
+        "flight": "forward_plus-foundation.json.01.png",
+        "combat_interruption_day": 2,
+        "confirmed_arrival_day": 5,
+        "metrics": {
+          "frame_ms": {
+            "count": 1206,
+            "median": 6.944,
+            "p95": 6.944,
+            "max": 126.965
+          },
+          "physics_and_projection_us": {
+            "count": 519,
+            "median": 148,
+            "p95": 215,
+            "max": 82541
+          },
+          "resolution": [
+            960,
+            640
+          ],
+          "video_bytes": 177720464,
+          "working_set": {
+            "current_bytes": 369971200,
+            "peak_bytes": 373370880
+          },
+          "last_checkpoint_us": 8495,
+          "geometry_load_us": 65150
+        }
+      },
+      "elite": {
+        "death_screen": "forward_plus-elite.json.01.png",
+        "checkpoint_at_death": 5,
+        "armor_after_spell": 25
+      }
+    },
+    "gl_compatibility": {
+      "young": {
+        "controls": "gl_compatibility-young.json.01.png",
+        "metrics": {
+          "frame_ms": {
+            "count": 1024,
+            "median": 6.944,
+            "p95": 7.098,
+            "max": 127.892
+          },
+          "physics_and_projection_us": {
+            "count": 437,
+            "median": 205,
+            "p95": 330,
+            "max": 9027
+          },
+          "resolution": [
+            960,
+            640
+          ],
+          "video_bytes": 20455127,
+          "working_set": {
+            "current_bytes": 309395456,
+            "peak_bytes": 312135680
+          },
+          "last_checkpoint_us": 7495,
+          "geometry_load_us": 226064
+        }
+      },
+      "core": {
+        "active": "gl_compatibility-core.json.01.png",
+        "paused": "gl_compatibility-core.json.02.png",
+        "phase": {
+          "tick": 184,
+          "credit": 2,
+          "wards": 2,
+          "hits": 0,
+          "projectiles": [
+            {
+              "direction": [
+                987,
+                -98,
+                -128
+              ],
+              "id": 1,
+              "key": "bolt",
+              "life": 111,
+              "owner": "hero",
+              "pos": [
+                592,
+                6714,
+                -8536
+              ],
+              "target": "stand.air"
+            }
+          ],
+          "perception": true,
+          "hero": {
+            "action": {
+              "center": [
+                7996,
+                5978,
+                -9497
+              ],
+              "direction": [
+                979,
+                -23,
+                -202
+              ],
+              "key": "bolt",
+              "rest": 21,
+              "target": "stand.air",
+              "wind": 0
+            },
+            "alert": false,
+            "armor": 0,
+            "damaged": false,
+            "face": [
+              979,
+              0,
+              -202
+            ],
+            "flight": "self",
+            "heavy_hits": 0,
+            "hp": 100,
+            "injury": false,
+            "loot": "",
+            "pos": [
+              0,
+              5994,
+              -8460
+            ],
+            "qi": 80570,
+            "shield": 40,
+            "shield_ticks": 372,
+            "stagger": 0,
+            "velocity": [
+              0,
+              0,
+              0
+            ]
+          },
+          "air": {
+            "action": {
+              "center": [
+                0,
+                2327,
+                -4013
+              ],
+              "direction": [
+                -772,
+                -352,
+                529
+              ],
+              "key": "spit",
+              "rest": 0,
+              "target": "hero",
+              "wind": 36
+            },
+            "alert": true,
+            "armor": 0,
+            "damaged": false,
+            "face": [
+              -825,
+              0,
+              566
+            ],
+            "flight": "self",
+            "heavy_hits": 0,
+            "hp": 55,
+            "injury": false,
+            "loot": "",
+            "pos": [
+              7996,
+              5198,
+              -9497
+            ],
+            "qi": 0,
+            "shield": 0,
+            "shield_ticks": 0,
+            "stagger": 0,
+            "velocity": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "metrics": {
+          "frame_ms": {
+            "count": 672,
+            "median": 6.944,
+            "p95": 7.143,
+            "max": 134.813
+          },
+          "physics_and_projection_us": {
+            "count": 291,
+            "median": 164,
+            "p95": 257,
+            "max": 8969
+          },
+          "resolution": [
+            960,
+            640
+          ],
+          "video_bytes": 20447263,
+          "working_set": {
+            "current_bytes": 286863360,
+            "peak_bytes": 289529856
+          },
+          "last_checkpoint_us": 8769,
+          "geometry_load_us": 110981
+        },
+        "restored": "gl_compatibility-resume.json.01.png",
+        "resumed_hit": {
+          "tick": 231,
+          "air_hp": 37,
+          "hit_count": 1,
+          "wards": 2
+        },
+        "sphere": "gl_compatibility-resume.json.02.png"
+      },
+      "foundation": {
+        "flight": "gl_compatibility-foundation.json.01.png",
+        "combat_interruption_day": 2,
+        "confirmed_arrival_day": 5,
+        "metrics": {
+          "frame_ms": {
+            "count": 1156,
+            "median": 6.944,
+            "p95": 7.143,
+            "max": 138.418
+          },
+          "physics_and_projection_us": {
+            "count": 505,
+            "median": 166,
+            "p95": 225,
+            "max": 78943
+          },
+          "resolution": [
+            960,
+            640
+          ],
+          "video_bytes": 20233549,
+          "working_set": {
+            "current_bytes": 277544960,
+            "peak_bytes": 278929408
+          },
+          "last_checkpoint_us": 8294,
+          "geometry_load_us": 61654
+        }
+      },
+      "elite": {
+        "death_screen": "gl_compatibility-elite.json.01.png",
+        "checkpoint_at_death": 6,
+        "armor_after_spell": 25
+      }
+    }
+  },
+  "screenshots": {
+    "p4-combat-forward-plus.png": "forward_plus-young.json.01.png",
+    "p4-air-save-forward-plus.png": "forward_plus-core.json.01.png",
+    "p4-restored-pause-forward-plus.png": "forward_plus-resume.json.01.png",
+    "p4-flight-compatibility.png": "gl_compatibility-foundation.json.01.png",
+    "p4-death-compatibility.png": "gl_compatibility-elite.json.01.png"
+  },
+  "fullscreen_1080p_probe": {
+    "forward_plus": {
+      "frame_ms": {
+        "count": 826,
+        "median": 6.944,
+        "p95": 6.944,
+        "max": 133.333
+      },
+      "physics_and_projection_us": {
+        "count": 351,
+        "median": 141,
+        "p95": 268,
+        "max": 8809
+      },
+      "resolution": [
+        1920,
+        1080
+      ],
+      "video_bytes": 214265152,
+      "working_set": {
+        "current_bytes": 373145600,
+        "peak_bytes": 374874112
+      },
+      "last_checkpoint_us": 8657,
+      "geometry_load_us": 114842
+    },
+    "gl_compatibility": {
+      "frame_ms": {
+        "count": 820,
+        "median": 6.944,
+        "p95": 6.944,
+        "max": 135.107
+      },
+      "physics_and_projection_us": {
+        "count": 351,
+        "median": 165,
+        "p95": 283,
+        "max": 8025
+      },
+      "resolution": [
+        1920,
+        1080
+      ],
+      "video_bytes": 29528863,
+      "working_set": {
+        "current_bytes": 268595200,
+        "peak_bytes": 268595200
+      },
+      "last_checkpoint_us": 7723,
+      "geometry_load_us": 120139
+    }
+  }
+}

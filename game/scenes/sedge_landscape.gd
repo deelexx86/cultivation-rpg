@@ -16,6 +16,33 @@ var tutor_actor: Node3D
 var merchant_alive := true
 var tutor_alive := true
 
+static func light(parent: Node3D) -> void:
+	var env := Environment.new()
+	var sky := Sky.new()
+	var sky_material := ProceduralSkyMaterial.new()
+	sky_material.sky_top_color = Color("#668a94")
+	sky_material.sky_horizon_color = Color("#e2d8b6")
+	sky_material.ground_horizon_color = sky_material.sky_horizon_color
+	sky.sky_material = sky_material
+	env.sky = sky
+	env.background_mode = Environment.BG_SKY
+	env.background_color = Color("#b9d5cb")
+	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+	env.ambient_light_color = Color("#e0e7da")
+	env.ambient_light_energy = 0.46 if RenderingServer.get_current_rendering_method() == "forward_plus" else 0.32
+	env.fog_enabled = true
+	env.fog_light_color = Color("#b3ccbe")
+	env.fog_density = 0.012
+	var world := WorldEnvironment.new()
+	world.environment = env
+	parent.add_child(world)
+	var sun := DirectionalLight3D.new()
+	sun.rotation_degrees = Vector3(-46,-32,0)
+	sun.light_color = Color("#ffebce")
+	sun.light_energy = 0.88 if RenderingServer.get_current_rendering_method() == "forward_plus" else 0.49
+	sun.shadow_enabled = true
+	parent.add_child(sun)
+
 static func model(parent: Node3D, pack: String, id: String, pos: Vector3, size_factor: Vector3, angle: float = 0) -> Node3D:
 	var scene := load("res://assets/sedge/%s/%s.glb" % [pack,id]) as PackedScene
 	var obj := scene.instantiate() as Node3D

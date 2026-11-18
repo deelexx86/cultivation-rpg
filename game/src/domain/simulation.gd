@@ -73,19 +73,24 @@ static func expire(state: CampaignState) -> void:
 		state.end_reason = "soul_expired"
 		state.record("soul_expired")
 	if state.body().alive and state.body_expiry() <= state.day:
-		state.body().alive = false
-		state.body().died = state.day
-		state.record("body_expired:" + state.body().id)
-		if state.mode != "ended":
-			state.mode = "body_dead"
-		for obligation: CampaignState.Obligation in state.obligations:
-			if obligation.active and obligation.body == state.body().id:
-				obligation.active = false
-				obligation.ended = state.day
-				state.record("obligation_ended:" + obligation.id)
+		lose_body(state, "body_expired")
 	var action := state.running()
 	if action != null and (state.mode == "ended" or (state.mode == "body_dead" and action.kind != "transfer_probe")):
 		action.status = "stopped"
+
+static func lose_body(state: CampaignState, reason: String) -> void:
+	state.body().alive = false
+	state.body().died = state.day
+	state.record("%s:%s" % [reason, state.body().id])
+	if state.mode != "ended":
+		state.mode = "body_dead"
+	for obligation: CampaignState.Obligation in state.obligations:
+		if obligation.active and obligation.body == state.body().id:
+			obligation.active = false
+			obligation.ended = state.day
+			state.record("obligation_ended:" + obligation.id)
+	if not state.combat.is_empty():
+		CombatWorld.lose_body(state)
 
 static func apply_event(state: CampaignState, event: CampaignState.WorldEvent) -> void:
 	var allowed := true
@@ -124,6 +129,8 @@ static func apply_event(state: CampaignState, event: CampaignState.WorldEvent) -
 		action.blocker = event.id
 		state.known[event.id] = state.day # Only an explicit communication channel interrupts.
 		state.record("interrupted:" + action.id + ":" + event.id)
+		if event.id == P4Content.AMBUSH and not state.combat.is_empty():
+			CombatWorld.prepare_crossing(state)
 
 static func complete(state: CampaignState, action: CampaignState.Action) -> void:
 	if action.status != "running" or action.progress != action.duration:
@@ -137,6 +144,10 @@ static func complete(state: CampaignState, action: CampaignState.Action) -> void
 			state.record("first_milestone:" + action.milestone)
 	if action.kind == "travel":
 		SedgeWorld.arrive(state)
+		if not state.combat.is_empty():
+			CombatWorld.arrive(state)
+	if action.kind == "recovery" and not state.combat.is_empty():
+		CombatWorld.recover(state, action.id)
 	if action.kind in ["study","craft"]:
 		MaterialWorld.finish(state,action.id)
 	action.status = "complete"
@@ -186,6 +197,8 @@ static func resume(state: CampaignState, id: String, operation_id: String) -> St
 	var action := state.action(id)
 	if operation_id.is_empty() or action == null or action.status != "paused" or state.running() != null or state.mode != "active":
 		return "Cannot resume this action"
+	if action.blocker == P4Content.AMBUSH and (state.combat.is_empty() or state.combat.actors[P4Content.CROSSING].hp > 0 or CombatWorld.engaged(state)):
+		return "Устраните угрозу, прежде чем продолжить путь."
 	action.blocker = ""
 	action.status = "running"
 	state.receipts[operation_id] = signature

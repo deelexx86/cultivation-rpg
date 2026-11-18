@@ -1,0 +1,2241 @@
+{
+  "baseline_source": "35df9e5465931fd5aaac039de717428d7318eb38",
+  "fixed_source": "8c0bc565021779155bec848d273b6cd1fa81da0a",
+  "engine": "4.8.beta3.official.c51ff06e8",
+  "hardware": {
+    "os": "Windows 11 Home x64",
+    "cpu": "AMD Ryzen 5 5600",
+    "gpu": "AMD Radeon RX 580 2048SP",
+    "display_hz": 144
+  },
+  "viewport": {
+    "output_px": [
+      1920,
+      1080
+    ],
+    "logical_px": [
+      960,
+      640
+    ]
+  },
+  "protocol": {
+    "event": "RenderingServer.frame_post_draw",
+    "frame_time": "Time.get_ticks_usec, adjacent frame callbacks",
+    "window_combat_ticks": [
+      8,
+      41
+    ],
+    "held_input": "D",
+    "hold_threshold_m": 1e-05,
+    "hold_threshold_logical_px": 0.0005
+  },
+  "baseline_export_sha256": {
+    "CultivationRPG.exe": "2f099ad62fdef78223c5060ad09073ce1829008e3efab3045a6c93ff4e3e215d",
+    "CultivationRPG.pck": "aa3f41eaba055e791ea135f77a9dd1dba09ad56fec48b1fd84dcb64554c6c5cb"
+  },
+  "fixed_export_sha256": {
+    "CultivationRPG.exe": "2f099ad62fdef78223c5060ad09073ce1829008e3efab3045a6c93ff4e3e215d",
+    "CultivationRPG.pck": "257f45100cf315de1ff0fa9da631a98409c715374fcd67a9523ceff3ff0a351b"
+  },
+  "verification": {
+    "P0_SMOKE_PASS": 5,
+    "P1_TEST_PASS": 1,
+    "P1_CRASH_PASS": 1,
+    "P2_RULE_PASS": 1,
+    "P3_RULE_PASS": 1,
+    "P3_CRASH_PASS": 1,
+    "P4_RULE_PASS": 1,
+    "P4_UI_YOUNG_PASS": 2,
+    "P4_UI_CORE_PASS": 2,
+    "P4_UI_FOUNDATION_PASS": 2,
+    "P4_UI_ELITE_PASS": 2,
+    "P4_MOTION_PASS": 1,
+    "P4_VERIFY_PASS": 1
+  },
+  "cases": {
+    "forward_plus": {
+      "ground": {
+        "normal": {
+          "equal_authoritative_ticks": 34,
+          "authority_sha256": "1367f53c9f3a96047a5960f56f6bfb4eef7e4c8e0f04c3cc9895b5e0ca66afda",
+          "before": {
+            "frames": 82,
+            "fps": 143.97,
+            "physics_hz": 58.66,
+            "combat_hz": 58.66,
+            "frame_ms": {
+              "median": 6.937,
+              "p95": 7.275,
+              "max": 7.804
+            },
+            "transforms": {
+              "hero_m": {
+                "hold_percent": 59.26,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.07203,
+                  "max": 0.07203
+                },
+                "travel": 2.37646
+              },
+              "opponent_m": {
+                "hold_percent": 59.26,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.03803,
+                  "max": 0.03809
+                },
+                "travel": 1.23905
+              },
+              "projectile_m": {
+                "hold_percent": 59.26,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.15,
+                  "max": 0.15
+                },
+                "travel": 4.95
+              },
+              "camera_m": {
+                "hold_percent": 59.26,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.07203,
+                  "max": 0.07203
+                },
+                "travel": 2.37646
+              },
+              "landmark_px": {
+                "hold_percent": 59.26,
+                "step": {
+                  "median": 0.0,
+                  "p95": 3.07637,
+                  "max": 3.07796
+                },
+                "travel": 101.43783
+              },
+              "projectile_px": {
+                "hold_percent": 59.26,
+                "step": {
+                  "median": 0.0,
+                  "p95": 5.95583,
+                  "max": 5.95717
+                },
+                "travel": 196.29006
+              },
+              "opponent_px": {
+                "hold_percent": 59.26,
+                "step": {
+                  "median": 0.0,
+                  "p95": 3.07072,
+                  "max": 3.11513
+                },
+                "travel": 100.09655
+              },
+              "hero_px": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 6e-05,
+                  "max": 6e-05
+                },
+                "travel": 0.00134
+              }
+            },
+            "trace": "forward_plus-ground-normal.motion.json",
+            "frozen_frames": null
+          },
+          "after": {
+            "frames": 82,
+            "fps": 143.98,
+            "physics_hz": 58.66,
+            "combat_hz": 58.66,
+            "frame_ms": {
+              "median": 6.953,
+              "p95": 7.176,
+              "max": 7.489
+            },
+            "transforms": {
+              "hero_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.03,
+                  "p95": 0.03001,
+                  "max": 0.03067
+                },
+                "travel": 2.43113
+              },
+              "opponent_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.01567,
+                  "p95": 0.01584,
+                  "max": 0.01599
+                },
+                "travel": 1.26688
+              },
+              "projectile_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.0625,
+                  "p95": 0.0625,
+                  "max": 0.06387
+                },
+                "travel": 5.06409
+              },
+              "camera_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.03,
+                  "p95": 0.03001,
+                  "max": 0.03067
+                },
+                "travel": 2.43113
+              },
+              "landmark_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 1.28057,
+                  "p95": 1.28229,
+                  "max": 1.31074
+                },
+                "travel": 103.77429
+              },
+              "projectile_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 2.47946,
+                  "p95": 2.48206,
+                  "max": 2.53165
+                },
+                "travel": 200.82341
+              },
+              "opponent_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 1.2661,
+                  "p95": 1.28698,
+                  "max": 1.31886
+                },
+                "travel": 102.55299
+              },
+              "hero_px": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 3e-05,
+                  "max": 3e-05
+                },
+                "travel": 0.00067
+              }
+            },
+            "trace": "forward_plus-ground-normal.motion.json",
+            "frozen_frames": {
+              "initial": 17,
+              "final": 25
+            }
+          }
+        },
+        "half": {
+          "equal_authoritative_ticks": 34,
+          "authority_sha256": "1367f53c9f3a96047a5960f56f6bfb4eef7e4c8e0f04c3cc9895b5e0ca66afda",
+          "before": {
+            "frames": 163,
+            "fps": 144.0,
+            "physics_hz": 59.55,
+            "combat_hz": 29.33,
+            "frame_ms": {
+              "median": 6.9415,
+              "p95": 7.075,
+              "max": 7.21
+            },
+            "transforms": {
+              "hero_m": {
+                "hold_percent": 79.63,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.07203,
+                  "max": 0.07203
+                },
+                "travel": 2.37646
+              },
+              "opponent_m": {
+                "hold_percent": 79.63,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.03775,
+                  "max": 0.03809
+                },
+                "travel": 1.23905
+              },
+              "projectile_m": {
+                "hold_percent": 79.63,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.15,
+                  "max": 0.15
+                },
+                "travel": 4.95
+              },
+              "camera_m": {
+                "hold_percent": 79.63,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.07203,
+                  "max": 0.07203
+                },
+                "travel": 2.37646
+              },
+              "landmark_px": {
+                "hold_percent": 79.63,
+                "step": {
+                  "median": 0.0,
+                  "p95": 3.07432,
+                  "max": 3.07796
+                },
+                "travel": 101.43783
+              },
+              "projectile_px": {
+                "hold_percent": 79.63,
+                "step": {
+                  "median": 0.0,
+                  "p95": 5.95406,
+                  "max": 5.95717
+                },
+                "travel": 196.29006
+              },
+              "opponent_px": {
+                "hold_percent": 79.63,
+                "step": {
+                  "median": 0.0,
+                  "p95": 3.05093,
+                  "max": 3.11513
+                },
+                "travel": 100.09655
+              },
+              "hero_px": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 6e-05,
+                  "max": 6e-05
+                },
+                "travel": 0.00134
+              }
+            },
+            "trace": "forward_plus-ground-half.motion.json",
+            "frozen_frames": null
+          },
+          "after": {
+            "frames": 164,
+            "fps": 144.03,
+            "physics_hz": 59.2,
+            "combat_hz": 29.16,
+            "frame_ms": {
+              "median": 6.936,
+              "p95": 7.153,
+              "max": 7.425
+            },
+            "transforms": {
+              "hero_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.015,
+                  "p95": 0.01501,
+                  "max": 0.01501
+                },
+                "travel": 2.44543
+              },
+              "opponent_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.00783,
+                  "p95": 0.00792,
+                  "max": 0.00794
+                },
+                "travel": 1.27471
+              },
+              "projectile_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.03125,
+                  "p95": 0.03125,
+                  "max": 0.03125
+                },
+                "travel": 5.09375
+              },
+              "camera_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.015,
+                  "p95": 0.01501,
+                  "max": 0.01501
+                },
+                "travel": 2.44543
+              },
+              "landmark_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.64029,
+                  "p95": 0.64117,
+                  "max": 0.64136
+                },
+                "travel": 104.38514
+              },
+              "projectile_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 1.23978,
+                  "p95": 1.241,
+                  "max": 1.24112
+                },
+                "travel": 201.9946
+              },
+              "opponent_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.63292,
+                  "p95": 0.6442,
+                  "max": 0.64977
+                },
+                "travel": 103.10568
+              },
+              "hero_px": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 3e-05,
+                  "max": 3e-05
+                },
+                "travel": 0.00171
+              }
+            },
+            "trace": "forward_plus-ground-half.motion.json",
+            "frozen_frames": {
+              "initial": 22,
+              "final": 25
+            }
+          }
+        },
+        "quarter": {
+          "equal_authoritative_ticks": 34,
+          "authority_sha256": "1367f53c9f3a96047a5960f56f6bfb4eef7e4c8e0f04c3cc9895b5e0ca66afda",
+          "before": {
+            "frames": 327,
+            "fps": 144.0,
+            "physics_hz": 59.63,
+            "combat_hz": 14.58,
+            "frame_ms": {
+              "median": 6.943,
+              "p95": 7.091,
+              "max": 7.335
+            },
+            "transforms": {
+              "hero_m": {
+                "hold_percent": 89.88,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.07201,
+                  "max": 0.07203
+                },
+                "travel": 2.37646
+              },
+              "opponent_m": {
+                "hold_percent": 89.88,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0376,
+                  "max": 0.03809
+                },
+                "travel": 1.23905
+              },
+              "projectile_m": {
+                "hold_percent": 89.88,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.15,
+                  "max": 0.15
+                },
+                "travel": 4.95
+              },
+              "camera_m": {
+                "hold_percent": 89.88,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.07201,
+                  "max": 0.07203
+                },
+                "travel": 2.37646
+              },
+              "landmark_px": {
+                "hold_percent": 89.88,
+                "step": {
+                  "median": 0.0,
+                  "p95": 3.07332,
+                  "max": 3.07796
+                },
+                "travel": 101.43783
+              },
+              "projectile_px": {
+                "hold_percent": 89.88,
+                "step": {
+                  "median": 0.0,
+                  "p95": 5.95119,
+                  "max": 5.95717
+                },
+                "travel": 196.29006
+              },
+              "opponent_px": {
+                "hold_percent": 89.88,
+                "step": {
+                  "median": 0.0,
+                  "p95": 3.03497,
+                  "max": 3.11513
+                },
+                "travel": 100.09655
+              },
+              "hero_px": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 3e-05,
+                  "max": 6e-05
+                },
+                "travel": 0.00134
+              }
+            },
+            "trace": "forward_plus-ground-quarter.motion.json",
+            "frozen_frames": null
+          },
+          "after": {
+            "frames": 326,
+            "fps": 143.97,
+            "physics_hz": 59.8,
+            "combat_hz": 14.62,
+            "frame_ms": {
+              "median": 6.945,
+              "p95": 7.127,
+              "max": 7.489
+            },
+            "transforms": {
+              "hero_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.0075,
+                  "p95": 0.0075,
+                  "max": 0.00792
+                },
+                "travel": 2.43795
+              },
+              "opponent_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.00392,
+                  "p95": 0.00396,
+                  "max": 0.00416
+                },
+                "travel": 1.27092
+              },
+              "projectile_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.01562,
+                  "p95": 0.01562,
+                  "max": 0.01649
+                },
+                "travel": 5.07812
+              },
+              "camera_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.0075,
+                  "p95": 0.0075,
+                  "max": 0.00792
+                },
+                "travel": 2.43795
+              },
+              "landmark_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.32016,
+                  "p95": 0.32062,
+                  "max": 0.33774
+                },
+                "travel": 104.06644
+              },
+              "projectile_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.61992,
+                  "p95": 0.62053,
+                  "max": 0.65435
+                },
+                "travel": 201.37308
+              },
+              "opponent_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.3165,
+                  "p95": 0.32241,
+                  "max": 0.33627
+                },
+                "travel": 102.77274
+              },
+              "hero_px": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 3e-05,
+                  "max": 6e-05
+                },
+                "travel": 0.00446
+              }
+            },
+            "trace": "forward_plus-ground-quarter.motion.json",
+            "frozen_frames": {
+              "initial": 17,
+              "final": 31
+            }
+          }
+        }
+      },
+      "air": {
+        "normal": {
+          "equal_authoritative_ticks": 34,
+          "authority_sha256": "cbe86d14ebfc73f1af07a3b458e575250b78ff8baf75ab5b6c49f00e66943d01",
+          "before": {
+            "frames": 81,
+            "fps": 144.03,
+            "physics_hz": 59.41,
+            "combat_hz": 59.41,
+            "frame_ms": {
+              "median": 6.9455,
+              "p95": 7.099,
+              "max": 7.287
+            },
+            "transforms": {
+              "hero_m": {
+                "hold_percent": 58.75,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.167,
+                  "max": 0.167
+                },
+                "travel": 5.302
+              },
+              "opponent_m": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0,
+                  "max": 0.0
+                },
+                "travel": 0.0
+              },
+              "projectile_m": {
+                "hold_percent": 58.75,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.15,
+                  "max": 0.15
+                },
+                "travel": 4.95
+              },
+              "camera_m": {
+                "hold_percent": 58.75,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.167,
+                  "max": 0.167
+                },
+                "travel": 5.302
+              },
+              "landmark_px": {
+                "hold_percent": 58.75,
+                "step": {
+                  "median": 0.0,
+                  "p95": 6.57477,
+                  "max": 6.57477
+                },
+                "travel": 208.73853
+              },
+              "projectile_px": {
+                "hold_percent": 58.75,
+                "step": {
+                  "median": 0.0,
+                  "p95": 1.29602,
+                  "max": 2.05832
+                },
+                "travel": 39.79486
+              },
+              "opponent_px": {
+                "hold_percent": 58.75,
+                "step": {
+                  "median": 0.0,
+                  "p95": 8.49593,
+                  "max": 8.49594
+                },
+                "travel": 269.732
+              },
+              "hero_px": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0,
+                  "max": 0.0
+                },
+                "travel": 0.0
+              }
+            },
+            "trace": "forward_plus-air-normal.motion.json",
+            "frozen_frames": null
+          },
+          "after": {
+            "frames": 81,
+            "fps": 144.06,
+            "physics_hz": 59.42,
+            "combat_hz": 59.42,
+            "frame_ms": {
+              "median": 6.9365,
+              "p95": 7.075,
+              "max": 7.153
+            },
+            "transforms": {
+              "hero_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.06958,
+                  "p95": 0.06958,
+                  "max": 0.06958
+                },
+                "travel": 5.27487
+              },
+              "opponent_m": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0,
+                  "max": 0.0
+                },
+                "travel": 0.0
+              },
+              "projectile_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.0625,
+                  "p95": 0.0625,
+                  "max": 0.0625
+                },
+                "travel": 5.0
+              },
+              "camera_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.06958,
+                  "p95": 0.06958,
+                  "max": 0.06958
+                },
+                "travel": 5.27487
+              },
+              "landmark_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 2.73947,
+                  "p95": 2.7395,
+                  "max": 2.7395
+                },
+                "travel": 207.67041
+              },
+              "projectile_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.54001,
+                  "p95": 0.85767,
+                  "max": 1.20706
+                },
+                "travel": 42.38666
+              },
+              "opponent_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 3.53994,
+                  "p95": 3.54,
+                  "max": 3.54001
+                },
+                "travel": 268.35182
+              },
+              "hero_px": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0,
+                  "max": 0.0
+                },
+                "travel": 0.0
+              }
+            },
+            "trace": "forward_plus-air-normal.motion.json",
+            "frozen_frames": {
+              "initial": 19,
+              "final": 30
+            }
+          }
+        },
+        "half": {
+          "equal_authoritative_ticks": 34,
+          "authority_sha256": "cbe86d14ebfc73f1af07a3b458e575250b78ff8baf75ab5b6c49f00e66943d01",
+          "before": {
+            "frames": 163,
+            "fps": 144.02,
+            "physics_hz": 59.56,
+            "combat_hz": 29.34,
+            "frame_ms": {
+              "median": 6.9435,
+              "p95": 7.107,
+              "max": 7.363
+            },
+            "transforms": {
+              "hero_m": {
+                "hold_percent": 79.63,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.167,
+                  "max": 0.167
+                },
+                "travel": 5.302
+              },
+              "opponent_m": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0,
+                  "max": 0.0
+                },
+                "travel": 0.0
+              },
+              "projectile_m": {
+                "hold_percent": 79.63,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.15,
+                  "max": 0.15
+                },
+                "travel": 4.95
+              },
+              "camera_m": {
+                "hold_percent": 79.63,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.167,
+                  "max": 0.167
+                },
+                "travel": 5.302
+              },
+              "landmark_px": {
+                "hold_percent": 79.63,
+                "step": {
+                  "median": 0.0,
+                  "p95": 6.57477,
+                  "max": 6.57477
+                },
+                "travel": 208.73853
+              },
+              "projectile_px": {
+                "hold_percent": 79.63,
+                "step": {
+                  "median": 0.0,
+                  "p95": 1.29602,
+                  "max": 2.05832
+                },
+                "travel": 39.79486
+              },
+              "opponent_px": {
+                "hold_percent": 79.63,
+                "step": {
+                  "median": 0.0,
+                  "p95": 8.4959,
+                  "max": 8.49594
+                },
+                "travel": 269.732
+              },
+              "hero_px": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0,
+                  "max": 0.0
+                },
+                "travel": 0.0
+              }
+            },
+            "trace": "forward_plus-air-half.motion.json",
+            "frozen_frames": null
+          },
+          "after": {
+            "frames": 163,
+            "fps": 144.0,
+            "physics_hz": 59.55,
+            "combat_hz": 29.33,
+            "frame_ms": {
+              "median": 6.9445,
+              "p95": 7.091,
+              "max": 7.47
+            },
+            "transforms": {
+              "hero_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.03479,
+                  "p95": 0.03479,
+                  "max": 0.03479
+                },
+                "travel": 5.35812
+              },
+              "opponent_m": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0,
+                  "max": 0.0
+                },
+                "travel": 0.0
+              },
+              "projectile_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.03125,
+                  "p95": 0.03125,
+                  "max": 0.03229
+                },
+                "travel": 5.06379
+              },
+              "camera_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.03479,
+                  "p95": 0.03479,
+                  "max": 0.03479
+                },
+                "travel": 5.35812
+              },
+              "landmark_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 1.36972,
+                  "p95": 1.36975,
+                  "max": 1.36978
+                },
+                "travel": 210.94791
+              },
+              "projectile_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.26999,
+                  "p95": 0.42883,
+                  "max": 0.60852
+                },
+                "travel": 42.58542
+              },
+              "opponent_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 1.76997,
+                  "p95": 1.77,
+                  "max": 1.77
+                },
+                "travel": 272.587
+              },
+              "hero_px": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0,
+                  "max": 0.0
+                },
+                "travel": 0.0
+              }
+            },
+            "trace": "forward_plus-air-half.motion.json",
+            "frozen_frames": {
+              "initial": 15,
+              "final": 25
+            }
+          }
+        },
+        "quarter": {
+          "equal_authoritative_ticks": 34,
+          "authority_sha256": "cbe86d14ebfc73f1af07a3b458e575250b78ff8baf75ab5b6c49f00e66943d01",
+          "before": {
+            "frames": 327,
+            "fps": 144.0,
+            "physics_hz": 59.63,
+            "combat_hz": 14.58,
+            "frame_ms": {
+              "median": 6.943,
+              "p95": 7.08,
+              "max": 7.358
+            },
+            "transforms": {
+              "hero_m": {
+                "hold_percent": 89.88,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.167,
+                  "max": 0.167
+                },
+                "travel": 5.302
+              },
+              "opponent_m": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0,
+                  "max": 0.0
+                },
+                "travel": 0.0
+              },
+              "projectile_m": {
+                "hold_percent": 89.88,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.15,
+                  "max": 0.15
+                },
+                "travel": 4.95
+              },
+              "camera_m": {
+                "hold_percent": 89.88,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.167,
+                  "max": 0.167
+                },
+                "travel": 5.302
+              },
+              "landmark_px": {
+                "hold_percent": 89.88,
+                "step": {
+                  "median": 0.0,
+                  "p95": 6.57474,
+                  "max": 6.57477
+                },
+                "travel": 208.73853
+              },
+              "projectile_px": {
+                "hold_percent": 89.88,
+                "step": {
+                  "median": 0.0,
+                  "p95": 1.29599,
+                  "max": 2.05832
+                },
+                "travel": 39.79486
+              },
+              "opponent_px": {
+                "hold_percent": 89.88,
+                "step": {
+                  "median": 0.0,
+                  "p95": 8.49589,
+                  "max": 8.49594
+                },
+                "travel": 269.732
+              },
+              "hero_px": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0,
+                  "max": 0.0
+                },
+                "travel": 0.0
+              }
+            },
+            "trace": "forward_plus-air-quarter.motion.json",
+            "frozen_frames": null
+          },
+          "after": {
+            "frames": 327,
+            "fps": 144.0,
+            "physics_hz": 59.63,
+            "combat_hz": 14.58,
+            "frame_ms": {
+              "median": 6.9405,
+              "p95": 7.117,
+              "max": 7.423
+            },
+            "transforms": {
+              "hero_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.0174,
+                  "p95": 0.0174,
+                  "max": 0.01757
+                },
+                "travel": 5.40038
+              },
+              "opponent_m": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0,
+                  "max": 0.0
+                },
+                "travel": 0.0
+              },
+              "projectile_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.01562,
+                  "p95": 0.01562,
+                  "max": 0.01597
+                },
+                "travel": 5.09431
+              },
+              "camera_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.0174,
+                  "p95": 0.0174,
+                  "max": 0.01757
+                },
+                "travel": 5.40038
+              },
+              "landmark_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.68488,
+                  "p95": 0.68488,
+                  "max": 0.6918
+                },
+                "travel": 212.61185
+              },
+              "projectile_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.13501,
+                  "p95": 0.21442,
+                  "max": 0.30176
+                },
+                "travel": 42.61377
+              },
+              "opponent_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.88497,
+                  "p95": 0.88503,
+                  "max": 0.89396
+                },
+                "travel": 274.7371
+              },
+              "hero_px": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0,
+                  "max": 0.0
+                },
+                "travel": 0.0
+              }
+            },
+            "trace": "forward_plus-air-quarter.motion.json",
+            "frozen_frames": {
+              "initial": 15,
+              "final": 24
+            }
+          }
+        }
+      }
+    },
+    "gl_compatibility": {
+      "ground": {
+        "normal": {
+          "equal_authoritative_ticks": 34,
+          "authority_sha256": "1367f53c9f3a96047a5960f56f6bfb4eef7e4c8e0f04c3cc9895b5e0ca66afda",
+          "before": {
+            "frames": 83,
+            "fps": 144.37,
+            "physics_hz": 58.1,
+            "combat_hz": 58.1,
+            "frame_ms": {
+              "median": 6.937,
+              "p95": 7.514,
+              "max": 9.142
+            },
+            "transforms": {
+              "hero_m": {
+                "hold_percent": 59.76,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.07203,
+                  "max": 0.07203
+                },
+                "travel": 2.37646
+              },
+              "opponent_m": {
+                "hold_percent": 59.76,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.03785,
+                  "max": 0.03809
+                },
+                "travel": 1.23905
+              },
+              "projectile_m": {
+                "hold_percent": 59.76,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.15,
+                  "max": 0.15
+                },
+                "travel": 4.95
+              },
+              "camera_m": {
+                "hold_percent": 59.76,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.07203,
+                  "max": 0.07203
+                },
+                "travel": 2.37646
+              },
+              "landmark_px": {
+                "hold_percent": 59.76,
+                "step": {
+                  "median": 0.0,
+                  "p95": 3.07594,
+                  "max": 3.07796
+                },
+                "travel": 101.43783
+              },
+              "projectile_px": {
+                "hold_percent": 59.76,
+                "step": {
+                  "median": 0.0,
+                  "p95": 5.9554,
+                  "max": 5.95717
+                },
+                "travel": 196.29006
+              },
+              "opponent_px": {
+                "hold_percent": 59.76,
+                "step": {
+                  "median": 0.0,
+                  "p95": 3.0655,
+                  "max": 3.11513
+                },
+                "travel": 100.09655
+              },
+              "hero_px": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 6e-05,
+                  "max": 6e-05
+                },
+                "travel": 0.00134
+              }
+            },
+            "trace": "gl_compatibility-ground-normal.motion.json",
+            "frozen_frames": null
+          },
+          "after": {
+            "frames": 82,
+            "fps": 144.06,
+            "physics_hz": 58.69,
+            "combat_hz": 58.69,
+            "frame_ms": {
+              "median": 6.943,
+              "p95": 7.053,
+              "max": 7.13
+            },
+            "transforms": {
+              "hero_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.03,
+                  "p95": 0.03001,
+                  "max": 0.03001
+                },
+                "travel": 2.42984
+              },
+              "opponent_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.01566,
+                  "p95": 0.01584,
+                  "max": 0.01587
+                },
+                "travel": 1.26617
+              },
+              "projectile_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.0625,
+                  "p95": 0.0625,
+                  "max": 0.0625
+                },
+                "travel": 5.06141
+              },
+              "camera_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.03,
+                  "p95": 0.03001,
+                  "max": 0.03001
+                },
+                "travel": 2.42984
+              },
+              "landmark_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 1.28058,
+                  "p95": 1.28217,
+                  "max": 1.28265
+                },
+                "travel": 103.71908
+              },
+              "projectile_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 2.47919,
+                  "p95": 2.48194,
+                  "max": 2.48218
+                },
+                "travel": 200.71638
+              },
+              "opponent_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 1.26577,
+                  "p95": 1.28852,
+                  "max": 1.29988
+                },
+                "travel": 102.50128
+              },
+              "hero_px": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 3e-05,
+                  "max": 6e-05
+                },
+                "travel": 0.00122
+              }
+            },
+            "trace": "gl_compatibility-ground-normal.motion.json",
+            "frozen_frames": {
+              "initial": 14,
+              "final": 25
+            }
+          }
+        },
+        "half": {
+          "equal_authoritative_ticks": 34,
+          "authority_sha256": "1367f53c9f3a96047a5960f56f6bfb4eef7e4c8e0f04c3cc9895b5e0ca66afda",
+          "before": {
+            "frames": 164,
+            "fps": 144.02,
+            "physics_hz": 59.2,
+            "combat_hz": 29.16,
+            "frame_ms": {
+              "median": 6.94,
+              "p95": 7.216,
+              "max": 8.323
+            },
+            "transforms": {
+              "hero_m": {
+                "hold_percent": 79.75,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.07203,
+                  "max": 0.07203
+                },
+                "travel": 2.37646
+              },
+              "opponent_m": {
+                "hold_percent": 79.75,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.03775,
+                  "max": 0.03809
+                },
+                "travel": 1.23905
+              },
+              "projectile_m": {
+                "hold_percent": 79.75,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.15,
+                  "max": 0.15
+                },
+                "travel": 4.95
+              },
+              "camera_m": {
+                "hold_percent": 79.75,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.07203,
+                  "max": 0.07203
+                },
+                "travel": 2.37646
+              },
+              "landmark_px": {
+                "hold_percent": 79.75,
+                "step": {
+                  "median": 0.0,
+                  "p95": 3.07432,
+                  "max": 3.07796
+                },
+                "travel": 101.43783
+              },
+              "projectile_px": {
+                "hold_percent": 79.75,
+                "step": {
+                  "median": 0.0,
+                  "p95": 5.95406,
+                  "max": 5.95717
+                },
+                "travel": 196.29006
+              },
+              "opponent_px": {
+                "hold_percent": 79.75,
+                "step": {
+                  "median": 0.0,
+                  "p95": 3.05093,
+                  "max": 3.11513
+                },
+                "travel": 100.09655
+              },
+              "hero_px": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 6e-05,
+                  "max": 6e-05
+                },
+                "travel": 0.00134
+              }
+            },
+            "trace": "gl_compatibility-ground-half.motion.json",
+            "frozen_frames": null
+          },
+          "after": {
+            "frames": 164,
+            "fps": 144.01,
+            "physics_hz": 59.2,
+            "combat_hz": 29.16,
+            "frame_ms": {
+              "median": 6.945,
+              "p95": 7.016,
+              "max": 7.164
+            },
+            "transforms": {
+              "hero_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.015,
+                  "p95": 0.01501,
+                  "max": 0.01501
+                },
+                "travel": 2.44496
+              },
+              "opponent_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.00783,
+                  "p95": 0.00792,
+                  "max": 0.00794
+                },
+                "travel": 1.27445
+              },
+              "projectile_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.03125,
+                  "p95": 0.03125,
+                  "max": 0.03125
+                },
+                "travel": 5.09279
+              },
+              "camera_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.015,
+                  "p95": 0.01501,
+                  "max": 0.01501
+                },
+                "travel": 2.44496
+              },
+              "landmark_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.64029,
+                  "p95": 0.64117,
+                  "max": 0.64136
+                },
+                "travel": 104.36527
+              },
+              "projectile_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 1.23972,
+                  "p95": 1.24094,
+                  "max": 1.24112
+                },
+                "travel": 201.95679
+              },
+              "opponent_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.63277,
+                  "p95": 0.64414,
+                  "max": 0.6498
+                },
+                "travel": 103.08735
+              },
+              "hero_px": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 3e-05,
+                  "max": 6e-05
+                },
+                "travel": 0.00192
+              }
+            },
+            "trace": "gl_compatibility-ground-half.motion.json",
+            "frozen_frames": {
+              "initial": 13,
+              "final": 30
+            }
+          }
+        },
+        "quarter": {
+          "equal_authoritative_ticks": 34,
+          "authority_sha256": "1367f53c9f3a96047a5960f56f6bfb4eef7e4c8e0f04c3cc9895b5e0ca66afda",
+          "before": {
+            "frames": 325,
+            "fps": 144.0,
+            "physics_hz": 60.0,
+            "combat_hz": 14.67,
+            "frame_ms": {
+              "median": 6.944,
+              "p95": 7.062,
+              "max": 8.374
+            },
+            "transforms": {
+              "hero_m": {
+                "hold_percent": 89.81,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.07201,
+                  "max": 0.07203
+                },
+                "travel": 2.37646
+              },
+              "opponent_m": {
+                "hold_percent": 89.81,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0376,
+                  "max": 0.03809
+                },
+                "travel": 1.23905
+              },
+              "projectile_m": {
+                "hold_percent": 89.81,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.15,
+                  "max": 0.15
+                },
+                "travel": 4.95
+              },
+              "camera_m": {
+                "hold_percent": 89.81,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.07201,
+                  "max": 0.07203
+                },
+                "travel": 2.37646
+              },
+              "landmark_px": {
+                "hold_percent": 89.81,
+                "step": {
+                  "median": 0.0,
+                  "p95": 3.07332,
+                  "max": 3.07796
+                },
+                "travel": 101.43783
+              },
+              "projectile_px": {
+                "hold_percent": 89.81,
+                "step": {
+                  "median": 0.0,
+                  "p95": 5.95119,
+                  "max": 5.95717
+                },
+                "travel": 196.29006
+              },
+              "opponent_px": {
+                "hold_percent": 89.81,
+                "step": {
+                  "median": 0.0,
+                  "p95": 3.03497,
+                  "max": 3.11513
+                },
+                "travel": 100.09655
+              },
+              "hero_px": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 3e-05,
+                  "max": 6e-05
+                },
+                "travel": 0.00134
+              }
+            },
+            "trace": "gl_compatibility-ground-quarter.motion.json",
+            "frozen_frames": null
+          },
+          "after": {
+            "frames": 326,
+            "fps": 143.99,
+            "physics_hz": 59.81,
+            "combat_hz": 14.62,
+            "frame_ms": {
+              "median": 6.943,
+              "p95": 7.081,
+              "max": 8.176
+            },
+            "transforms": {
+              "hero_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.0075,
+                  "p95": 0.0075,
+                  "max": 0.00792
+                },
+                "travel": 2.43886
+              },
+              "opponent_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.00392,
+                  "p95": 0.00396,
+                  "max": 0.00418
+                },
+                "travel": 1.27139
+              },
+              "projectile_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.01562,
+                  "p95": 0.01562,
+                  "max": 0.0165
+                },
+                "travel": 5.08002
+              },
+              "camera_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.0075,
+                  "p95": 0.0075,
+                  "max": 0.00792
+                },
+                "travel": 2.43886
+              },
+              "landmark_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.32016,
+                  "p95": 0.32062,
+                  "max": 0.33798
+                },
+                "travel": 104.1052
+              },
+              "projectile_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.61992,
+                  "p95": 0.62053,
+                  "max": 0.65477
+                },
+                "travel": 201.44823
+              },
+              "opponent_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.31657,
+                  "p95": 0.32244,
+                  "max": 0.33206
+                },
+                "travel": 102.81136
+              },
+              "hero_px": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 3e-05,
+                  "max": 6e-05
+                },
+                "travel": 0.00443
+              }
+            },
+            "trace": "gl_compatibility-ground-quarter.motion.json",
+            "frozen_frames": {
+              "initial": 12,
+              "final": 25
+            }
+          }
+        }
+      },
+      "air": {
+        "normal": {
+          "equal_authoritative_ticks": 34,
+          "authority_sha256": "cbe86d14ebfc73f1af07a3b458e575250b78ff8baf75ab5b6c49f00e66943d01",
+          "before": {
+            "frames": 82,
+            "fps": 144.26,
+            "physics_hz": 58.77,
+            "combat_hz": 58.77,
+            "frame_ms": {
+              "median": 6.93,
+              "p95": 7.062,
+              "max": 7.144
+            },
+            "transforms": {
+              "hero_m": {
+                "hold_percent": 59.26,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.167,
+                  "max": 0.167
+                },
+                "travel": 5.302
+              },
+              "opponent_m": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0,
+                  "max": 0.0
+                },
+                "travel": 0.0
+              },
+              "projectile_m": {
+                "hold_percent": 59.26,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.15,
+                  "max": 0.15
+                },
+                "travel": 4.95
+              },
+              "camera_m": {
+                "hold_percent": 59.26,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.167,
+                  "max": 0.167
+                },
+                "travel": 5.302
+              },
+              "landmark_px": {
+                "hold_percent": 59.26,
+                "step": {
+                  "median": 0.0,
+                  "p95": 6.57477,
+                  "max": 6.57477
+                },
+                "travel": 208.73853
+              },
+              "projectile_px": {
+                "hold_percent": 59.26,
+                "step": {
+                  "median": 0.0,
+                  "p95": 1.29602,
+                  "max": 2.05832
+                },
+                "travel": 39.79486
+              },
+              "opponent_px": {
+                "hold_percent": 59.26,
+                "step": {
+                  "median": 0.0,
+                  "p95": 8.49593,
+                  "max": 8.49594
+                },
+                "travel": 269.732
+              },
+              "hero_px": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0,
+                  "max": 0.0
+                },
+                "travel": 0.0
+              }
+            },
+            "trace": "gl_compatibility-air-normal.motion.json",
+            "frozen_frames": null
+          },
+          "after": {
+            "frames": 81,
+            "fps": 144.05,
+            "physics_hz": 59.42,
+            "combat_hz": 59.42,
+            "frame_ms": {
+              "median": 6.9355,
+              "p95": 7.113,
+              "max": 7.804
+            },
+            "transforms": {
+              "hero_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.06958,
+                  "p95": 0.06958,
+                  "max": 0.07142
+                },
+                "travel": 5.27776
+              },
+              "opponent_m": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0,
+                  "max": 0.0
+                },
+                "travel": 0.0
+              },
+              "projectile_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.0625,
+                  "p95": 0.0625,
+                  "max": 0.06618
+                },
+                "travel": 5.0056
+              },
+              "camera_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.06958,
+                  "p95": 0.06958,
+                  "max": 0.07142
+                },
+                "travel": 5.27776
+              },
+              "landmark_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 2.73947,
+                  "p95": 2.7395,
+                  "max": 2.81192
+                },
+                "travel": 207.78406
+              },
+              "projectile_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.54001,
+                  "p95": 0.85767,
+                  "max": 1.20706
+                },
+                "travel": 42.52667
+              },
+              "opponent_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 3.53994,
+                  "p95": 3.54,
+                  "max": 3.63356
+                },
+                "travel": 268.49861
+              },
+              "hero_px": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0,
+                  "max": 0.0
+                },
+                "travel": 0.0
+              }
+            },
+            "trace": "gl_compatibility-air-normal.motion.json",
+            "frozen_frames": {
+              "initial": 13,
+              "final": 30
+            }
+          }
+        },
+        "half": {
+          "equal_authoritative_ticks": 34,
+          "authority_sha256": "cbe86d14ebfc73f1af07a3b458e575250b78ff8baf75ab5b6c49f00e66943d01",
+          "before": {
+            "frames": 162,
+            "fps": 144.02,
+            "physics_hz": 59.93,
+            "combat_hz": 29.52,
+            "frame_ms": {
+              "median": 6.941,
+              "p95": 7.068,
+              "max": 7.883
+            },
+            "transforms": {
+              "hero_m": {
+                "hold_percent": 79.5,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.167,
+                  "max": 0.167
+                },
+                "travel": 5.302
+              },
+              "opponent_m": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0,
+                  "max": 0.0
+                },
+                "travel": 0.0
+              },
+              "projectile_m": {
+                "hold_percent": 79.5,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.15,
+                  "max": 0.15
+                },
+                "travel": 4.95
+              },
+              "camera_m": {
+                "hold_percent": 79.5,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.167,
+                  "max": 0.167
+                },
+                "travel": 5.302
+              },
+              "landmark_px": {
+                "hold_percent": 79.5,
+                "step": {
+                  "median": 0.0,
+                  "p95": 6.57477,
+                  "max": 6.57477
+                },
+                "travel": 208.73853
+              },
+              "projectile_px": {
+                "hold_percent": 79.5,
+                "step": {
+                  "median": 0.0,
+                  "p95": 1.29602,
+                  "max": 2.05832
+                },
+                "travel": 39.79486
+              },
+              "opponent_px": {
+                "hold_percent": 79.5,
+                "step": {
+                  "median": 0.0,
+                  "p95": 8.4959,
+                  "max": 8.49594
+                },
+                "travel": 269.732
+              },
+              "hero_px": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0,
+                  "max": 0.0
+                },
+                "travel": 0.0
+              }
+            },
+            "trace": "gl_compatibility-air-half.motion.json",
+            "frozen_frames": null
+          },
+          "after": {
+            "frames": 163,
+            "fps": 144.03,
+            "physics_hz": 59.57,
+            "combat_hz": 29.34,
+            "frame_ms": {
+              "median": 6.943,
+              "p95": 7.048,
+              "max": 7.865
+            },
+            "transforms": {
+              "hero_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.03479,
+                  "p95": 0.03479,
+                  "max": 0.03709
+                },
+                "travel": 5.36121
+              },
+              "opponent_m": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0,
+                  "max": 0.0
+                },
+                "travel": 0.0
+              },
+              "projectile_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.03125,
+                  "p95": 0.03125,
+                  "max": 0.03331
+                },
+                "travel": 5.0625
+              },
+              "camera_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.03479,
+                  "p95": 0.03479,
+                  "max": 0.03709
+                },
+                "travel": 5.36121
+              },
+              "landmark_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 1.36972,
+                  "p95": 1.36975,
+                  "max": 1.46014
+                },
+                "travel": 211.06955
+              },
+              "projectile_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.26999,
+                  "p95": 0.42883,
+                  "max": 0.60355
+                },
+                "travel": 42.45358
+              },
+              "opponent_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 1.76997,
+                  "p95": 1.77,
+                  "max": 1.8868
+                },
+                "travel": 272.74415
+              },
+              "hero_px": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0,
+                  "max": 0.0
+                },
+                "travel": 0.0
+              }
+            },
+            "trace": "gl_compatibility-air-half.motion.json",
+            "frozen_frames": {
+              "initial": 15,
+              "final": 31
+            }
+          }
+        },
+        "quarter": {
+          "equal_authoritative_ticks": 34,
+          "authority_sha256": "cbe86d14ebfc73f1af07a3b458e575250b78ff8baf75ab5b6c49f00e66943d01",
+          "before": {
+            "frames": 326,
+            "fps": 144.0,
+            "physics_hz": 59.81,
+            "combat_hz": 14.62,
+            "frame_ms": {
+              "median": 6.944,
+              "p95": 7.053,
+              "max": 7.29
+            },
+            "transforms": {
+              "hero_m": {
+                "hold_percent": 89.85,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.167,
+                  "max": 0.167
+                },
+                "travel": 5.302
+              },
+              "opponent_m": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0,
+                  "max": 0.0
+                },
+                "travel": 0.0
+              },
+              "projectile_m": {
+                "hold_percent": 89.85,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.15,
+                  "max": 0.15
+                },
+                "travel": 4.95
+              },
+              "camera_m": {
+                "hold_percent": 89.85,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.167,
+                  "max": 0.167
+                },
+                "travel": 5.302
+              },
+              "landmark_px": {
+                "hold_percent": 89.85,
+                "step": {
+                  "median": 0.0,
+                  "p95": 6.57474,
+                  "max": 6.57477
+                },
+                "travel": 208.73853
+              },
+              "projectile_px": {
+                "hold_percent": 89.85,
+                "step": {
+                  "median": 0.0,
+                  "p95": 1.29599,
+                  "max": 2.05832
+                },
+                "travel": 39.79486
+              },
+              "opponent_px": {
+                "hold_percent": 89.85,
+                "step": {
+                  "median": 0.0,
+                  "p95": 8.49589,
+                  "max": 8.49594
+                },
+                "travel": 269.732
+              },
+              "hero_px": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0,
+                  "max": 0.0
+                },
+                "travel": 0.0
+              }
+            },
+            "trace": "gl_compatibility-air-quarter.motion.json",
+            "frozen_frames": null
+          },
+          "after": {
+            "frames": 327,
+            "fps": 144.0,
+            "physics_hz": 59.63,
+            "combat_hz": 14.58,
+            "frame_ms": {
+              "median": 6.944,
+              "p95": 7.046,
+              "max": 8.026
+            },
+            "transforms": {
+              "hero_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.0174,
+                  "p95": 0.0174,
+                  "max": 0.0174
+                },
+                "travel": 5.39943
+              },
+              "opponent_m": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0,
+                  "max": 0.0
+                },
+                "travel": 0.0
+              },
+              "projectile_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.01562,
+                  "p95": 0.01562,
+                  "max": 0.01563
+                },
+                "travel": 5.09371
+              },
+              "camera_m": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.0174,
+                  "p95": 0.0174,
+                  "max": 0.0174
+                },
+                "travel": 5.39943
+              },
+              "landmark_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.68488,
+                  "p95": 0.68488,
+                  "max": 0.68491
+                },
+                "travel": 212.57419
+              },
+              "projectile_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.13501,
+                  "p95": 0.21442,
+                  "max": 0.30176
+                },
+                "travel": 42.616
+              },
+              "opponent_px": {
+                "hold_percent": 0.0,
+                "step": {
+                  "median": 0.88497,
+                  "p95": 0.88503,
+                  "max": 0.88503
+                },
+                "travel": 274.68843
+              },
+              "hero_px": {
+                "hold_percent": 100.0,
+                "step": {
+                  "median": 0.0,
+                  "p95": 0.0,
+                  "max": 0.0
+                },
+                "travel": 0.0
+              }
+            },
+            "trace": "gl_compatibility-air-quarter.motion.json",
+            "frozen_frames": {
+              "initial": 14,
+              "final": 31
+            }
+          }
+        }
+      }
+    }
+  }
+}
