@@ -1,7 +1,7 @@
 #requires -Version 7.0
 [CmdletBinding()]
 param(
-    [ValidateSet('Demo','Test','Smoke','Verify')][string]$Task = 'Demo',
+    [ValidateSet('Demo','Test','Smoke','Motion','Verify')][string]$Task = 'Demo',
     [ValidateSet('qi','foundation','core','soul')][string]$Rank = 'qi',
     [ValidatePattern('^[a-zA-Z0-9_-]{1,64}$')][string]$Campaign,
     [string]$Python = 'python'
@@ -25,7 +25,7 @@ function Run-Phase($phase, $task) {
 
 if (!(Test-Path $engine)) { Run-Phase p0 Setup }
 if ($Task -eq 'Verify') { Run-Phase p3 Verify }
-if ($Task -in 'Demo','Test','Smoke') {
+if ($Task -in 'Demo','Test','Smoke','Motion') {
     Check 'p4-import' '' @($engine,'--headless','--path',$game,'--import')
 }
 if ($Task -eq 'Demo') {
@@ -37,9 +37,14 @@ if ($Task -eq 'Demo') {
 if ($Task -in 'Test','Verify') {
     Check 'p4-rules' 'P4_RULE_PASS' @($engine,'--headless','--path',$game,'--script','res://tests/combat_tests.gd')
 }
+if ($Task -in 'Smoke','Motion') { Run-Phase p0 Export }
 if ($Task -in 'Smoke','Verify') {
-    if ($Task -eq 'Smoke') { Run-Phase p0 Export }
     & $Python "$PSScriptRoot/verify_combat_ui.py" --godot $engine --game $game --export $exe --output $out
     if ($LASTEXITCODE) { throw 'Windows gameplay verification failed' }
+}
+if ($Task -in 'Motion','Verify') {
+    $motionOut = Join-Path $out ('p4-motion-' + (Get-Date -Format 'yyyyMMdd-HHmmss-fff'))
+    & $Python "$PSScriptRoot/verify_p4_motion.py" --godot $engine --game $game --export $exe --output $motionOut
+    if ($LASTEXITCODE) { throw 'Windows combat motion verification failed' }
 }
 if ($Task -eq 'Verify') { Write-Output 'P4_VERIFY_PASS' }

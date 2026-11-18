@@ -8,6 +8,8 @@ var player: SedgePlayer
 var land: SedgeLandscape
 var stage := Node3D.new()
 var geometry: CombatGeometry
+var motion := CombatMotion.new()
+var camera_height := 0.0
 var target := ""
 var selection := ""
 var aim := Vector3.INF
@@ -86,6 +88,12 @@ func _ready() -> void:
 	player.collision_mask = 3
 	player.arm.spring_length = 5.7
 	player.arm.collision_mask = 1
+	# The collider is authoritative. Only the model and follow rig move at draw rate.
+	camera_height = player.pivot.position.y
+	player.actor.reparent(stage, false)
+	player.pivot.reparent(stage, false)
+	var camera := get_viewport().get_camera_3d()
+	camera.position.z = player.arm.spring_length
 	build_ui()
 	load_scene()
 	if exists:
@@ -149,7 +157,9 @@ func load_scene() -> void:
 		land.add_child(access)
 		world_meshes["passage"] = access
 		land.solid(P4Content.PASSAGE + Vector3(0, 0.7, -1), Vector3(2.5, 1.5, 0.5), access_marker_block())
-	project()
+	motion.reset(c.tick, c.credit)
+	project(true)
+	render_motion(0.0)
 	load_usec = Time.get_ticks_usec() - before
 
 func access_marker_block() -> Node3D:
@@ -173,8 +183,10 @@ func add_opponent(id: String, a: Dictionary) -> void:
 	collider.position.y = 0.72
 	body.add_child(collider)
 	geometry.bodies[id] = body
+	var anchor := Node3D.new()
+	land.add_child(anchor)
 	var model := Node3D.new()
-	body.add_child(model)
+	anchor.add_child(model)
 	var size_factor := 1.3 if id == P4Content.HORNED else 0.95
 	var mesh := land.shape(Vector3(0, 0.68, 0), Vector3(1.0, 1.21, 1.33) * size_factor, COLORS[id], true)
 	mesh.rotation.z = 0.32
@@ -187,8 +199,8 @@ func add_opponent(id: String, a: Dictionary) -> void:
 	label.font_size = 46
 	label.pixel_size = 0.0038
 	label.outline_size = 12
-	body.add_child(label)
-	world_meshes[id] = {"model":model, "label":label}
+	anchor.add_child(label)
+	world_meshes[id] = {"anchor":anchor, "model":model, "label":label}
 
 func translucent(colour: Color) -> StandardMaterial3D:
 	var material := StandardMaterial3D.new()
@@ -213,20 +225,18 @@ func sphere(parent: Node3D, colour: Color, radius: float) -> MeshInstance3D:
 func in_court() -> bool:
 	return session.state.exploration.place == SedgeWorld.YARD
 
-func project() -> void:
+func project(capture_pose: bool, snap_hero: bool = false) -> void:
 	var c := session.state.combat
 	var a: Dictionary = c.actors[HERO]
-	player.position = CombatWorld.pos(a)
-	var facing := CombatState.vec(a.face)
-	player.actor.rotation.y = atan2(facing.x, facing.z)
+	if capture_pose:
+		player.position = CombatWorld.pos(a)
+		var facing := CombatState.vec(a.face)
+		motion.capture(HERO, player.position, atan2(facing.x, facing.z), snap_hero)
 	var speed := Vector2(a.velocity[0], a.velocity[2]).length() / 1000.0
 	var clip := "idle" if speed < 0.3 or a.flight != "ground" else ("sprint" if speed > 5 else "walk")
 	SedgeLandscape.play_clip(player.actor, clip, perception_rate())
 	ward.visible = a.shield > 0
-	ward.position = CombatWorld.chest(a)
 	board.visible = a.flight == "artifact"
-	board.position = player.position - Vector3.UP * 0.03
-	board.rotation.y = atan2(facing.x, facing.z)
 	if world_meshes.has("barrier"):
 		var barrier: Node3D = world_meshes.barrier
 		var won: bool = c.actors[P4Content.HORNED].hp == 0
@@ -250,10 +260,11 @@ func project() -> void:
 		if id == HERO:
 			continue
 		var body := geometry.bodies[id]
-		body.position = CombatWorld.pos(actor)
+		if capture_pose:
+			body.position = CombatWorld.pos(actor)
+			motion.capture(id, body.position, atan2(-float(actor.face[0]), -float(actor.face[2])))
 		body.collision_layer = 2 if actor.hp > 0 else 0
 		var visual: Dictionary = world_meshes[id]
-		visual.model.rotation.y = atan2(-float(actor.face[0]), -float(actor.face[2]))
 		visual.model.scale.y = 1.0 if actor.hp > 0 else 0.25
 		visual.model.visible = actor.hp > 0 or actor.loot != ""
 		visual.label.visible = actor.hp > 0 or actor.loot in ["intact", "damaged"]
@@ -266,12 +277,33 @@ func project() -> void:
 		if not shot_meshes.has(shot.id):
 			var tint := Color("#f7a66f") if shot.owner != HERO else (Color("#a9d2ff") if shot.key == "seek" else Color("#fff3ae"))
 			shot_meshes[shot.id] = sphere(land, tint, 0.17)
-		shot_meshes[shot.id].position = CombatState.vec(shot.pos)
+		if capture_pose:
+			motion.capture(shot.id, CombatState.vec(shot.pos))
 		active[shot.id] = true
 	for sid: int in shot_meshes.keys():
 		if not active.has(sid):
+			shot_meshes[sid].hide()
 			shot_meshes[sid].queue_free()
 			shot_meshes.erase(sid)
+			motion.erase(sid)
+
+func render_motion(fraction: float) -> void:
+	var ticks_back := motion.lookback(fraction)
+	var hero_pose := motion.pose(HERO, ticks_back)
+	apply_pose(player.actor, hero_pose)
+	player.pivot.position = player.actor.position + Vector3.UP * camera_height
+	ward.position = player.actor.position + Vector3.UP * 0.78
+	board.position = player.actor.position - Vector3.UP * 0.03
+	board.rotation.y = hero_pose.w
+	for id: String in volumes:
+		if id != HERO:
+			apply_pose(world_meshes[id].anchor, motion.pose(id, ticks_back))
+	for sid: int in shot_meshes:
+		apply_pose(shot_meshes[sid], motion.pose(sid, ticks_back))
+
+static func apply_pose(node: Node3D, pose: Vector4) -> void:
+	node.position = Vector3(pose.x, pose.y, pose.z)
+	node.rotation.y = pose.w
 
 func show_volume(node: MeshInstance3D, card: Dictionary, center: Vector3) -> void:
 	var height: float = card.get("height", card.radius * 2.0)
@@ -319,8 +351,13 @@ func _physics_process(delta: float) -> void:
 	click = false
 	if get_tree().paused:
 		return
+	var c := session.state.combat
+	var old_tick: int = c.tick
+	var action: Dictionary = c.actors[HERO].action
+	var blink_end: Array = action.center if action.key == "blink" and action.wind == 1 else []
 	var important := CombatWorld.advance(session.state, geometry, held, Input.is_action_pressed("sprint"))
-	project()
+	motion.advance_clock(c.tick, c.credit)
+	project(c.tick != old_tick, blink_end == c.actors[HERO].pos)
 	checkpoint_seconds += delta
 	if important or checkpoint_seconds >= 5.0:
 		checkpoint()
@@ -334,6 +371,8 @@ func _physics_process(delta: float) -> void:
 func _process(delta: float) -> void:
 	if session == null or land == null:
 		return
+	if not get_tree().paused:
+		render_motion(Engine.get_physics_interpolation_fraction())
 	render_hud()
 	if probe != "":
 		probe_elapsed += delta
@@ -489,7 +528,8 @@ func pick(at: Vector2) -> String:
 	var closest := 58.0
 	var result := ""
 	for id: String in visible_targets():
-		var point := CombatWorld.chest(session.state.combat.actors[id])
+		var model: Node3D = world_meshes[id].anchor
+		var point := model.global_position + Vector3.UP * 0.78
 		if not camera.is_position_behind(point):
 			var distance := camera.unproject_position(point).distance_to(at)
 			if distance < closest:

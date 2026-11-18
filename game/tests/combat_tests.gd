@@ -22,6 +22,7 @@ class WallSpace extends CombatSpace:
 
 func _initialize() -> void:
 	clock_and_flow()
+	presentation_clock()
 	commands()
 	forewarning()
 	space_and_protection()
@@ -48,6 +49,28 @@ func place(s: CampaignState, id: String, at: Vector3) -> void:
 func advance(s: CampaignState, ticks: int, dir: Vector3 = Vector3.ZERO, geometry: CombatSpace = space) -> void:
 	for i in ticks:
 		CombatWorld.advance(s, geometry, dir)
+
+func presentation_clock() -> void:
+	var motion := CombatMotion.new()
+	motion.reset(0, 0)
+	motion.capture(H, Vector3.ZERO)
+	motion.advance_clock(1, 0)
+	motion.capture(H, Vector3.RIGHT)
+	motion.advance_clock(1, 1)
+	expect(is_equal_approx(motion.pose(H, motion.lookback(0.5)).x, 0.125), "Interpolate over the entire slow combat interval")
+	motion.advance_clock(1, 2)
+	var before_switch := motion.pose(H, motion.lookback(1.0))
+	# Switch off R with two units of accumulated credit. The next host tick
+	# crosses a combat boundary and still has two units left.
+	motion.advance_clock(2, 2)
+	motion.capture(H, Vector3.RIGHT * 2)
+	expect(motion.pose(H, motion.lookback(0.0)) == before_switch, "Changing pace with residual credit preserves visual continuity")
+	expect(is_equal_approx(motion.pose(H, motion.lookback(0.5)).x, 1.0), "Blend only between completed poses across a rate change")
+	motion.capture(H, Vector3.RIGHT * 6, 0.0, true)
+	expect(motion.pose(H, motion.lookback(0.75)).x == 6.0, "Blink presents the destination without a swept visual path")
+	motion.reset(90, 3)
+	motion.capture(H, Vector3.RIGHT * 11)
+	expect(motion.pose(H, motion.lookback(0.9)).x == 11.0, "Restored world with residual credit starts at the saved pose")
 
 func clock_and_flow() -> void:
 	var normal := fresh("core")
