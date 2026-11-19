@@ -121,6 +121,18 @@ static func craft(h) -> void:
 static func start(h) -> void:
 	await h.get_tree().create_timer(0.3).timeout
 	var s: SliceSession = h.integrated
+	if "--ending" in OS.get_cmdline_user_args():
+		if s.state.mode=="body_dead":
+			await click(h,"Начать перенос души")
+			await click(h,"Отменить")
+			if not h.verify_scene(s.state.day==WorldCalendar.ordinal(97) and s.state.running()==null,"Cancel known ending"): return
+			await click(h,"Начать перенос души")
+			await click(h,"Принять известный исход")
+			await click(h,"Завершить этап")
+		if h.verify_scene(s.state.mode=="ended" and s.state.day==WorldCalendar.ordinal(100) and s.state.bodies.size()==1 and "Высшая ступень" in h.column.get_child(1).text,"Terminal identity, limits and summary"):
+			print("P5_ENDING_PASS")
+			h.leave()
+		return
 	if s.state.mode=="body_dead":
 		if s.state.running()==null:
 			await choice(h,"Начать перенос души",false)

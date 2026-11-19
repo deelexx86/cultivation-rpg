@@ -739,7 +739,7 @@ func pause(view: String) -> void:
 			add_button(pause_box, "Удержать канат и продолжить", finish_trip)
 		"rest":
 			title.text = "Отдых на берегу"
-			text.text = "Здоровье %d/100. Доз лекарства: %d.\nДля восстановления Ци используйте медитацию (M)." % [a.hp, c.medicine]
+			text.text = "Здоровье %d/%d. Доз лекарства: %d.\nДля восстановления Ци используйте медитацию (M)." % [a.hp,SliceWorld.vitals(session.state).hp,c.medicine]
 			if a.hp < SliceWorld.vitals(session.state).hp:
 				add_button(pause_box, "Лечение +50 здоровья · 7 дней", recovery.bind(false, false))
 				if c.medicine > 0:

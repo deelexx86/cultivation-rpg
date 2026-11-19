@@ -43,6 +43,11 @@ if ($Task -in 'Verify','Smoke') {
             Check 'p5-second-life' 'P5_REBIRTH_PASS' $argsUi
         }
     }
+    $ending = "qa-ending-$tag"
+    Check 'p5-ending-fixture' 'P5_ENDING_FIXTURE' @($engine,'--headless','--path',$game,'--script','res://tests/slice_ending_fixture.gd','--',$ending)
+    $terminal = @($exe,'--rendering-method','gl_compatibility','--','--p5-tour','--ending',"--campaign=$ending")
+    Check 'p5-ending' 'P5_ENDING_PASS' $terminal
+    Check 'p5-ending-reload' 'P5_ENDING_PASS' $terminal
     Write-Output 'P5_EXPORT_PASS'
 }
 if ($Task -eq 'Verify') { Write-Output 'P5_VERIFY_PASS' }

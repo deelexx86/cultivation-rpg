@@ -127,7 +127,7 @@ func refresh() -> void:
 	var name_text := "Торговый двор" if s.exploration.place == "court" else "Дальний берег"
 	heading.text = "Белая осока   /   %s    ·    %s" % [name_text, WorldCalendar.label(s.day)]
 	if p3:
-		heading.text += "\nP3 · Камни: %d  ·  Душа: %d/%d  ·  Тело: %d/%d" % [s.materials.wallet,WorldCalendar.age_years(s.soul.born,s.day),s.soul.limit_years,WorldCalendar.age_years(s.body().born,s.day),s.body().limit_years]
+		heading.text += "\nP3 · Камни: %d  ·  Душа: %d/%d  ·  Тело: %d/%d" % [s.materials.wallet,WorldCalendar.age_years(s.soul.born,s.day),s.soul.limit_years,WorldCalendar.age_years(s.body().born,s.day if s.body().alive else s.body().died),s.body().limit_years]
 		if integrated != null: heading.text = heading.text.replace("P3 · ",SliceWorld.NAMES[SliceWorld.STAGES.find(s.body().milestone)]+" · ")
 		player.load_factor = 0.55 if MaterialWorld.weight(s) > int(P3Content.data().carry_grams) else 1.0
 		if player.load_factor < 1.0: heading.text += " · Перегрузка"

@@ -217,6 +217,9 @@ func advance(days: int) -> void:
 		scene.failure()
 		return
 	scene.refresh()
+	if not state().slice.is_empty() and state().mode != "active":
+		scene.journey_ui.main()
+		return
 	if state().running() != null: work()
 	else:
 		scene.land.sync(state())

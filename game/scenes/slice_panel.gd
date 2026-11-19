@@ -35,6 +35,15 @@ func main() -> void:
 	if p.unstable: text += "\nНестабильная Ци: %d · распад %s." % [p.unstable,WorldCalendar.label(p.decay)]
 	if s.mode == "ended":
 		title = "Путь души завершён"
+		var peak := 0
+		for i in SliceWorld.STAGES.size():
+			if s.soul.first_milestones.has(SliceWorld.STAGES[i]): peak = i
+		text = "Срок души исчерпан. Прожито %d лет, тел в истории: %d.\nВысшая ступень: %s." % [WorldCalendar.age_years(s.soul.born,s.day),s.bodies.size(),SliceWorld.NAMES[peak]]
+		for i in range(1,peak+1):
+			if s.soul.first_milestones.has(SliceWorld.STAGES[i]):
+				text += "\n%s · %s" % [SliceWorld.NAMES[i],WorldCalendar.label(s.soul.first_milestones[SliceWorld.STAGES[i]])]
+		text += "\nОсвоено умений: %d. Записей об открытиях и встречах: %d." % [s.soul.mastery.size(),s.exploration.notes.size()]
+		opts["К списку кампаний"] = campaigns
 	elif a != null and a.kind in ["slice","transfer"]:
 		title = "Перенос души" if a.kind == "transfer" else "Уединение"
 		text += "\nПройдено %d из %d дней. Окончание %s." % [a.progress,a.duration,WorldCalendar.label(s.day+a.duration-a.progress)]
@@ -77,6 +86,13 @@ func main() -> void:
 		opts["Путевой журнал"] = host.journal
 	opts["Сохранить и выйти"] = host.leave
 	host.show_panel(title,text,opts)
+
+func campaigns() -> void:
+	if not host.session.save():
+		host.failure()
+		return
+	SliceSession.current = null
+	host.get_tree().change_scene_to_file.call_deferred("res://scenes/foundation.tscn")
 
 func enter_ravine() -> void:
 	host.show_panel("Тропа к водосбросу","Внизу обитают молодой и рогатый камнееды. Короткий выход может обвалиться. Безопасная площадка позади вас позволяет вернуться через меню паузы.",{"Войти в ущелье":switch_ravine})
