@@ -1,10 +1,11 @@
 class_name SliceWorld
 extends RefCounted
 ## VS-DEBUG-01 authored prototype. Calendar work always uses Simulation boundaries.
+const STEPS := Vector3(4,0,-1)
 const SHOP := {"lo.ward":{"kind":"ward","price":6,"count":2}, "lo.medicine":{"kind":"medicine","price":3,"count":2}}
 const STAGES := ["initial","middle","late","perfect","foundation"]
 const NAMES := ["Ранняя Ци","Средняя Ци","Поздняя Ци","Великое Совершенство Ци","Раннее Основание"]
-const YEARS := [19,4,4]
+const YEARS := [19,4,3]
 const LIMITS := [100,115,130,150,200]
 
 static func fresh(id: String, seed_key: String) -> CampaignState:
@@ -92,7 +93,7 @@ static func release(s: CampaignState) -> void:
 	s.slice.load = false
 	s.slice.aligned = false
 
-static func death(s: CampaignState) -> void:
+static func death(s: CampaignState,reason: String) -> void:
 	var old := s.body().id
 	var grave := "grave."+old
 	release(s)
@@ -111,6 +112,7 @@ static func death(s: CampaignState) -> void:
 	s.slice.unstable = 0
 	s.slice.decay = 0
 	s.slice.pool = false
+	s.slice.result = "Носитель погиб. "+("Достигнут предел тела." if reason == "body_expired" else "Перегрузка в камере." if reason == "chamber" else "Смертельный удар у водосброса.")
 	s.combat.artifact = false
 	sync_consumables(s)
 	MaterialWorld.settle(s)
@@ -123,8 +125,7 @@ static func rebirth(s: CampaignState) -> void:
 	s.active_body += 1
 	s.mode = "active"
 	var key := "carrier."+body.id
-	var cold := (s.seed_value+":"+key).sha256_text().left(8).hex_to_int()%2
-	s.outcomes[key] = cold
+	var cold: int = s.outcomes[key]
 	s.slice.carrier = "cold" if cold else "warm"
 	s.slice.sensitive = false
 	s.slice.area = "village"
@@ -143,7 +144,7 @@ static func rebirth(s: CampaignState) -> void:
 		var a: Dictionary = s.combat.actors[id]
 		a.alert = false
 		a.action = CombatState.action()
-	s.slice.result = "Новое тело. Вы помните прежние места. Осмотрите тайник у мастерской."
+	s.slice.result = "Вы очнулись у знакомой мастерской. Прежняя ступень полёта утрачена. К востоку от навеса видны старые ступени. Вы помните путь к тайнику." if s.slice.buried else "Вы очнулись у знакомой мастерской. Проверьте старую тропу или вернитесь к практике на дальнем берегу."
 	s.record("reborn:"+body.id)
 
 static func cache(s: CampaignState, deposit: bool) -> String:
@@ -166,6 +167,7 @@ static func cache(s: CampaignState, deposit: bool) -> String:
 		s.materials.wallet -= 24
 		p.result = "Карта тайника сохранена. Восемь камней снаружи, шестнадцать и имущество внутри."
 	else:
+		if s.active_body>0 and not s.known.has("path."+s.body().id): return "Сначала сверьте старые ступени к востоку от мастерской с прежней картой."
 		if p.inner+p.outer == 0: return "В тайнике ничего нет."
 		for row: Dictionary in s.materials.items:
 			if row.holder == "vault":
@@ -185,7 +187,12 @@ static func start_time(s: CampaignState, cmd: String, years: int, fatal: bool) -
 
 static func apply(s: CampaignState,cmd: String,fatal: bool = false) -> String:
 	if s.slice.is_empty() or MaterialWorld.occupied(s) or s.mode == "ended": return "Сначала завершите текущее действие."
-	if cmd == "transfer" and s.mode == "body_dead": return start_time(s,cmd,5,fatal)
+	if cmd == "transfer" and s.mode == "body_dead":
+		var result := start_time(s,cmd,5,fatal)
+		if result == "":
+			var key := "carrier.body.%d" % (s.bodies.size()+1)
+			s.outcomes[key] = (s.seed_value+":"+key).sha256_text().left(8).hex_to_int()%2
+		return result
 	if s.mode != "active": return "Это тело погибло."
 	var p := s.slice
 	var stage := STAGES.find(s.body().milestone)
@@ -197,6 +204,11 @@ static func apply(s: CampaignState,cmd: String,fatal: bool = false) -> String:
 			if phase != "": return "Вы заняты в камере."
 			var result := cache(s,cmd=="bury")
 			if result != "": return result
+		"survey":
+			var pos := Vector2(s.exploration.x,s.exploration.z)/100.0
+			if phase!="" or s.active_body==0 or s.exploration.place!=SedgeWorld.YARD or pos.distance_to(Vector2(STEPS.x,STEPS.z))>2.85: return "Нужно осмотреть старые ступени на месте."
+			s.known["path."+s.body().id] = s.day
+			p.result = "Ступени осыпались. По знакомой кладке вы нашли пеший обход к мастерской. Теперь можно проверить тайник." if p.buried else "Вы нашли пеший обход к мастерской и переправе. Можно начать практику, даже без оставленного тайника."
 		"board":
 			if phase != "" or s.exploration.place != SedgeWorld.YARD or not s.exploration.gate or s.flags.has("hall.board"): return "В зале больше нет полётной доски."
 			MaterialWorld.add_item(s,"flight_board","hall")
@@ -207,16 +219,24 @@ static func apply(s: CampaignState,cmd: String,fatal: bool = false) -> String:
 			if p.sensitive or not MaterialWorld.at_workshop(s) or not s.person(MaterialWorld.MENTOR).alive or phase != "": return "Практика у живого наставника недоступна."
 			if not charge(s,4): return "Нужны четыре камня."
 			years = 2
-		"gather","minor","risk_minor","begin":
+		"gather","minor","risk_minor","steady","begin":
 			if phase != "" or s.exploration.place != SedgeWorld.BANK: return "Нужна свободная камера на дальнем берегу."
-			if cmd == "gather":
+			if cmd == "steady":
+				if not s.flags.has("unsteady."+s.body().id): return "Поток уже устойчив."
+				years = 2
+			elif cmd == "gather":
 				if stage >= 4 or p.pool: return "Накопление уже заполнено."
 				years = YEARS[stage] if stage < 3 else 1
 			elif cmd != "begin":
+				if s.flags.has("unsteady."+s.body().id): return "Для новой попытки нужны два года восстановления."
 				if stage >= 3 or not p.pool: return "Нужно полное накопление текущей подстадии."
+				if cmd == "risk_minor" or s.flags.has("retry."+s.body().id):
+					if not charge(s,1): return "Для этой попытки нужен свободный камень."
 				years = 1
 			else:
 				if stage != 3 or not p.pool or s.materials.method == "" or p.unstable > 0 or s.combat.actors.hero.injury: return "Нужны Совершенство, полное накопление, устойчивое тело и подготовленные средства."
+				var earliest := WorldCalendar.add_years(s.day,2 if s.materials.method=="condense" else 5)
+				if earliest >= mini(s.body_expiry(),s.soul_expiry()) and not fatal: return "За срок попытки будет достигнут предел жизни. Требуется отдельное подтверждение."
 				p.method = s.materials.method
 				for row: Dictionary in s.materials.items:
 					if row.reserved == MaterialWorld.PLAN: row.reserved = "chamber"
@@ -250,6 +270,7 @@ static func apply(s: CampaignState,cmd: String,fatal: bool = false) -> String:
 			else: p.phase = "final"
 		"finish","extend","force","unstable":
 			if phase != "final": return "Закрепление ещё не началось."
+			if smooth and s.outcomes.get("critical.%d"%p.attempt,0)==1: return "Контур распадается. Требуется контролируемое прекращение."
 			if cmd == "finish" and p.load: return "Осталась нагрузка."
 			if cmd == "extend" and (not smooth or not p.load): return "Продление здесь неприменимо."
 			if cmd in ["force","unstable"] and not p.load: return "Контур устойчив."
@@ -277,30 +298,41 @@ static func completed(s: CampaignState,a: CampaignState.Action) -> void:
 		"sensitivity":
 			p.sensitive = true
 			p.result = "Чувствительность тела развита. Знакомые операции снова доступны."
+		"steady":
+			s.flags.erase("unsteady."+s.body().id)
+			s.flags["retry."+s.body().id] = "yes"
+			p.result = "Поток восстановлен. Накопление сохранено; повторная попытка требует одного камня."
 		"gather":
 			p.pool = true
 			p.result = "Накопление заполнено."
 		"minor":
+			s.flags.erase("retry."+s.body().id)
 			Simulation.milestone(s,STAGES[stage+1],LIMITS[stage+1],LIMITS[stage+1])
-			p.pool = stage+1 == 3
+			p.pool = false
 			p.result = "Достигнута ступень: "+NAMES[stage+1]
 		"risk_minor":
+			s.flags.erase("retry."+s.body().id)
 			var key := "minor."+a.id
 			s.outcomes[key] = (s.seed_value+key).sha256_text().left(8).hex_to_int()%2
 			if s.outcomes[key] == 1:
 				Simulation.milestone(s,STAGES[stage+1],LIMITS[stage+1],LIMITS[stage+1])
-				p.pool = stage+1 == 3
+				p.pool = false
 				p.result = "Малый переход завершён."
-			else: p.result = "Малый переход сорван. Год прошёл, накопление и понимание сохранены."
+			else:
+				s.flags["unsteady."+s.body().id] = "yes"
+				p.result = "Малый переход сорван. Год прошёл, накопление сохранено. Потоку нужны два года восстановления."
 		"infuse":
 			p.phase = "wave"
 			var key := "wave.%d"%p.attempt
 			s.outcomes[key] = (s.seed_value+key).sha256_text().left(8).hex_to_int()%2
 			if s.seed_value == "vs_smooth_no_overload": s.outcomes[key] = 0
+			var critical := (s.seed_value+":"+key+":critical").sha256_text().left(8).hex_to_int()%16==0
+			s.outcomes["critical.%d"%p.attempt] = int(p.method.begins_with("smooth") and critical and s.seed_value!="vs_smooth_no_overload")
 			p.result = "Контур дрожит. Можно вмешаться или сохранить резерв."
 		"align","endure","reserve":
 			p.phase = "final"
 			p.result = "Нагрузка сохраняется." if p.load else "Контур устойчив и готов к закреплению."
+			if s.outcomes.get("critical.%d"%p.attempt,0)==1: p.result = "Предельная нестабильность. Камеру нужно покинуть, пока остановка безопасна."
 		"finish","extend":
 			Simulation.milestone(s,"foundation",200,200)
 			s.combat.rank = "foundation"
@@ -334,6 +366,12 @@ static func problems(s: CampaignState) -> PackedStringArray:
 			locked_items += 1
 			if row.kind == "quartz": quartz += 1
 			if row.kind in ["root","pill","stabilizer"]: ingredients += 1
+	var running := s.running()
+	if p.phase in ["infusing","settling","finishing"] and (running==null or running.kind!="slice") and s.mode!="ended": errors.append("Missing chamber process")
+	if running!=null and running.kind=="transfer" and (s.mode!="body_dead" or not s.outcomes.has("carrier.body.%d"%(s.bodies.size()+1))): errors.append("Missing selected carrier")
+	if p.phase != "" and (s.exploration.place!=SedgeWorld.BANK or s.body().milestone!="perfect" or not p.pool): errors.append("Invalid chamber actor or place")
+	if p.robbed and (p.outer!=0 or p.raid>s.day): errors.append("Inconsistent cache raid")
+	if p.buried != (p.raid>=0) or (not p.buried and p.inner+p.outer>0): errors.append("Missing cache provenance")
 	if p.phase == "" and locked_items != 0: errors.append("Released chamber retains materials")
 	if p.phase != "":
 		var smooth: bool = p.method.begins_with("smooth")

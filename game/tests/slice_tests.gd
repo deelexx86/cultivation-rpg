@@ -31,6 +31,18 @@ func _initialize() -> void:
 				r.state = StateCodec.clone(inheritance)
 				r.state.seed_value = seed_key
 				second_life(r)
+		if method=="condense":
+			r.state = StateCodec.clone(wave)
+			r.state.outcomes["wave.1"] = 0
+			var started := entry.day
+			r.step("endure")
+			r.step("finish")
+			must(r.state.day==WorldCalendar.add_years(started,2) and r.state.soul.limit_years==200,"two-year stable condensation")
+			r.state = StateCodec.clone(wave)
+			r.state.slice.carrier="cold"
+			r.state.combat.actors.hero.hp=80
+			r.step("endure")
+			must(SliceWorld.apply(r.state,"finish")!="" and r.state.slice.load,"cold body cannot skip alignment for stable condensation")
 		r.state = StateCodec.clone(wave)
 		var wallet: int = r.state.materials.wallet
 		r.play("stop")
@@ -69,6 +81,7 @@ func _initialize() -> void:
 			must(r.state.soul.limit_years==200,"new attempt after incomplete contour")
 		must(r.error=="",r.error)
 		checks += r.checks
+	boundaries()
 	story()
 	mortality()
 	print("P5_RULE_", "PASS" if failures==0 else "FAIL"," checks=",checks," failures=",failures)
@@ -82,6 +95,11 @@ func second_life(r: SliceRoute) -> void:
 	r.step("transfer")
 	must(r.state.active_body==1 and WorldCalendar.age_years(r.state.body().born,r.state.day)==18 and r.state.day==WorldCalendar.add_years(date,5),"new carrier")
 	must(r.state.soul.mastery.get("operation.stabilization")==2 and not r.state.slice.sensitive and r.state.body().limit_years==100,"mastery and physical reset")
+	r.workshop()
+	must(SliceWorld.cache(r.state,false)!="","new carrier first surveys approach")
+	r.state.exploration.x = int(SliceWorld.STEPS.x*100)
+	r.state.exploration.z = int(SliceWorld.STEPS.z*100)
+	r.play("survey")
 	r.workshop()
 	r.play("unearth")
 	must(r.state.materials.wallet==16 and r.state.slice.robbed and MaterialWorld.available(r.state,"stabilizer").size()==1,"raided inheritance")
@@ -132,3 +150,41 @@ func mortality() -> void:
 	r.applied(SliceWorld.apply(r.state,"transfer",true),"fatal consent")
 	r.finish()
 	must(r.error=="" and r.state.mode=="ended" and r.state.bodies.size()==1 and r.state.day==WorldCalendar.ordinal(100),r.error+" soul expires in transit")
+
+func boundaries() -> void:
+	var r := SliceRoute.new()
+	r.trip()
+	r.step("gather")
+	var retained := StateCodec.clone(r.state)
+	for i in 32:
+		r.state=StateCodec.clone(retained)
+		r.state.seed_value="minor-%d"%i
+		r.step("risk_minor")
+		if r.state.flags.has("unsteady.body.1"): break
+	must(r.state.slice.pool and r.state.body().milestone=="initial" and r.state.materials.wallet==79,"failed minor retains accumulation")
+	r.step("steady")
+	r.step("minor")
+	must(r.error=="" and r.state.body().milestone=="middle" and r.state.materials.wallet==78,"recovered minor costs without repurchasing accumulation")
+	r=SliceRoute.new()
+	r.chamber("smooth-reserve")
+	r.step("infuse")
+	r.state.outcomes["critical.1"]=1
+	r.step("reserve")
+	must(SliceWorld.apply(r.state,"finish")!="" and SliceWorld.apply(r.state,"extend")!="","critical instability cannot be bought off")
+	r.step("stop")
+	must(r.error=="" and r.state.body().milestone=="perfect" and MaterialWorld.available(r.state,"stabilizer").is_empty(),"controlled termination with actual reserve expense")
+	r=SliceRoute.new()
+	Simulation.lose_body(r.state,"combat")
+	r.step("transfer")
+	var born:=r.state.fingerprint()
+	must(StateCodec.clone(r.state).fingerprint()==born and r.state.materials.wallet==0 and not r.state.slice.buried,"awakening without inheritance is durable")
+	r.trip()
+	r.step("gather")
+	must(r.error=="" and r.state.slice.pool,"beginner action without inheritance")
+	# P3 and P5 headers never share a writer, even if the directory was copied.
+	var dir := "user://schema-check-%d" % Time.get_ticks_usec()
+	var old := SnapshotStore.new(dir,"legacy",true,true)
+	var current := SnapshotStore.new(dir,"legacy",true,true,true,true)
+	must(old.save(MaterialWorld.fresh("legacy")),"legacy fixture")
+	var original := FileAccess.get_file_as_bytes(old.path("current.json"))
+	must(current.load_current().get("incompatible",false) and not current.save(SliceWorld.fresh("legacy","seed")) and original==FileAccess.get_file_as_bytes(old.path("current.json")),"old slot byte-preserved")

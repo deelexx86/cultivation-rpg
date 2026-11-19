@@ -1,6 +1,6 @@
 extends Node3D
 
-const NAMES := {"merchant":"Торговец", "root":"Бледные цветы", "sign":"Медный блеск", "gate":"Старый затвор", "ferry":"Переправа", "retreat":"Уединение", "mentor":"Шэнь Юй · обучение и мастерская", "quartz":"Светлая порода", "shop":"Лавка"}
+const NAMES := {"steps":"Осыпавшиеся ступени","merchant":"Торговец", "root":"Бледные цветы", "sign":"Медный блеск", "gate":"Старый затвор", "ferry":"Переправа", "retreat":"Уединение", "mentor":"Шэнь Юй · обучение и мастерская", "quartz":"Светлая порода", "shop":"Лавка"}
 const NOTES := {"accept":"Ло Вэй просил вернуть знак из водосброса.", "decline":"Я отказалась от просьбы Ло Вэя.", "take":"У старого водосброса найден медный знак.", "return":"Я вернула знак. Ло Вэй дал мне припасы.", "gift":"Ло Вэй доверил мне свой ключ к формации.", "notch":"На обороте знака — насечка с разрывом.", "open":"Знак установлен. Каменная решётка открыта.", "rope":"Я удержала канат. Вода поднялась.", "observe.dry":"Осмотр берега: прозрачные прожилки под сухим илом.", "observe.flooded":"Осмотр берега: корни скрыты под свежей водой.", "interpret.dry":"По прожилкам предполагаю стеклянный корень. Для извлечения нужно травничество.", "interpret.flooded":"После разлива прежний способ осмотра непригоден.", "successor":"Инь Цю сообщил о смерти Ло Вэя. Личного обещания он не давал."}
 var session: SedgeSession
 var land: SedgeLandscape
@@ -51,6 +51,7 @@ func _ready() -> void:
 	get_tree().auto_accept_quit = false
 	SedgeLandscape.light(self)
 	player = SedgePlayer.new()
+	if integrated != null and session.state.active_body>0: player.appearance = "character-male-f" if session.state.slice.carrier=="cold" else "character-male-b"
 	add_child(player)
 	if p3: material_ui = MaterialPanel.new(self)
 	build_ui()
@@ -64,6 +65,7 @@ func _ready() -> void:
 	elif p3 and session.state.materials.items.is_empty(): material_ui.guide()
 
 func enter() -> void:
+	player.show_carrier(session.state)
 	if land != null:
 		remove_child(land)
 		land.queue_free()
@@ -223,6 +225,9 @@ func act(command: String) -> void:
 	show_panel("Запись в журнале",NOTES.get(command,NOTES.get(command+"."+str(session.state.exploration.source),"Сведения сохранены.")))
 
 func interact(key: String) -> void:
+	if integrated != null and key == "steps":
+		show_panel("Старая водоотводная кладка","Нижний пролёт осыпался. Вы помните, как шов в камне огибал склон. Печать прежней техники сохранилась, но ранняя Ци ещё не держит полётную доску.",{"Сверить кладку и пройти обходом":journey_ui.preview.bind("survey")})
+		return
 	if integrated != null and key == "retreat":
 		journey_ui.main()
 		return

@@ -112,7 +112,7 @@ static func engaged(s: CampaignState) -> bool:
 			return true
 	return not s.combat.projectiles.is_empty()
 
-static func lose_body(s: CampaignState) -> void:
+static func lose_body(s: CampaignState,reason: String = "combat") -> void:
 	var c := s.combat
 	var a: Dictionary = c.actors[HERO]
 	a.hp = 0
@@ -123,7 +123,7 @@ static func lose_body(s: CampaignState) -> void:
 	c.meditating = false
 	c.queued = CombatState.order()
 	if not s.slice.is_empty():
-		SliceWorld.death(s)
+		SliceWorld.death(s,reason)
 		return
 	for item: Dictionary in s.materials.items:
 		if item.holder == s.body().id:

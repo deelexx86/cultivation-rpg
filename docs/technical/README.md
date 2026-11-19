@@ -63,3 +63,5 @@ The [P2 walkthrough and engineering notes](07-p2-exploration.md) describe the pl
 The [P3 walkthrough and contract](08-p3-material-preparation.md) extend that scene with extraction, processing and material preparation, a separate schema-3 campaign and reproducible verification.
 
 The [P4 combat and flight walkthrough](09-p4-combat-flight.md) covers the encounter stand, fixed combat clock, dynamic snapshot and Windows input verification.
+
+[P5 / VS-05 · связная кампания](11-p5-integrated-slice.md) описывает запуск, единое сохранение, маршруты первого Основания и второго тела.

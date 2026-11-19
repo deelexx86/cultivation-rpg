@@ -72,6 +72,7 @@ func grow() -> void:
 	for i in 3:
 		step("gather")
 		step("minor")
+	step("gather")
 
 func chamber(method: String) -> void:
 	prepare(method)

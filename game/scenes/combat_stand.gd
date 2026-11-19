@@ -87,6 +87,7 @@ func _ready() -> void:
 	get_tree().auto_accept_quit = false
 	SedgeLandscape.light(stage)
 	player = SedgePlayer.new()
+	if SliceSession.current != null and session.state.active_body>0: player.appearance = "character-male-f" if session.state.slice.carrier=="cold" else "character-male-b"
 	player.external_motion = true
 	stage.add_child(player)
 	player.collision_layer = 2

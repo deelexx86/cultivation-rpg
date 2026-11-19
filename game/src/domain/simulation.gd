@@ -94,7 +94,7 @@ static func lose_body(state: CampaignState, reason: String) -> void:
 			obligation.ended = state.day
 			state.record("obligation_ended:" + obligation.id)
 	if not state.combat.is_empty():
-		CombatWorld.lose_body(state)
+		CombatWorld.lose_body(state,reason)
 
 static func apply_event(state: CampaignState, event: CampaignState.WorldEvent) -> void:
 	var allowed := true
@@ -115,6 +115,7 @@ static func apply_event(state: CampaignState, event: CampaignState.WorldEvent) -
 		"death":
 			state.person(event.target).alive = false
 			state.person(event.target).died = state.day
+			if event.target == SedgeWorld.LO and not state.slice.is_empty(): state.exploration.source = "flooded"
 			for obligation: CampaignState.Obligation in state.obligations:
 				if obligation.person == event.target and obligation.active:
 					obligation.active = false

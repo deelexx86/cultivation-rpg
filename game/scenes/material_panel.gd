@@ -58,6 +58,7 @@ func shop() -> void:
 func mentor() -> void:
 	var options := {"Травничество · 8 камней / 4 года":training.bind("herbalism"),"Алхимия и оба способа · трактат / 6 лет":training.bind("alchemy"),"Обработка и заказы":recipes,"Сравнить способы подготовки":methods}
 	for row: Dictionary in state().materials.jobs:
+		if row.customer != state().body().id: continue
 		if row.executor == "workshop" and row.status in ["running","ready"]:
 			options["Мои заказы"] = processes
 			break
@@ -135,13 +136,14 @@ func inventory() -> void:
 	if s.slice.is_empty() and s.materials.method != "": lines = "P3 завершён: материальная подготовка сохранена. Выполнение прорыва — этап P5.\n"+lines
 	for raw: Dictionary in s.materials.items:
 		if raw.holder in ["consumed","merchant"] or raw.owner != s.body().id: continue
-		lines += "%s%s\n" % [item_name(raw)," · зарезервировано" if raw.reserved != "" else " · на хранении" if raw.holder == "court.cache" else ""]
+		lines += "%s%s\n" % [item_name(raw)," · зарезервировано" if raw.reserved != "" else " · на хранении" if raw.holder in ["court.cache","vault"] else ""]
 	for row: Dictionary in s.materials.jobs:
+		if row.customer != s.body().id: continue
 		var title: String = "Обучение" if row.recipe.begins_with("learn.") else RECIPES[row.recipe]
 		var status: String = {"running":"в работе","ready":"готово" if row.known or row.executor == "self" else "готовность не проверена","claimed":"получено","cancelled":"отменено","stopped":"остановлено"}[row.status]
 		lines += "%s · %s · %s\n" % [title,WorldCalendar.label(row.due),status]
 	if s.materials.method != "": lines += "План: %s. Резерв камней: %d.\n" % [{"smooth":"Плавный","smooth-reserve":"Плавный с резервом","condense":"Конденсация"}[s.materials.method],s.materials.pledged]
-	scene.show_panel("Имущество и работа",lines,{"Свойства и происхождение":details,"Текущие процессы":processes,"Сравнить способы":methods,"Маршрут P3":guide})
+	scene.show_panel("Имущество и работа",lines,{"Свойства и происхождение":details,"Текущие процессы":processes,"Сравнить способы":methods,"Личный план" if not s.slice.is_empty() else "Маршрут P3":guide})
 
 func details() -> void:
 	var options := {}
@@ -177,6 +179,7 @@ func recipe_preview(key: String, id: String) -> void:
 func processes() -> void:
 	var options := {}
 	for row: Dictionary in state().materials.jobs:
+		if row.customer != state().body().id: continue
 		if row.status == "ready" and (row.executor == "self" or row.known): options["Получить: "+str(RECIPES[row.recipe])+" №"+row.id.get_slice(".",2)] = run.bind("claim",row.id)
 		if row.status == "running" and row.recipe in ["order","mature"]: options["Отменить: "+str(RECIPES[row.recipe])+" №"+row.id.get_slice(".",2)] = cancel_preview.bind(row.id)
 	options["Практиковаться 30 дней параллельно"] = practice.bind(30)

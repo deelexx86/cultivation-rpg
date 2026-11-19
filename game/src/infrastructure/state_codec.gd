@@ -140,6 +140,7 @@ static func problems(state: CampaignState) -> PackedStringArray:
 	for action: CampaignState.Action in state.actions:
 		if action.kind not in ["practice", "recovery", "transfer_probe", "travel_probe", "travel", "study", "craft", "slice", "transfer"] or action.status not in ["running", "paused", "complete", "stopped"]:
 			errors.append("Unknown action kind/status")
+		if action.kind in ["slice","transfer"] and state.slice.is_empty(): errors.append("Missing integrated action state")
 		if action.kind in ["study","craft"] and (state.materials.is_empty() or MaterialWorld.job(state,action.id).is_empty()):
 			errors.append("Material action requires its process")
 		if action.kind == "travel" and state.exploration.is_empty():

@@ -54,6 +54,7 @@ func _smoke(probe: Node, player: AnimationPlayer) -> void:
 	get_tree().quit(0)
 
 func campaign_menu() -> void:
+	DisplayServer.window_set_title("Белая осока · Cultivation RPG")
 	var requested := ""
 	var seed_key := ""
 	for arg in OS.get_cmdline_user_args():

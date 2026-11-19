@@ -83,6 +83,7 @@ static func stage(h) -> void:
 	for i in 3:
 		await choice(h,"Накопить Ци")
 		await choice(h,"Уравновесить поток")
+	await choice(h,"Накопить Ци")
 
 static func chamber(h,condense: bool) -> void:
 	await trip(h)
@@ -129,6 +130,8 @@ static func start(h) -> void:
 				await click(h,"Сохранить и выйти")
 			return
 		await click(h,"Завершить этап")
+		await near(h,"steps")
+		await choice(h,"Сверить кладку",false)
 		await mentor(h,"Тайник и наследие")
 		await choice(h,"Осмотреть и забрать",false)
 		await mentor(h,"Тайник и наследие")
@@ -210,6 +213,15 @@ static func combat(h) -> void:
 	if h.modal != "restore": h.get_tree().quit(1); return
 	if "--finish-combat" not in OS.get_cmdline_user_args():
 		await combat_click(h,"Продолжить   /")
+		tap(KEY_R)
+		tap(KEY_T)
+		for i in 250:
+			await h.get_tree().physics_frame
+			if h.session.state.combat.actors.hero.shield>0: break
+		if not h.session.state.combat.perception or h.session.state.combat.wards!=0 or h.session.state.combat.actors.hero.shield<=0:
+			push_error("Purchased ward and perception did not resolve in campaign")
+			h.get_tree().quit(1)
+			return
 		MaterialSceneProbe.send_key(KEY_W,true)
 		for i in 500:
 			await h.get_tree().physics_frame

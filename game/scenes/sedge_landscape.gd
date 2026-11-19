@@ -130,6 +130,11 @@ func populate(s: CampaignState) -> void:
 		solid(Vector3(-3,0.6,0),Vector3(1.5,1.2,3))
 		return
 	points = POINTS.duplicate()
+	if not s.slice.is_empty() and s.active_body>0:
+		points["steps"] = SliceWorld.STEPS
+		for i in 5:
+			shape(SliceWorld.STEPS+Vector3(i*0.22,0.08*i,0),Vector3(0.78,0.18,1.15),Color("#9f9787"))
+		prop(NATURE,"rock_largeA",SliceWorld.STEPS+Vector3(1.6,0,0),1.25)
 	if not s.slice.is_empty() and not s.person(SedgeWorld.LO).alive:
 		prop(TOWN,"cart",Vector3(-8,0,-3),2.1,0.1)
 		shape(Vector3(-4,0.28,2.8),Vector3(1.2,0.15,0.35),Color("#937558"))

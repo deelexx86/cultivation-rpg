@@ -54,7 +54,8 @@ func main() -> void:
 				if not SliceWorld.reserved(s,["stabilizer"]).is_empty(): opts["Использовать резервную дозу"] = preview.bind("reserve")
 				if p.method == "condense": opts["Выравнивание · дополнительный год"] = preview.bind("align")
 			"final":
-				if not p.load: opts["Закрепить Основание"] = preview.bind("finish")
+				if s.outcomes.get("critical.%d"%p.attempt,0)==1: pass
+				elif not p.load: opts["Закрепить Основание"] = preview.bind("finish")
 				else:
 					if p.method.begins_with("smooth"): opts["Снять нагрузку · ещё два года"] = preview.bind("extend")
 					opts["Удержать частичный контур · нестабильная Ци"] = preview.bind("unstable")
@@ -64,6 +65,7 @@ func main() -> void:
 		if stage < 4 and s.exploration.place == SedgeWorld.BANK:
 			title = "Уединение на дальнем берегу"
 			if not p.pool: opts["Накопить Ци"] = preview.bind("gather")
+			elif s.flags.has("unsteady."+s.body().id): opts["Восстановить устойчивость · 2 года"] = preview.bind("steady")
 			elif stage < 3:
 				opts["Уравновесить поток и пройти малую ступень"] = preview.bind("minor")
 				opts["Попытаться перейти без выравнивания"] = preview.bind("risk_minor")
@@ -101,13 +103,20 @@ func preview(cmd: String) -> void:
 		"finish","force","unstable","extend": text += "\nРасходуются оставшиеся камни метода, при конденсации также второй кварц."
 		"risk_minor": text += "\nБез выравнивания переход может сорваться. Накопление сохранится."
 		"transfer": text += "\nНовое тело начнёт с ранней Ци. Личные обязательства прежнего тела завершены."
+	if cmd == "transfer":
+		text += "\nОстаток срока души при пробуждении: %d дней." % maxi(0,s.soul_expiry()-end)
 	if cmd == "force": text += "\nКонтур перегружен. Повреждение рёбер и потеря 35 здоровья. При 35 здоровья или меньше тело погибнет."
-	var fatal := end >= s.soul_expiry() or (s.body().alive and end >= s.body_expiry())
-	if fatal: text += "\nИзвестный предел будет достигнут прежде окончания: %s." % ("кампания завершится" if end >= s.soul_expiry() else "тело погибнет")
+	var last := end
+	if cmd=="begin": last = WorldCalendar.add_years(s.day,2 if s.materials.method=="condense" else 5)
+	var fatal := last >= s.soul_expiry() or (s.body().alive and last >= s.body_expiry())
+	if fatal: text += "\nИзвестный предел будет достигнут прежде окончания: %s." % ("кампания завершится" if last >= s.soul_expiry() else "тело погибнет")
 	host.show_panel("Подтвердить решение",text,{"Принять известный исход" if fatal else "Подтвердить":execute.bind(cmd,fatal),"Отменить":main})
 
 func execute(cmd: String,fatal: bool) -> void:
 	if not host.integrated.play(cmd,fatal):
+		if host.session.dirty:
+			host.failure()
+			return
 		host.show_panel("Действие недоступно",host.session.error)
 		return
 	host.land.sync(state())
