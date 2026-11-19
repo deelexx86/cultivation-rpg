@@ -1,7 +1,7 @@
 class_name MaterialPanel
 extends RefCounted
 ## Presentation only: every consequence goes through SedgeSession.
-const LABELS := {"kit":"Набор сбора", "vessel":"Герметичный сосуд", "treatise":"Учебный трактат", "root":"Целый живой корень", "root_part":"Повреждённая часть корня", "quartz":"Фрагмент глухого кварца", "tainted_quartz":"Загрязнённый кварц", "essence":"Стабилизированный полуфабрикат", "unstable_essence":"Нестабильная эссенция", "spent_essence":"Выдохшаяся эссенция", "stabilizer":"Доза стабилизатора", "pill":"Пилюля конденсации"}
+const LABELS := {"flight_board":"Полётная доска","ward":"Талисман","medicine":"Лекарство","horn_plate":"Роговая пластина","bone_plate":"Костная пластина","kit":"Набор сбора", "vessel":"Герметичный сосуд", "treatise":"Учебный трактат", "root":"Целый живой корень", "root_part":"Повреждённая часть корня", "quartz":"Фрагмент глухого кварца", "tainted_quartz":"Загрязнённый кварц", "essence":"Стабилизированный полуфабрикат", "unstable_essence":"Нестабильная эссенция", "spent_essence":"Выдохшаяся эссенция", "stabilizer":"Доза стабилизатора", "pill":"Пилюля конденсации"}
 const RECIPES := {"divide":"Разделить целый корень", "stabilize":"Бережная стабилизация", "force":"Ускоренный прогрев", "repair":"Исправить нестабильность", "mature":"Автономная выдержка", "clean":"Очистить кварц", "order":"Заказать стабилизацию"}
 var scene
 
@@ -35,6 +35,9 @@ func run(command: String, argument: String = "") -> void:
 		scene.show_panel("Материальная подготовка",message,{"Имущество и процессы":inventory,"Следующий шаг":guide})
 
 func guide() -> void:
+	if not state().slice.is_empty():
+		scene.journey_ui.guide()
+		return
 	scene.show_panel("P3 · Личный план","1. Купите набор, сосуд и трактат у красного навеса.\n2. У зелёного навеса Шэнь Юй: травничество (4 года) и алхимия по трактату (6 лет).\n3. Бледные цветы к северо-востоку: осмотр → духовное обследование → способ добычи.\n4. Светлая порода к западу от тропы: осмотр → распознавание → наружные фрагменты.\n5. Вернитесь к зелёному навесу. Обработайте часть или закажите стабилизацию, затем выдержите полуфабрикат. Во время автономной работы практикуйтесь.\n6. Выберите подготовку: плавное закрепление принимает дозу из повреждённого корня; конденсации нужен целый живой корень или конечная покупная пилюля.\nJ — журнал; Esc — имущество, процессы и помощь. Годы расходуются только после подтверждения.",{"Сравнить способы":methods,"Имущество и процессы":inventory})
 
 func shop() -> void:
@@ -43,9 +46,9 @@ func shop() -> void:
 	var options := {}
 	var lines := "Камни духа: %d (зарезервировано %d). Запас конечный.\n" % [s.materials.wallet,s.materials.pledged]
 	if prefix == "yin." and s.day < WorldCalendar.ordinal(24): lines += "Поставка готовых препаратов ожидается к году 24.\n"
-	for key: String in P3Content.data().offers:
+	for key: String in MaterialWorld.offers(s):
 		if not key.begins_with(prefix): continue
-		var offer: Dictionary = P3Content.data().offers[key]
+		var offer: Dictionary = MaterialWorld.offers(s)[key]
 		lines += "%s · %d камней · осталось %d\n" % [LABELS[offer.kind],offer.price,s.materials.stock[key]]
 		if s.materials.stock[key] > 0: options["Купить: %s · %d" % [LABELS[offer.kind],offer.price]] = run.bind("buy",key)
 	options["Продать материал"] = sell_menu
@@ -60,6 +63,8 @@ func mentor() -> void:
 			break
 	options["Оставить сосуд с содержимым на хранении"] = run.bind("stash","")
 	options["Забрать сосуд с хранения"] = run.bind("retrieve","")
+	if not state().slice.is_empty():
+		options["Тайник и наследие"] = scene.journey_ui.inheritance
 	var learned := PackedStringArray()
 	for key: String in P3Content.data().training:
 		if state().soul.mastery.get(P3Content.data().training[key].mastery,0) > 0:
@@ -76,6 +81,9 @@ func mentor() -> void:
 	scene.show_panel("Шэнь Юй · зелёный навес","\n".join(learned),options)
 
 func completion() -> void:
+	if not state().slice.is_empty():
+		scene.journey_ui.main()
+		return
 	var s := state()
 	var lines := PackedStringArray(["Материальная подготовка завершена. Сценарий P3 пройден.","Способ: "+str({"smooth":"Плавное закрепление","smooth-reserve":"Плавное закрепление с резервом","condense":"Конденсация"}[s.materials.method]),"Зарезервировано:"])
 	for raw: Dictionary in s.materials.items:
@@ -124,9 +132,9 @@ func extraction(method: String) -> void:
 func inventory() -> void:
 	var s := state()
 	var lines := "Камни: %d; свободно %d. Груз %.1f / %.1f кг.\n" % [s.materials.wallet,s.materials.wallet-s.materials.pledged,MaterialWorld.weight(s)/1000.0,P3Content.data().carry_grams/1000.0]
-	if s.materials.method != "": lines = "P3 завершён: материальная подготовка сохранена. Выполнение прорыва — этап P5.\n"+lines
+	if s.slice.is_empty() and s.materials.method != "": lines = "P3 завершён: материальная подготовка сохранена. Выполнение прорыва — этап P5.\n"+lines
 	for raw: Dictionary in s.materials.items:
-		if raw.holder in ["consumed","merchant"]: continue
+		if raw.holder in ["consumed","merchant"] or raw.owner != s.body().id: continue
 		lines += "%s%s\n" % [item_name(raw)," · зарезервировано" if raw.reserved != "" else " · на хранении" if raw.holder == "court.cache" else ""]
 	for row: Dictionary in s.materials.jobs:
 		var title: String = "Обучение" if row.recipe.begins_with("learn.") else RECIPES[row.recipe]
@@ -138,7 +146,7 @@ func inventory() -> void:
 func details() -> void:
 	var options := {}
 	for raw: Dictionary in state().materials.items:
-		if raw.holder not in ["consumed","merchant"]: options[item_name(raw)] = detail.bind(raw.id)
+		if raw.holder not in ["consumed","merchant"] and raw.owner == state().body().id: options[item_name(raw)] = detail.bind(raw.id)
 	scene.show_panel("Материалы","Выберите экземпляр. Происхождение и текущее состояние учитываются отдельно.",options)
 
 func detail(id: String) -> void:
@@ -179,7 +187,7 @@ func cancel_preview(id: String) -> void:
 
 func practice(days: int) -> void:
 	var plan := Simulation.preview(state(),days,0)
-	scene.show_panel("Практика · параллельная работа",forecast(days)+"\nКультивация и автономная работа идут в те же дни, без сложения сроков. Ступень и предел жизни в P3 не меняются.",{"Подтвердить практику":begin_practice.bind(plan)})
+	scene.show_panel("Практика · параллельная работа",forecast(days)+"\nВыдержка продолжается в те же календарные дни.",{"Подтвердить практику":begin_practice.bind(plan)})
 
 func begin_practice(plan: Dictionary) -> void:
 	if scene.session.confirm(plan,"p3.practice.%d" % state().revision): work()
@@ -218,9 +226,10 @@ func advance(days: int) -> void:
 func sell_menu() -> void:
 	var options := {}
 	for raw: Dictionary in state().materials.items:
-		if raw.holder == state().body().id and raw.reserved == "" and P3Content.data().sell.has(raw.kind): options["%s · %d камней" % [item_name(raw),P3Content.data().sell[raw.kind]]] = run.bind("sell",raw.id)
+		if raw.holder == state().body().id and raw.reserved == "" and MaterialWorld.sale_prices(state()).has(raw.kind): options["%s · %d камней" % [item_name(raw),MaterialWorld.sale_prices(state())[raw.kind]]] = run.bind("sell",raw.id)
 	scene.show_panel("Продажа","Проданный экземпляр переходит торговцу. Бесплатного выкупа, обновления сырья и бесконечного производства нет.",options)
 
 func methods() -> void:
 	var body := "Плавное закрепление · 5 лет, возможно ещё 2. Нужны 1 доза стабилизатора, 1 чистый кварц, 4 камня и камера за 4. Можно добавить дозу резерва. Принимает обработанные повреждённые части. Возможны нагрузка, продление или прекращение; результат — устойчивое простое Основание.\n\nКонденсация · 2 года, либо 3 с выравниванием. Нужны целый живой корень / готовая пилюля, 2 кварца с сохранённой энергией, 8 камней и камера за 4. Повреждённые части не подходят. Быстрее, но дороже и опаснее: нагрузка, травма, при критическом продолжении — гибель. Дополнительная сила автоматически не выдаётся.\n\nЭто материальный план P3. До реальной попытки нужны совершенство Ци, заполненное накопление и устойчивое тело (поздний этап). Здесь материалы резервируются, календарь и предел жизни не меняются."
+	if not state().slice.is_empty(): body = body.get_slice("Это материальный план P3",0)+"После подготовки отправляйтесь в камеру на дальнем берегу."
 	scene.show_panel("Два способа · первый великий переход",body,{"Подготовить плавный способ":run.bind("choose","smooth"),"Плавный способ + доза резерва":run.bind("choose","smooth-reserve"),"Подготовить конденсацию":run.bind("choose","condense"),"Освободить подготовку":run.bind("choose","")})

@@ -12,6 +12,10 @@ func _ready() -> void:
 	if "--p1-demo" in OS.get_cmdline_user_args() or "--p1-demo-smoke" in OS.get_cmdline_user_args():
 		get_tree().change_scene_to_file.call_deferred("res://scenes/p1_demo.tscn")
 		return
+	if "--smoke" not in OS.get_cmdline_user_args() and "--p0" not in OS.get_cmdline_user_args():
+		$Probe.hide()
+		campaign_menu()
+		return
 	var probe := $Probe
 	var errors: PackedStringArray = AssetContract.problems(probe)
 	if not errors.is_empty():
@@ -48,3 +52,35 @@ func _smoke(probe: Node, player: AnimationPlayer) -> void:
 	await get_tree().create_timer(1.6).timeout
 	print("P0_SMOKE_PASS animation_advanced=true")
 	get_tree().quit(0)
+
+func campaign_menu() -> void:
+	var id := "white-sedge"
+	var seed_key := "vs_smooth_no_overload"
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--campaign="): id = arg.trim_prefix("--campaign=")
+		if arg.begins_with("--seed="): seed_key = arg.trim_prefix("--seed=")
+	var slot := SliceSession.storage(id)
+	var exists := FileAccess.file_exists(slot.path("current.json")) or FileAccess.file_exists(slot.path("previous.json"))
+	var center := CenterContainer.new()
+	add_child(center)
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var box := VBoxContainer.new()
+	center.add_child(box)
+	var title := Label.new()
+	title.text = "Долина Белой Осоки"
+	title.add_theme_font_size_override("font_size",32)
+	box.add_child(title)
+	var button := Button.new()
+	button.text = "Продолжить кампанию" if exists else "Начать кампанию"
+	box.add_child(button)
+	button.pressed.connect(func() -> void:
+		var session := SliceSession.open(id,seed_key)
+		if session.error != "":
+			title.text = session.error
+			return
+		SliceSession.current = session
+		get_tree().change_scene_to_file(SliceSession.RAVINE if session.state.slice.area == "ravine" else SliceSession.VILLAGE))
+	button.grab_focus()
+	if "--p5-tour" in OS.get_cmdline_user_args():
+		await get_tree().process_frame
+		button.pressed.emit()
