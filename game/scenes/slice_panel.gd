@@ -81,7 +81,7 @@ func enter_ravine() -> void:
 
 func switch_ravine() -> void:
 	if host.integrated.switch_area("ravine"):
-		host.get_tree().change_scene_to_file(SliceSession.RAVINE)
+		host.get_tree().change_scene_to_file.call_deferred(SliceSession.RAVINE)
 	else: host.show_panel("Тропа недоступна",host.session.error)
 
 func preview(cmd: String) -> void:

@@ -54,13 +54,11 @@ func _smoke(probe: Node, player: AnimationPlayer) -> void:
 	get_tree().quit(0)
 
 func campaign_menu() -> void:
-	var id := "white-sedge"
-	var seed_key := "vs_smooth_no_overload"
+	var requested := ""
+	var seed_key := ""
 	for arg in OS.get_cmdline_user_args():
-		if arg.begins_with("--campaign="): id = arg.trim_prefix("--campaign=")
+		if arg.begins_with("--campaign="): requested = arg.trim_prefix("--campaign=")
 		if arg.begins_with("--seed="): seed_key = arg.trim_prefix("--seed=")
-	var slot := SliceSession.storage(id)
-	var exists := FileAccess.file_exists(slot.path("current.json")) or FileAccess.file_exists(slot.path("previous.json"))
 	var center := CenterContainer.new()
 	add_child(center)
 	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -70,17 +68,39 @@ func campaign_menu() -> void:
 	title.text = "Долина Белой Осоки"
 	title.add_theme_font_size_override("font_size",32)
 	box.add_child(title)
-	var button := Button.new()
-	button.text = "Продолжить кампанию" if exists else "Начать кампанию"
-	box.add_child(button)
-	button.pressed.connect(func() -> void:
-		var session := SliceSession.open(id,seed_key)
-		if session.error != "":
-			title.text = session.error
-			return
-		SliceSession.current = session
-		get_tree().change_scene_to_file(SliceSession.RAVINE if session.state.slice.area == "ravine" else SliceSession.VILLAGE))
-	button.grab_focus()
+	var scroll := ScrollContainer.new()
+	scroll.custom_minimum_size = Vector2(430,220)
+	box.add_child(scroll)
+	var slots := VBoxContainer.new()
+	slots.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(slots)
+	var ids := DirAccess.get_directories_at("user://sedge-campaign") if DirAccess.dir_exists_absolute("user://sedge-campaign") else PackedStringArray()
+	var launch: Button
+	for id: String in ids:
+		if requested != "" and requested != id: continue
+		if requested == "" and not id.begins_with("soul-"): continue
+		var storage := SliceSession.storage(id)
+		if not FileAccess.file_exists(storage.path("current.json")) and not FileAccess.file_exists(storage.path("previous.json")): continue
+		launch = Button.new()
+		launch.text = "Продолжить · "+id
+		slots.add_child(launch)
+		launch.pressed.connect(open_campaign.bind(id,seed_key,title))
+	if requested == "" or launch == null:
+		var id := requested if requested != "" else "soul-%d-%06d" % [int(Time.get_unix_time_from_system()),Time.get_ticks_usec()%1000000]
+		launch = Button.new()
+		launch.text = "Начать кампанию"
+		box.add_child(launch)
+		launch.pressed.connect(open_campaign.bind(id,seed_key,title))
+	launch.grab_focus()
 	if "--p5-tour" in OS.get_cmdline_user_args():
 		await get_tree().process_frame
-		button.pressed.emit()
+		MaterialSceneProbe.send_key(KEY_ENTER,true)
+		MaterialSceneProbe.send_key(KEY_ENTER,false)
+
+func open_campaign(id: String,seed_key: String,title: Label) -> void:
+	var session := SliceSession.open(id,id if seed_key=="" else seed_key)
+	if session.error != "":
+		title.text = session.error
+		return
+	SliceSession.current = session
+	get_tree().change_scene_to_file.call_deferred(SliceSession.RAVINE if session.state.slice.area == "ravine" else SliceSession.VILLAGE)

@@ -105,6 +105,7 @@ func _ready() -> void:
 		pause("restore" if session.state.mode == "active" else "death")
 	else:
 		input_notice = "Камнееды у водосброса. Южная тропа за спиной ведёт к отдыху."
+	if SliceSession.current != null and "--p5-tour" in args: SliceTour.combat.call_deferred(self)
 	print("P4_READY rank=", session.state.combat.rank, " loaded=", exists, " renderer=", RenderingServer.get_current_rendering_method())
 
 func load_scene() -> void:
@@ -761,7 +762,7 @@ func return_village() -> void:
 		show_error(session.error if session.error != "" else "Дождитесь окончания действия и выйдите из боя.")
 		return
 	get_tree().paused = false
-	get_tree().change_scene_to_file(SliceSession.VILLAGE)
+	get_tree().change_scene_to_file.call_deferred(SliceSession.VILLAGE)
 
 func resume() -> void:
 	if session.dirty:
