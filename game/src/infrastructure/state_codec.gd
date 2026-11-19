@@ -66,6 +66,8 @@ static func decode(data: Variant) -> CampaignState:
 		spec["materials"] = MaterialWorld.schema()
 	if data is Dictionary and data.has("combat"):
 		spec["combat"] = CombatState.schema()
+	if data is Dictionary and data.has("slice"):
+		spec["slice"] = SliceWorld.schema()
 	if not shape(data, spec):
 		return null
 	var state := CampaignState.new()
@@ -73,6 +75,7 @@ static func decode(data: Variant) -> CampaignState:
 	for key: String in ["soul", "bodies", "actions", "events", "people", "obligations"]:
 		scalars.erase(key)
 	assign_fields(state, scalars)
+	state.slice = P3Content.integers(state.slice)
 	if not state.materials.is_empty():
 		state.materials = P3Content.integers(state.materials)
 	if not state.combat.is_empty():
@@ -135,7 +138,7 @@ static func problems(state: CampaignState) -> PackedStringArray:
 	var running := 0
 	var total_cost := 0
 	for action: CampaignState.Action in state.actions:
-		if action.kind not in ["practice", "recovery", "transfer_probe", "travel_probe", "travel", "study", "craft"] or action.status not in ["running", "paused", "complete", "stopped"]:
+		if action.kind not in ["practice", "recovery", "transfer_probe", "travel_probe", "travel", "study", "craft", "slice", "transfer"] or action.status not in ["running", "paused", "complete", "stopped"]:
 			errors.append("Unknown action kind/status")
 		if action.kind in ["study","craft"] and (state.materials.is_empty() or MaterialWorld.job(state,action.id).is_empty()):
 			errors.append("Material action requires its process")
@@ -154,7 +157,7 @@ static func problems(state: CampaignState) -> PackedStringArray:
 		total_cost += action.cost
 	if total_cost != state.spent or running > 1 or (state.mode != "active" and running > 0):
 		# transfer_probe is only a controlled no-body calendar fixture.
-		if not (total_cost == state.spent and running == 1 and state.mode == "body_dead" and state.running().kind == "transfer_probe"):
+		if not (total_cost == state.spent and running == 1 and state.mode == "body_dead" and state.running().kind in ["transfer_probe","transfer"]):
 			errors.append("Inconsistent expenses/running action")
 	for person: CampaignState.Person in state.people:
 		if (person.alive and person.died != -1) or (not person.alive and (person.died < 0 or person.died > state.day)):
@@ -184,5 +187,7 @@ static func problems(state: CampaignState) -> PackedStringArray:
 		errors.append_array(MaterialWorld.problems(state))
 	if not state.combat.is_empty() and not CombatState.valid(state):
 		errors.append("Invalid VS-04 dynamic state")
+	if not state.slice.is_empty():
+		errors.append_array(SliceWorld.problems(state))
 	errors.append_array(EventGraph.problems(state))
 	return errors
