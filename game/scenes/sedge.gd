@@ -353,6 +353,9 @@ func journal() -> void:
 
 func menu() -> void:
 	if integrated != null:
+		if not session.checkpoint(player.position):
+			failure()
+			return
 		journey_ui.main()
 		return
 	if p3:

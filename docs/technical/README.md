@@ -56,6 +56,10 @@ Windows 11 supersedes the former Ubuntu development preference by the owner’s 
 
 Эти вопросы не требуют нового общего интервью перед подготовкой проекта. Уточнять их в момент соответствующего этапа с результатами измерений и конкретным вариантом.
 
+## Система персонажа P7.1
+
+[Характеристики, карточки носителей, практики и совместимость сохранений](12-p71-character-foundations.md) описывают интеграцию в кампанию P5 и команды проверки на Windows.
+
 ## Playable exploration
 
 The [P2 walkthrough and engineering notes](07-p2-exploration.md) describe the playable White Sedge scene, the schema-2 slot, licensed assets and acceptance commands.

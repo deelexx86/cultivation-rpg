@@ -100,8 +100,8 @@ static func mentor(h,key: String) -> void:
 	await near(h,"mentor")
 	await click(h,key)
 
-static func craft(h) -> void:
-	for i in 2:
+static func craft(h, batches: int = 2) -> void:
+	for i in batches:
 		for recipe: String in ["Бережная стабилизация","Автономная выдержка"]:
 			await mentor(h,"Обработка и заказы")
 			await click(h,recipe)
@@ -148,12 +148,21 @@ static func start(h) -> void:
 		await choice(h,"Сверить кладку",false)
 		await mentor(h,"Тайник и наследие")
 		await choice(h,"Осмотреть и забрать",false)
+		if character:
+			await mentor(h,"Обработка и заказы")
+			await click(h,"Бережная стабилизация")
+			await click(h,"Повреждённая часть корня")
+			await click(h,"Подтвердить работу")
+			if not h.verify_scene("чувствительности" in h.column.get_child(1).text and s.state.running()==null and s.state.soul.mastery.get("operation.stabilization")==2,"Inherited operation is known but the new body cannot yet perform it"): return
 		await mentor(h,"Тайник и наследие")
 		await choice(h,"Развить чувствительность")
 		if character:
 			await mentor(h,"Тело и душа")
 			await MaterialSceneProbe.capture(h,"new-carrier")
 			print("P71_INHERITANCE carrier=",s.state.body().profile," mind=",s.state.soul.mental.reason," sensitivity=",CharacterRules.sensitivity(s.state))
+			await craft(h,1)
+			if not h.verify_scene(MaterialWorld.available(s.state,"stabilizer").size()==1 and s.state.soul.mastery.get("operation.stabilization")==2,"Made a new dose in the second body"): return
+			print("P71_INHERITED_RECIPE_PASS")
 		await near(h,"quartz")
 		await click(h,"Выделить наружный фрагмент")
 		await click(h,"Подтвердить способ")
@@ -185,6 +194,12 @@ static func start(h) -> void:
 		await mentor(h,"Тело и душа")
 		await MaterialSceneProbe.capture(h,"trained")
 		if not h.verify_scene(s.state.soul.mental.reason == 2 and s.state.body().footwork == 1,"Paid training in first body"): return
+		tap(KEY_ESCAPE)
+		await h.get_tree().process_frame
+		if not await walk(h,"shop"): return
+		tap(KEY_ESCAPE)
+		await click(h,"Тело и душа")
+		if not h.verify_scene(not MaterialWorld.at_workshop(s.state) and "Практики проводит" in h.column.get_child(1).text,"Opening the sheet after walking uses current proximity"): return
 	for label: String in ["Травничество","Алхимия и оба способа"]:
 		await mentor(h,label)
 		await click(h,"Начать обучение")
@@ -211,9 +226,10 @@ static func start(h) -> void:
 		await near(h,"quartz")
 		await click(h,"Выделить наружный фрагмент")
 		await click(h,"Подтвердить способ")
-	if not quick: await craft(h)
+	if not quick: await craft(h,1 if character else 2)
 	await mentor(h,"Сравнить способы")
-	await click(h,"Подготовить конденсацию" if quick else "Плавный способ +")
+	var plan := "Подготовить плавный способ" if character else "Плавный способ +"
+	await click(h,"Подготовить конденсацию" if quick else plan)
 	await chamber(h,quick)
 	if not h.verify_scene(s.state.body().milestone=="foundation" and s.state.active_body==0,"first Foundation"): return
 	await near(h,"shop")
