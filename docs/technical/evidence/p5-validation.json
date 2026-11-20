@@ -1,0 +1,321 @@
+{
+  "tested_commit": "4bd626d9444dc8a452de359720913f7e9daf0a7c",
+  "tested_tree_clean": true,
+  "clean_command": "pwsh -NoProfile -File tools/verify_clean_checkout.ps1 -Phase P5",
+  "platform": "Windows 11 x64 build 26200",
+  "gpu": "AMD Radeon RX 580 2048SP",
+  "engine": "Godot 4.8 beta 3 c51ff06e8",
+  "gameplay_input": "Godot viewport mouse and keyboard in Windows release export, fixed FPS for P5 tours. P4 includes Win32 input and fullscreen motion regression.",
+  "clean_run_markers": [
+    "P0_TEST_PASS geometry transforms materials animation_samples",
+    "P1_TEST_PASS checks=182 calendar preview chronology life causality save",
+    "P1_CRASH_PASS stages=8",
+    "P1_VERIFY_PASS",
+    "P2_RULE_PASS checks=47",
+    "P3_RULE_PASS checks=337",
+    "P3_CRASH_PASS terminations=64",
+    "P3_VERIFY_PASS",
+    "P4_RULE_PASS checks=83 failures=0",
+    "P4_UI_YOUNG_PASS renderer=forward_plus",
+    "P4_UI_CORE_PASS renderer=forward_plus",
+    "P4_UI_FOUNDATION_PASS renderer=forward_plus",
+    "P4_UI_ELITE_PASS renderer=forward_plus",
+    "P4_UI_YOUNG_PASS renderer=gl_compatibility",
+    "P4_UI_CORE_PASS renderer=gl_compatibility",
+    "P4_UI_FOUNDATION_PASS renderer=gl_compatibility",
+    "P4_UI_ELITE_PASS renderer=gl_compatibility",
+    "P4_UI_PASS",
+    "P4_MOTION_PASS",
+    "P4_VERIFY_PASS",
+    "P5_SECOND_LIFE carrier=cold wallet=4 day=31856",
+    "P5_SECOND_LIFE carrier=cold wallet=4 day=32587",
+    "P5_SECOND_LIFE carrier=warm wallet=4 day=31856",
+    "P5_RULE_PASS checks=542 failures=0",
+    "P5_CRASH_PASS terminations=40",
+    "P5_FIRST_FOUNDATION method=condense day=15716 wallet=29",
+    "P5_FIRST_FOUNDATION method=smooth day=16511 wallet=33",
+    "P5_WINDUP_SAVED",
+    "P5_DEATH_SAVED",
+    "P5_TRANSFER_SAVED",
+    "P5_REBIRTH_PASS carrier=warm wallet=4",
+    "P5_ENDING_PASS",
+    "P5_ENDING_PASS",
+    "P5_EXPORT_PASS",
+    "P5_VERIFY_PASS",
+    "P5_CLEAN_CHECKOUT_PASS"
+  ],
+  "export_files": [
+    {
+      "file": "CultivationRPG.exe",
+      "bytes": 104852480,
+      "sha256": "2f099ad62fdef78223c5060ad09073ce1829008e3efab3045a6c93ff4e3e215d"
+    },
+    {
+      "file": "CultivationRPG.pck",
+      "bytes": 635260,
+      "sha256": "78ea05ab8471f2ac4ac2577cb926023f912c8870aa9d95c48a3a73b1ce98e0c8"
+    }
+  ],
+  "local_distribution": {
+    "file": "CultivationRPG-P5-Windows-x64.zip",
+    "bytes": 39548135,
+    "sha256": "290bf7a5ec3a2df140b40c32cdae37f7cbfcfb8511eed873808f477ae511e318"
+  },
+  "process_crashes": {
+    "count": 40,
+    "transactions": [
+      "infuse",
+      "finish",
+      "death",
+      "transfer",
+      "rebirth"
+    ],
+    "boundaries": [
+      "before_write",
+      "partial_write",
+      "after_flush",
+      "after_verify",
+      "partial_backup",
+      "after_backup_write",
+      "after_backup_replace",
+      "after_main_replace"
+    ],
+    "results": [
+      "death:after_backup_replace",
+      "death:after_backup_write",
+      "death:after_flush",
+      "death:after_main_replace",
+      "death:after_verify",
+      "death:before_write",
+      "death:partial_backup",
+      "death:partial_write",
+      "finish:after_backup_replace",
+      "finish:after_backup_write",
+      "finish:after_flush",
+      "finish:after_main_replace",
+      "finish:after_verify",
+      "finish:before_write",
+      "finish:partial_backup",
+      "finish:partial_write",
+      "infuse:after_backup_replace",
+      "infuse:after_backup_write",
+      "infuse:after_flush",
+      "infuse:after_main_replace",
+      "infuse:after_verify",
+      "infuse:before_write",
+      "infuse:partial_backup",
+      "infuse:partial_write",
+      "rebirth:after_backup_replace",
+      "rebirth:after_backup_write",
+      "rebirth:after_flush",
+      "rebirth:after_main_replace",
+      "rebirth:after_verify",
+      "rebirth:before_write",
+      "rebirth:partial_backup",
+      "rebirth:partial_write",
+      "transfer:after_backup_replace",
+      "transfer:after_backup_write",
+      "transfer:after_flush",
+      "transfer:after_main_replace",
+      "transfer:after_verify",
+      "transfer:before_write",
+      "transfer:partial_backup",
+      "transfer:partial_write"
+    ]
+  },
+  "export_save_readback": {
+    "smooth": {
+      "header": {
+        "build": "p5",
+        "campaign_id": "qa-25210a3148ad-smooth",
+        "content": "white-sedge-campaign-1",
+        "rng_algorithm": "sha256-keyed-v1",
+        "schema": 5,
+        "sequence": 161
+      },
+      "checksum": "03e53ee62214d9b926bc2f57303398eb6ec216d8970c41ce7595bc07b4c8a0ca",
+      "day": 31861,
+      "mode": "active",
+      "end_reason": "",
+      "soul": {
+        "limit_years": 200,
+        "first_milestones": {
+          "foundation": 16506,
+          "late": 12853,
+          "middle": 11027,
+          "perfect": 14314
+        }
+      },
+      "stabilization_mastery": 2,
+      "bodies": [
+        {
+          "alive": false,
+          "born": -7305,
+          "died": 16511,
+          "id": "body.1",
+          "limit_years": 200,
+          "milestone": "foundation",
+          "practice_days": 60
+        },
+        {
+          "alive": true,
+          "born": 11763,
+          "died": -1,
+          "id": "body.2",
+          "limit_years": 200,
+          "milestone": "foundation",
+          "practice_days": 0
+        }
+      ],
+      "carrier": "warm",
+      "sensitive": true,
+      "area": "village",
+      "place": "court",
+      "sign_holder": "socket",
+      "quest": "asked",
+      "wallet": 4,
+      "quartz_left": 4,
+      "cache_raided": true,
+      "lo_wei_alive": false
+    },
+    "condense": {
+      "header": {
+        "build": "p5",
+        "campaign_id": "qa-25210a3148ad-condense",
+        "content": "white-sedge-campaign-1",
+        "rng_algorithm": "sha256-keyed-v1",
+        "schema": 5,
+        "sequence": 79
+      },
+      "checksum": "a23197b50c00cd97c99d01467ad85be33d36c68513ad4e1c6af9d3a8fdb7bc51",
+      "day": 15716,
+      "mode": "active",
+      "end_reason": "",
+      "soul": {
+        "limit_years": 200,
+        "first_milestones": {
+          "foundation": 15711,
+          "late": 12789,
+          "middle": 10963,
+          "perfect": 14250
+        }
+      },
+      "stabilization_mastery": 1,
+      "bodies": [
+        {
+          "alive": true,
+          "born": -7305,
+          "died": -1,
+          "id": "body.1",
+          "limit_years": 200,
+          "milestone": "foundation",
+          "practice_days": 0
+        }
+      ],
+      "carrier": "first",
+      "sensitive": true,
+      "area": "village",
+      "place": "court",
+      "sign_holder": "socket",
+      "quest": "gift",
+      "wallet": 29,
+      "quartz_left": 4,
+      "cache_raided": false,
+      "lo_wei_alive": false
+    },
+    "ending": {
+      "header": {
+        "build": "p5",
+        "campaign_id": "qa-ending-25210a3148ad",
+        "content": "white-sedge-campaign-1",
+        "rng_algorithm": "sha256-keyed-v1",
+        "schema": 5,
+        "sequence": 5
+      },
+      "checksum": "43a631762ebf35789e5c6f12d4bb247ce4c7ca0253a880e34b996ccf23cb83a6",
+      "day": 36525,
+      "mode": "ended",
+      "end_reason": "soul_expired",
+      "soul": {
+        "limit_years": 100,
+        "first_milestones": {}
+      },
+      "stabilization_mastery": 0,
+      "bodies": [
+        {
+          "alive": false,
+          "born": -7305,
+          "died": 0,
+          "id": "body.1",
+          "limit_years": 100,
+          "milestone": "initial",
+          "practice_days": 0
+        }
+      ],
+      "carrier": "first",
+      "sensitive": true,
+      "area": "village",
+      "place": "court",
+      "sign_holder": "spillway",
+      "quest": "new",
+      "wallet": 0,
+      "quartz_left": 6,
+      "cache_raided": false,
+      "lo_wei_alive": false
+    }
+  },
+  "logs": [
+    {
+      "file": "p5-rules.log",
+      "bytes": 252,
+      "sha256": "033ac2b436f5cf5893b2912ed3de893ef7e99084b9559549a697bd4c5f988a87"
+    },
+    {
+      "file": "p5-condense.log",
+      "bytes": 585,
+      "sha256": "0645e6f59197c2e0738264d628759a7891be270da3357798384fb95079a4fcbb"
+    },
+    {
+      "file": "p5-smooth.log",
+      "bytes": 774,
+      "sha256": "4ef00d0a6aad4011665d4fc77f476b3f76a0127115c8afa8e5ac27eff98a1cc5"
+    },
+    {
+      "file": "p5-combat-resume.log",
+      "bytes": 286,
+      "sha256": "1e3f108698752b6e12d79457ae5d06ef35411557baf6349fc6d7114c260719eb"
+    },
+    {
+      "file": "p5-transfer.log",
+      "bytes": 289,
+      "sha256": "96cda0967a6831e80eadf7452a8edbe860f5af00861f90443b1c969701ade1c6"
+    },
+    {
+      "file": "p5-second-life.log",
+      "bytes": 379,
+      "sha256": "ade75ad536b02d107dc819d37053e02275ff7c39723153a7802e4aca2a749eb1"
+    },
+    {
+      "file": "p5-ending.log",
+      "bytes": 222,
+      "sha256": "df08c88ef49ed8e5be53cd26c0d71772611339cc6c9cec9e4b7e6a3112928172"
+    },
+    {
+      "file": "p5-ending-reload.log",
+      "bytes": 222,
+      "sha256": "df08c88ef49ed8e5be53cd26c0d71772611339cc6c9cec9e4b7e6a3112928172"
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "p5-condense-foundation.png",
+      "bytes": 113618,
+      "sha256": "71ec35aaa89783bff4fab59cb58e57cf33ed33a5c20dd889e749dbacc814dd29"
+    },
+    {
+      "file": "p5-smooth-second-life.png",
+      "bytes": 141073,
+      "sha256": "b5e288eeaa7f78e3e0edc9c977be06caa97ce52f010e90b64d3dd67e238b74e3"
+    }
+  ]
+}

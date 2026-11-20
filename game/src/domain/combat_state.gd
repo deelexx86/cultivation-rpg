@@ -85,13 +85,14 @@ static func valid(s: CampaignState) -> bool:
 		return false
 	if c.warning_ticks < 0 or c.warning_ticks > 120 or (c.warning_ticks == 0) != (c.warning == ""):
 		return false
-	if c.wards < 0 or c.wards > 3 or c.medicine < 0 or c.medicine > 1 or (c.artifact and c.rank != "foundation"):
+	if c.wards < 0 or c.wards > 3 or c.medicine < 0 or c.medicine > (1 if s.slice.is_empty() else 2) or (c.artifact and c.rank != "foundation"):
 		return false
 	var has_crossing := s.event(P4Content.AMBUSH) != null and s.event(P4Content.AMBUSH).status == "applied"
-	var expected_count := (3 if c.rank == "qi" else 4) + int(has_crossing)
-	if c.actors.has(P4Content.CROSSING) != has_crossing or c.actors.has(P4Content.AIR) != (c.rank != "qi"):
+	var has_air: bool = c.rank != "qi" and s.slice.is_empty()
+	var expected_count := (4 if has_air else 3) + int(has_crossing)
+	if c.actors.has(P4Content.CROSSING) != has_crossing or c.actors.has(P4Content.AIR) != has_air:
 		return false
-	if s.body().milestone != ("initial" if c.rank == "qi" else c.rank):
+	if s.slice.is_empty() and s.body().milestone != ("initial" if c.rank == "qi" else c.rank):
 		return false
 	if c.actors.size() != expected_count or not c.actors.has(P4Content.HERO) or not c.actors.has(P4Content.YOUNG) or not c.actors.has(P4Content.HORNED):
 		return false
@@ -104,7 +105,7 @@ static func valid(s: CampaignState) -> bool:
 		if not P4Content.VITALS.has(id):
 			return false
 		var a: Dictionary = c.actors[id]
-		var limits: Dictionary = P4Content.VITALS[id]
+		var limits: Dictionary = SliceWorld.vitals(s) if id == P4Content.HERO else P4Content.VITALS[id]
 		if a.hp < 0 or a.hp > limits.hp or a.qi < 0 or a.qi > limits.qi * 1000 or a.shield < 0 or a.shield > 40 or a.shield_ticks < 0 or a.shield_ticks > 480 or (a.shield == 0) != (a.shield_ticks == 0):
 			return false
 		if a.armor < 0 or a.armor > (40 if id == P4Content.HORNED else 0) or a.heavy_hits < 0 or a.stagger < 0 or a.stagger > 30:

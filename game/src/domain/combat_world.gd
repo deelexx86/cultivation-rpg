@@ -112,7 +112,7 @@ static func engaged(s: CampaignState) -> bool:
 			return true
 	return not s.combat.projectiles.is_empty()
 
-static func lose_body(s: CampaignState) -> void:
+static func lose_body(s: CampaignState,reason: String = "combat") -> void:
 	var c := s.combat
 	var a: Dictionary = c.actors[HERO]
 	a.hp = 0
@@ -122,6 +122,9 @@ static func lose_body(s: CampaignState) -> void:
 	c.perception = false
 	c.meditating = false
 	c.queued = CombatState.order()
+	if not s.slice.is_empty():
+		SliceWorld.death(s,reason)
+		return
 	for item: Dictionary in s.materials.items:
 		if item.holder == s.body().id:
 			item.holder = "p4.corpse"
@@ -131,13 +134,14 @@ static func lose_body(s: CampaignState) -> void:
 
 static func begin_recovery(s: CampaignState, with_medicine: bool, ribs: bool) -> String:
 	var a: Dictionary = s.combat.actors[HERO]
-	if (ribs and not a.injury) or (not ribs and a.hp >= 100) or (with_medicine and (ribs or s.combat.medicine <= 0)):
+	if (ribs and not a.injury) or (not ribs and a.hp >= SliceWorld.vitals(s).hp) or (with_medicine and (ribs or s.combat.medicine <= 0)):
 		return "Лечение сейчас недоступно."
 	var days := WorldCalendar.add_years(s.day, 1) - s.day if ribs else (2 if with_medicine else 7)
 	var plan := Simulation.preview(s, days, 0, "", 100, 100, "recovery")
 	var result := Simulation.confirm(s, plan, "p4.%s.%d" % ["ribs" if ribs else "health", s.revision])
 	if result == "" and with_medicine:
 		s.combat.medicine -= 1
+		if not s.slice.is_empty(): SliceWorld.consume_carried(s,"medicine")
 	return result
 
 static func recover(s: CampaignState, operation: String) -> void:
@@ -146,7 +150,7 @@ static func recover(s: CampaignState, operation: String) -> void:
 		a.injury = false
 		a.heavy_hits = 0
 	else:
-		a.hp = mini(100, int(a.hp) + 50)
+		a.hp = mini(SliceWorld.vitals(s).hp, int(a.hp) + 50)
 
 static func arrive(s: CampaignState) -> void:
 	var c := s.combat
@@ -219,7 +223,7 @@ static func flow(s: CampaignState) -> void:
 		air_cost = 42 if CombatState.vec(hero.velocity).length() < 10 else 100
 	elif hero.flight == "artifact":
 		air_cost = 58 if CombatState.vec(hero.velocity).length() < 6 else 104
-	hero.qi = clampi(int(hero.qi) + passive(s) + (310 if c.meditating else 0) - upkeep - air_cost, 0, 100000)
+	hero.qi = clampi(int(hero.qi) + passive(s) + (310 if c.meditating else 0) - upkeep - air_cost, 0, int(SliceWorld.vitals(s).qi) * 1000)
 	if hero.qi == 0:
 		if c.perception:
 			c.perception = false
@@ -423,6 +427,7 @@ static func release(s: CampaignState, id: String, space: CombatSpace) -> void:
 	match card.kind:
 		"ward":
 			c.wards -= 1
+			if not s.slice.is_empty(): SliceWorld.consume_carried(s,"ward")
 			a.shield = 40
 			a.shield_ticks = 480
 		"blink":
@@ -523,6 +528,9 @@ static func hit(s: CampaignState, owner: String, id: String, card: Dictionary, s
 	var c := s.combat
 	var a: Dictionary = c.actors[id]
 	var damage: int = card.damage
+	if owner == HERO and not s.slice.is_empty() and s.slice.unstable > 0:
+		damage += 5
+		SliceWorld.drain(s)
 	if owner == HERO and c.rank in ["core", "soul"]:
 		damage += mini(4, damage / 4)
 	var kind: String = card.get("type", "plain")

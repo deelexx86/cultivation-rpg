@@ -70,6 +70,7 @@ class WorldEvent extends RefCounted:
 var campaign_id: String = "p1-demo"
 var exploration: Dictionary = {}
 var materials: Dictionary = {}
+var slice: Dictionary = {}
 var combat: Dictionary = {}
 var day: int = 0
 var revision: int = 0
@@ -141,6 +142,8 @@ func encode() -> Dictionary:
 		result["materials"] = materials.duplicate(true)
 	if not combat.is_empty():
 		result["combat"] = combat.duplicate(true)
+	if not slice.is_empty():
+		result["slice"] = slice.duplicate(true)
 	return result
 
 func fingerprint() -> String:

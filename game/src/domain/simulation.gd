@@ -5,20 +5,24 @@ extends RefCounted
 static func preview(state: CampaignState, duration: int, cost: int = 1, milestone: String = "", soul_years: int = 100, body_years: int = 100, kind: String = "practice") -> Dictionary:
 	var finish := state.day + duration
 	var life_day := state.soul_expiry()
-	if kind != "transfer_probe":
+	if kind not in ["transfer_probe","transfer"]:
 		life_day = mini(life_day, state.body_expiry())
 	var reason := ""
 	if duration <= 0 or duration > 1095728 or finish >= WorldCalendar.ordinal(3000):
 		reason = "Invalid duration or outside P1 pre-endgame range"
 	elif cost < 0 or cost > state.supplies:
 		reason = "Insufficient supplies"
+	elif state.slice.get("phase","") != "" and kind != "slice":
+		reason = "Завершите этап в камере."
 	elif state.running() != null:
 		reason = "Another action is running"
 	elif not state.materials.is_empty() and MaterialWorld.occupied(state):
 		reason = "Resolve the interrupted personal action first"
-	elif state.mode != "active" and not (kind == "transfer_probe" and state.mode == "body_dead"):
+	elif state.mode != "active" and not (kind in ["transfer_probe","transfer"] and state.mode == "body_dead"):
 		reason = "No living actor"
-	elif kind not in ["practice", "recovery", "transfer_probe", "travel_probe", "travel", "study", "craft"] or soul_years < 100 or soul_years > 5000 or body_years <= 0 or body_years > 5000:
+	elif kind in ["slice","transfer"] and state.slice.is_empty():
+		reason = "Integrated campaign required"
+	elif kind not in ["practice", "recovery", "transfer_probe", "travel_probe", "travel", "study", "craft", "slice", "transfer"] or soul_years < 100 or soul_years > 5000 or body_years <= 0 or body_years > 5000:
 		reason = "Invalid method parameters"
 	elif kind == "travel" and state.exploration.is_empty():
 		reason = "No playable route in this campaign"
@@ -28,7 +32,7 @@ static func preview(state: CampaignState, duration: int, cost: int = 1, mileston
 	for obligation: CampaignState.Obligation in state.obligations:
 		if obligation.active and obligation.body == state.body().id:
 			obligations.append(obligation.id)
-	var result := {"fingerprint": state.fingerprint(), "revision": state.revision, "duration": duration, "cost": cost, "milestone": milestone, "soul_years": soul_years, "body_years": body_years, "kind": kind, "finish": finish, "soul_age_days": finish - state.soul.born, "body_age_days": finish - state.body().born if kind != "transfer_probe" else -1, "life_boundary": life_day, "fatal": finish >= life_day, "reason": reason, "known_obligations": obligations, "risk": "Prepared technical fixture; interruption possible. Personal promises can expire; hidden dates are not disclosed."}
+	var result := {"fingerprint": state.fingerprint(), "revision": state.revision, "duration": duration, "cost": cost, "milestone": milestone, "soul_years": soul_years, "body_years": body_years, "kind": kind, "finish": finish, "soul_age_days": finish - state.soul.born, "body_age_days": finish - state.body().born if kind not in ["transfer_probe","transfer"] else -1, "life_boundary": life_day, "fatal": finish >= life_day, "reason": reason, "known_obligations": obligations, "risk": "Prepared technical fixture; interruption possible. Personal promises can expire; hidden dates are not disclosed."}
 	result["checksum"] = JSON.stringify(result).sha256_text()
 	return result
 
@@ -75,7 +79,7 @@ static func expire(state: CampaignState) -> void:
 	if state.body().alive and state.body_expiry() <= state.day:
 		lose_body(state, "body_expired")
 	var action := state.running()
-	if action != null and (state.mode == "ended" or (state.mode == "body_dead" and action.kind != "transfer_probe")):
+	if action != null and (state.mode == "ended" or (state.mode == "body_dead" and action.kind not in ["transfer_probe","transfer"])):
 		action.status = "stopped"
 
 static func lose_body(state: CampaignState, reason: String) -> void:
@@ -90,7 +94,7 @@ static func lose_body(state: CampaignState, reason: String) -> void:
 			obligation.ended = state.day
 			state.record("obligation_ended:" + obligation.id)
 	if not state.combat.is_empty():
-		CombatWorld.lose_body(state)
+		CombatWorld.lose_body(state,reason)
 
 static func apply_event(state: CampaignState, event: CampaignState.WorldEvent) -> void:
 	var allowed := true
@@ -111,6 +115,7 @@ static func apply_event(state: CampaignState, event: CampaignState.WorldEvent) -
 		"death":
 			state.person(event.target).alive = false
 			state.person(event.target).died = state.day
+			if event.target == SedgeWorld.LO and not state.slice.is_empty(): state.exploration.source = "flooded"
 			for obligation: CampaignState.Obligation in state.obligations:
 				if obligation.person == event.target and obligation.active:
 					obligation.active = false
@@ -132,16 +137,19 @@ static func apply_event(state: CampaignState, event: CampaignState.WorldEvent) -
 		if event.id == P4Content.AMBUSH and not state.combat.is_empty():
 			CombatWorld.prepare_crossing(state)
 
+static func milestone(state: CampaignState, stage: String, body_years: int, soul_years: int) -> void:
+	state.body().milestone = stage
+	state.body().limit_years = maxi(state.body().limit_years, body_years)
+	if not state.soul.first_milestones.has(stage):
+		state.soul.first_milestones[stage] = state.day
+		state.soul.limit_years = maxi(state.soul.limit_years, soul_years)
+		state.record("first_milestone:" + stage)
+
 static func complete(state: CampaignState, action: CampaignState.Action) -> void:
 	if action.status != "running" or action.progress != action.duration:
 		return
 	if not action.milestone.is_empty():
-		state.body().milestone = action.milestone
-		state.body().limit_years = maxi(state.body().limit_years, action.body_years)
-		if not state.soul.first_milestones.has(action.milestone):
-			state.soul.first_milestones[action.milestone] = state.day
-			state.soul.limit_years = maxi(state.soul.limit_years, action.soul_years)
-			state.record("first_milestone:" + action.milestone)
+		milestone(state,action.milestone,action.body_years,action.soul_years)
 	if action.kind == "travel":
 		SedgeWorld.arrive(state)
 		if not state.combat.is_empty():
@@ -151,6 +159,7 @@ static func complete(state: CampaignState, action: CampaignState.Action) -> void
 	if action.kind in ["study","craft"]:
 		MaterialWorld.finish(state,action.id)
 	action.status = "complete"
+	if not state.slice.is_empty(): SliceWorld.completed(state,action)
 	state.record("completed:" + action.id)
 
 static func next_boundary(state: CampaignState, budget: int) -> int:
@@ -164,6 +173,9 @@ static func next_boundary(state: CampaignState, budget: int) -> int:
 	for event: CampaignState.WorldEvent in state.events:
 		if event.status == "pending":
 			boundary = mini(boundary, event.day)
+	if not state.slice.is_empty():
+		for deadline: int in [state.slice.raid,state.slice.decay]:
+			if deadline > state.day: boundary = mini(boundary,deadline)
 	return MaterialWorld.next_boundary(state,boundary)
 
 static func step(state: CampaignState, budget: int) -> String:
@@ -182,6 +194,7 @@ static func step(state: CampaignState, budget: int) -> String:
 	if action.kind == "practice":
 		state.body().practice_days += elapsed
 	state.day = boundary
+	if not state.slice.is_empty(): SliceWorld.calendar(state)
 	expire(state)
 	for event: CampaignState.WorldEvent in EventGraph.due(state):
 		apply_event(state, event)

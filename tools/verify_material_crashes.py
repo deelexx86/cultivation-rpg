@@ -15,15 +15,19 @@ def main():
     parser.add_argument("--godot", type=Path, required=True)
     parser.add_argument("--game", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--slice", action="store_true", help="Exercise integrated chamber and transfer checkpoints")
     args = parser.parse_args()
-    destination = args.output.resolve() / f"material-crashes-{time.time_ns()}"
+    kinds = ("infuse", "finish", "death", "transfer", "rebirth") if args.slice else KINDS
+    phase = "P5" if args.slice else "P3"
+    worker = "slice_crash_worker" if args.slice else "material_crash_worker"
+    destination = args.output.resolve() / f"{worker}-{time.time_ns()}"
     destination.mkdir(parents=True)
     engine = args.godot.resolve()
     if engine.name.endswith("_console.exe"):
         engine = engine.with_name(engine.name.replace("_console.exe", ".exe"))
     command = [str(engine), "--headless", "--path", str(args.game.resolve()),
-               "--script", "res://tests/material_crash_worker.gd", "--"]
-    for kind in KINDS:
+               "--script", f"res://tests/{worker}.gd", "--"]
+    for kind in kinds:
         for stage in STAGES:
             slot = destination / f"{kind}-{stage}"
             log = destination / f"{kind}-{stage}-writer.log"
@@ -43,10 +47,10 @@ def main():
                                     capture_output=True, text=True, encoding="utf-8", timeout=20)
             content = result.stdout + result.stderr
             (destination / f"{kind}-{stage}-recovery.log").write_text(content, encoding="utf-8")
-            if result.returncode or "P3_CRASH_RECOVERY_PASS:" not in content or re.search(r"SCRIPT ERROR:|ERROR:", content):
+            if result.returncode or f"{phase}_CRASH_RECOVERY_PASS:" not in content or re.search(r"SCRIPT ERROR:|ERROR:", content):
                 raise RuntimeError(f"Recovery failed at {kind}/{stage}: {content}")
-        print(f"P3_CRASH_KIND_PASS {kind} stages={len(STAGES)}", flush=True)
-    print(f"P3_CRASH_PASS terminations={len(KINDS)*len(STAGES)} evidence={destination}")
+        print(f"{phase}_CRASH_KIND_PASS {kind} stages={len(STAGES)}", flush=True)
+    print(f"{phase}_CRASH_PASS terminations={len(kinds)*len(STAGES)} evidence={destination}")
 
 
 if __name__ == "__main__":

@@ -24,13 +24,25 @@ static func fresh(id: String) -> CampaignState:
 	var s := SedgeWorld.fresh(id)
 	s.seed_value = "p3-fixed-1"
 	var stock := {}
-	for key: String in P3Content.data().offers: stock[key] = P3Content.data().offers[key].count
+	for key: String in offers(s): stock[key] = offers(s)[key].count
 	s.materials = {"profile":P3Content.data().profile, "wallet":80, "paid":0, "earned":0, "serial":0, "root":"standing", "quartz_left":6, "stock":stock, "notes":{}, "items":[], "jobs":[], "method":"", "pledged":0}
 	var npc := CampaignState.Person.new()
 	npc.id = MENTOR
 	s.people.append(npc)
 	s.events.append(P1Fixture.event("shen-yu.death",WorldCalendar.ordinal(60),"death",MENTOR))
 	return s
+
+static func offers(s: CampaignState) -> Dictionary:
+	if s.slice.is_empty(): return P3Content.data().offers
+	var result: Dictionary = P3Content.data().offers.duplicate()
+	result.merge(SliceWorld.SHOP)
+	return result
+
+static func sale_prices(s: CampaignState) -> Dictionary:
+	if s.slice.is_empty(): return P3Content.data().sell
+	var result: Dictionary = P3Content.data().sell.duplicate()
+	result.merge({"bone_plate":3,"horn_plate":6})
+	return result
 
 static func item(s: CampaignState, id: String) -> Dictionary:
 	for row: Dictionary in s.materials.items:
@@ -80,6 +92,8 @@ static func room(s: CampaignState, count: int) -> bool:
 	return used + count <= int(P3Content.data().vessel_capacity)
 
 static func item_weight(kind: String, combat: bool) -> int:
+	if combat and kind == "flight_board": return 900
+	if combat and kind in ["ward","medicine"]: return 100
 	if combat and kind in ["bone_plate", "horn_plate"]:
 		return 350 if kind == "bone_plate" else 650
 	return P3Content.data().weights.get(kind, -1)
@@ -92,7 +106,7 @@ static func weight(s: CampaignState) -> int:
 	return total
 
 static func buy(s: CampaignState, offer: String) -> String:
-	var offers: Dictionary = P3Content.data().offers
+	var offers: Dictionary = offers(s)
 	if not offers.has(offer): return "Нет такого предложения."
 	if (offer.begins_with("lo.") and not s.person(SedgeWorld.LO).alive) or (offer.begins_with("yin.") and (s.person(SedgeWorld.LO).alive or s.day < WorldCalendar.ordinal(24))): return "Продавец или поставка недоступны."
 	if s.materials.stock[offer] <= 0: return "Конечное предложение исчерпано."
@@ -104,6 +118,7 @@ static func buy(s: CampaignState, offer: String) -> String:
 	return ""
 
 static func extract(s: CampaignState, command: String) -> String:
+	if not s.slice.get("sensitive",true): return "Новому телу нужна практика чувствительности у наставника."
 	if equipment(s,"kit") == "" or not room(s,2 if command.begins_with("root.") else 1): return "Нужны набор сбора и свободный подходящий сосуд."
 	if command.begins_with("root."):
 		if s.materials.root != "standing": return "Источник уже извлечён; нового роста нет."
@@ -152,6 +167,8 @@ static func occupied(s: CampaignState) -> bool:
 	return false
 
 static func start(s: CampaignState, recipe: String, input_id: String) -> String:
+	if not s.slice.is_empty() and not s.slice.sensitive and recipe not in ["order","learn.herbalism","learn.alchemy"]:
+		return "Новому телу нужна практика чувствительности у наставника."
 	var learn := recipe.begins_with("learn.")
 	if (learn or recipe == "order") and not at_workshop(s): return "Посетите мастерскую у зелёного навеса."
 	var def: Dictionary
@@ -218,6 +235,7 @@ static func finish(s: CampaignState, id: String) -> void:
 		var parent_ids: Array[String] = []
 		parent_ids.assign(row.inputs)
 		var output := add_item(s,def.output,item(s,row.inputs[0]).origin,parent_ids,id)
+		item(s,output).owner = row.customer
 		row.outputs.append(output)
 	row.status = "ready"
 	if def.mode == "active":
@@ -326,7 +344,7 @@ static func choose(s: CampaignState, method: String) -> String:
 	return ""
 
 static func apply(s: CampaignState, command: String, argument: String = "") -> String:
-	if s.materials.is_empty() or s.mode != "active" or occupied(s) or s.exploration.place != SedgeWorld.YARD: return "Завершите текущую работу или вернитесь во двор."
+	if (not s.slice.is_empty() and s.slice.phase != "") or s.materials.is_empty() or s.mode != "active" or occupied(s) or s.exploration.place != SedgeWorld.YARD: return "Завершите текущую работу или вернитесь во двор."
 	if command in ["visit","stash","retrieve"] and not at_workshop(s): return "Посетите мастерскую у зелёного навеса."
 	var result := ""
 	match command:
@@ -339,8 +357,8 @@ static func apply(s: CampaignState, command: String, argument: String = "") -> S
 		"choose": result = choose(s,argument)
 		"sell":
 			var raw := item(s,argument)
-			if raw.is_empty() or not P3Content.data().sell.has(raw.kind) or raw.holder != s.body().id or raw.reserved != "": return "Материал недоступен для продажи."
-			var amount: int = P3Content.data().sell[raw.kind]
+			if raw.is_empty() or not sale_prices(s).has(raw.kind) or raw.holder != s.body().id or raw.reserved != "": return "Материал недоступен для продажи."
+			var amount: int = sale_prices(s)[raw.kind]
 			s.materials.wallet += amount
 			s.materials.earned += amount
 			raw.holder = "merchant"
@@ -362,6 +380,7 @@ static func apply(s: CampaignState, command: String, argument: String = "") -> S
 			if command.begins_with("recipe."): result = start(s,command.trim_prefix("recipe."),argument)
 			else: return "Неизвестная материальная операция."
 	if result == "":
+		if not s.slice.is_empty(): SliceWorld.sync_consumables(s)
 		s.record("material:"+command+":"+argument)
 		s.revision += 1
 	return result
@@ -370,11 +389,11 @@ static func problems(s: CampaignState) -> PackedStringArray:
 	var errors := PackedStringArray()
 	var m := s.materials
 	if s.exploration.is_empty() or not StateCodec.shape(m,schema()): return PackedStringArray(["Invalid material shape"])
-	if m.profile != P3Content.data().profile or m.wallet < 0 or m.paid < 0 or m.earned < 0 or m.wallet != 80 + m.earned - m.paid or m.pledged < 0 or m.pledged > m.wallet or m.serial < 0 or m.root not in ["standing","intact","parts"] or m.quartz_left < 0 or m.quartz_left > 6: errors.append("Invalid material economy/source")
+	if m.profile != P3Content.data().profile or m.wallet < 0 or m.paid < 0 or m.earned < 0 or m.wallet != 80 + m.earned - m.paid - SliceWorld.stored_stones(s) or m.pledged < 0 or m.pledged > m.wallet or m.serial < 0 or m.root not in ["standing","intact","parts"] or m.quartz_left < 0 or m.quartz_left > 6: errors.append("Invalid material economy/source")
 	if s.person(MENTOR) == null: errors.append("Missing material teacher")
-	if m.stock.size() != P3Content.data().offers.size(): errors.append("Invalid offer keys")
+	if m.stock.size() != offers(s).size(): errors.append("Invalid offer keys")
 	for key: String in m.stock:
-		if not P3Content.data().offers.has(key) or m.stock[key] < 0 or m.stock[key] > P3Content.data().offers[key].count: errors.append("Invalid finite stock")
+		if not offers(s).has(key) or m.stock[key] < 0 or m.stock[key] > offers(s)[key].count: errors.append("Invalid finite stock")
 	var ids := {}
 	var root_units := 0
 	var quartz_units := 0
@@ -390,31 +409,33 @@ static func problems(s: CampaignState) -> PackedStringArray:
 				var key: String = raw.origin.trim_prefix("shop.")
 				purchases[key] = purchases.get(key,0)+1
 		if raw.holder == "merchant":
-			if not P3Content.data().sell.has(raw.kind): errors.append("Unsaleable merchant item")
-			else: sales += int(P3Content.data().sell[raw.kind])
+			if not sale_prices(s).has(raw.kind): errors.append("Unsaleable merchant item")
+			else: sales += int(sale_prices(s)[raw.kind])
 		if raw.created < 0 or raw.created > s.day or raw.age < 0 or (raw.origin == ROOT and raw.age != 600) or raw.purity not in ["clean","tainted"] or raw.energy not in ["retained","reduced","unstable"] or raw.integrity not in ["whole","part","damaged"]: errors.append("Invalid material provenance/quality")
-		if raw.owner != ("merchant" if raw.holder == "merchant" else s.body().id): errors.append("Invalid material ownership")
+		if (raw.holder == "merchant" and raw.owner != "merchant") or (raw.holder != "merchant" and not SliceWorld.body_owner(s,raw.owner)): errors.append("Invalid material ownership")
 		var combat_material: bool = not s.combat.is_empty() and ((raw.origin == P4Content.YOUNG and raw.kind == "bone_plate") or (raw.origin == P4Content.HORNED and raw.kind == "horn_plate"))
-		if not combat_material and raw.origin not in [ROOT,QUARTZ] and not P3Content.data().offers.has(raw.origin.trim_prefix("shop.")): errors.append("Unknown material origin")
+		var hall_item: bool = not s.slice.is_empty() and raw.origin == "hall" and raw.kind == "flight_board" and s.exploration.gate
+		if not hall_item and not combat_material and raw.origin not in [ROOT,QUARTZ] and not offers(s).has(raw.origin.trim_prefix("shop.")): errors.append("Unknown material origin")
 		if raw.container != "" and (item(s,raw.container).get("kind","") != "vessel" or raw.holder in ["consumed","merchant"]): errors.append("Invalid container linkage")
 		if raw.container != "":
 			var vessel := item(s,raw.container)
-			if not vessel.is_empty() and raw.holder != vessel.holder and not (raw.holder.begins_with("p3.job.") and vessel.holder == s.body().id and job(s,raw.holder).get("executor","") == "self"): errors.append("Container and content have conflicting locations")
+			if not vessel.is_empty() and raw.holder != vessel.holder and not (raw.holder.begins_with("p3.job.") and vessel.owner == raw.owner and job(s,raw.holder).get("executor","") == "self"): errors.append("Container and content have conflicting locations")
 		for parent: String in raw.parents:
 			if parent == raw.id or item(s,parent).is_empty() or item(s,parent).holder != "consumed" or item(s,parent).origin != raw.origin: errors.append("Broken material lineage")
 		if raw.reserved == PLAN:
 			if m.method == "" or raw.holder != s.body().id: errors.append("Invalid preparation reservation")
+		elif raw.reserved == "chamber" and not s.slice.is_empty() and s.slice.phase != "" and raw.holder == s.body().id: pass
 		elif raw.reserved != "":
 			var work := job(s,raw.reserved)
 			if work.is_empty() or work.status not in ["running","ready","stopped"] or (raw.id not in work.inputs and raw.id not in work.equipment): errors.append("Orphaned material reservation")
 		if raw.holder.begins_with("p3.job."):
 			var work := job(s,raw.holder)
 			if work.is_empty() or (raw.id not in work.inputs and raw.id not in work.outputs): errors.append("Orphaned workshop item")
-		elif raw.holder not in [s.body().id,"consumed","merchant","court.cache"] and not (raw.holder == "p4.corpse" and not s.combat.is_empty() and not s.body().alive): errors.append("Unknown material holder")
+		elif raw.holder not in [s.body().id,"consumed","merchant","court.cache"] and not SliceWorld.property_holder(s,raw) and not (raw.holder == "p4.corpse" and not s.combat.is_empty() and not s.body().alive): errors.append("Unknown material holder")
 	var jobs := {}
 	var expenses := 0
-	for key: String in P3Content.data().offers:
-		var offer: Dictionary = P3Content.data().offers[key]
+	for key: String in offers(s):
+		var offer: Dictionary = offers(s)[key]
 		if m.stock.has(key):
 			var bought: int = offer.count-m.stock[key]
 			expenses += bought*int(offer.price)
@@ -422,7 +443,7 @@ static func problems(s: CampaignState) -> PackedStringArray:
 	if sales != m.earned: errors.append("Sale ledger mismatch")
 	if root_units != (0 if m.root == "standing" else 1 if m.root == "intact" else 2) or quartz_units != 6-int(m.quartz_left): errors.append("Source/material conservation failure")
 	for row: Dictionary in m.jobs:
-		if jobs.has(row.id) or row.id == "" or row.status not in ["running","ready","claimed","cancelled","stopped"] or row.start < 0 or row.start > s.day or row.due <= row.start or row.executor not in ["self","workshop"] or row.customer != s.body().id: errors.append("Invalid material process")
+		if jobs.has(row.id) or row.id == "" or row.status not in ["running","ready","claimed","cancelled","stopped"] or row.start < 0 or row.start > s.day or row.due <= row.start or row.executor not in ["self","workshop"] or not SliceWorld.body_owner(s,row.customer): errors.append("Invalid material process")
 		jobs[row.id] = true
 		if row.recipe.begins_with("learn."):
 			if not P3Content.data().training.has(row.recipe.trim_prefix("learn.")): errors.append("Unknown training")
@@ -446,7 +467,7 @@ static func problems(s: CampaignState) -> PackedStringArray:
 	for key: String in m.notes:
 		if m.notes[key] < 0 or m.notes[key] > s.day: errors.append("Future material observation")
 	if m.method not in ["","smooth","smooth-reserve","condense"] or (m.method == "") != (m.pledged == 0): errors.append("Invalid preparation method")
-	if expenses != m.paid: errors.append("Material expense ledger mismatch")
+	if expenses + int(s.slice.get("fees",0)) != m.paid: errors.append("Material expense ledger mismatch")
 	var reserved: Array[Dictionary] = []
 	for raw: Dictionary in m.items:
 		if raw.reserved == PLAN: reserved.append(raw)

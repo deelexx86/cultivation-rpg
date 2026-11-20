@@ -5,6 +5,7 @@ var pivot := Node3D.new()
 var arm := SpringArm3D.new()
 var actor: Node3D
 var locked := false
+var appearance := "character-female-b"
 var external_motion := false
 var load_factor := 1.0
 
@@ -16,7 +17,7 @@ func _ready() -> void:
 	collider.shape = capsule
 	collider.position.y = 0.78
 	add_child(collider)
-	actor = SedgeLandscape.model(self,SedgeLandscape.PEOPLE,"character-female-b",Vector3.ZERO,Vector3.ONE*2.4,PI)
+	actor = SedgeLandscape.model(self,SedgeLandscape.PEOPLE,appearance,Vector3.ZERO,Vector3.ONE*2.4,PI)
 	add_child(pivot)
 	pivot.position.y = 1.35
 	pivot.add_child(arm)
@@ -28,6 +29,14 @@ func _ready() -> void:
 	camera.fov = 65
 	arm.add_child(camera)
 	camera.current = true
+
+func show_carrier(s: CampaignState) -> void:
+	if s.slice.is_empty() or s.active_body==0: return
+	var model_id := "character-male-f" if s.slice.carrier=="cold" else "character-male-b"
+	if model_id==appearance: return
+	appearance = model_id
+	actor.queue_free()
+	actor = SedgeLandscape.model(self,SedgeLandscape.PEOPLE,appearance,Vector3.ZERO,Vector3.ONE*2.4,PI)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if locked: return

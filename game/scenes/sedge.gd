@@ -1,6 +1,6 @@
 extends Node3D
 
-const NAMES := {"merchant":"Торговец", "root":"Бледные цветы", "sign":"Медный блеск", "gate":"Старый затвор", "ferry":"Переправа", "retreat":"Уединение", "mentor":"Шэнь Юй · обучение и мастерская", "quartz":"Светлая порода", "shop":"Лавка"}
+const NAMES := {"steps":"Осыпавшиеся ступени","merchant":"Торговец", "root":"Бледные цветы", "sign":"Медный блеск", "gate":"Старый затвор", "ferry":"Переправа", "retreat":"Уединение", "mentor":"Шэнь Юй · обучение и мастерская", "quartz":"Светлая порода", "shop":"Лавка"}
 const NOTES := {"accept":"Ло Вэй просил вернуть знак из водосброса.", "decline":"Я отказалась от просьбы Ло Вэя.", "take":"У старого водосброса найден медный знак.", "return":"Я вернула знак. Ло Вэй дал мне припасы.", "gift":"Ло Вэй доверил мне свой ключ к формации.", "notch":"На обороте знака — насечка с разрывом.", "open":"Знак установлен. Каменная решётка открыта.", "rope":"Я удержала канат. Вода поднялась.", "observe.dry":"Осмотр берега: прозрачные прожилки под сухим илом.", "observe.flooded":"Осмотр берега: корни скрыты под свежей водой.", "interpret.dry":"По прожилкам предполагаю стеклянный корень. Для извлечения нужно травничество.", "interpret.flooded":"После разлива прежний способ осмотра непригоден.", "successor":"Инь Цю сообщил о смерти Ло Вэя. Личного обещания он не давал."}
 var session: SedgeSession
 var land: SedgeLandscape
@@ -13,11 +13,14 @@ var column := VBoxContainer.new()
 var target := ""
 var elapsed := 0.0
 var smoke := false
+var integrated: SliceSession
+var journey_ui: SlicePanel
 var p3 := false
 var material_ui: MaterialPanel
 
 func _ready() -> void:
-	p3 = "--p3" in OS.get_cmdline_user_args()
+	integrated = SliceSession.current
+	p3 = integrated != null or "--p3" in OS.get_cmdline_user_args()
 	smoke = "--p2-smoke" in OS.get_cmdline_user_args()
 	var p3_smoke := "--p3-smoke" in OS.get_cmdline_user_args()
 	if p3_smoke: smoke = true
@@ -30,30 +33,39 @@ func _ready() -> void:
 		for arg in OS.get_cmdline_user_args():
 			if arg.begins_with("--slot="): id = arg.trim_prefix("--slot=")
 	if p3: base = "user://sedge-materials-smoke" if smoke else "user://sedge-materials"
-	session = SedgeSession.new(MaterialWorld.fresh(id) if p3 else SedgeWorld.fresh(id),SnapshotStore.new(base,id,true,p3))
-	var storage := session.store
-	if FileAccess.file_exists(storage.path("current.json")) or FileAccess.file_exists(storage.path("previous.json")):
-		if not session.reload():
+	if integrated != null:
+		session = integrated
+		journey_ui = SlicePanel.new(self)
+	else:
+		session = SedgeSession.new(MaterialWorld.fresh(id) if p3 else SedgeWorld.fresh(id),SnapshotStore.new(base,id,true,p3))
+		var storage := session.store
+		if FileAccess.file_exists(storage.path("current.json")) or FileAccess.file_exists(storage.path("previous.json")):
+			if not session.reload():
+				push_error(session.error)
+				get_tree().quit(1)
+				return
+		elif not session.save():
 			push_error(session.error)
 			get_tree().quit(1)
 			return
-	elif not session.save():
-		push_error(session.error)
-		get_tree().quit(1)
-		return
 	get_tree().auto_accept_quit = false
 	SedgeLandscape.light(self)
 	player = SedgePlayer.new()
+	if integrated != null and session.state.active_body>0: player.appearance = "character-male-f" if session.state.slice.carrier=="cold" else "character-male-b"
 	add_child(player)
 	if p3: material_ui = MaterialPanel.new(self)
 	build_ui()
 	enter()
 	restore_action()
-	if p3_smoke: call_deferred("material_tour")
+	if integrated != null:
+		if not panel.visible: journey_ui.main()
+		if "--p5-tour" in OS.get_cmdline_user_args(): SliceTour.start.call_deferred(self)
+	elif p3_smoke: call_deferred("material_tour")
 	elif smoke: call_deferred("tour")
 	elif p3 and session.state.materials.items.is_empty(): material_ui.guide()
 
 func enter() -> void:
+	player.show_carrier(session.state)
 	if land != null:
 		remove_child(land)
 		land.queue_free()
@@ -115,7 +127,8 @@ func refresh() -> void:
 	var name_text := "Торговый двор" if s.exploration.place == "court" else "Дальний берег"
 	heading.text = "Белая осока   /   %s    ·    %s" % [name_text, WorldCalendar.label(s.day)]
 	if p3:
-		heading.text += "\nP3 · Камни: %d  ·  Душа: %d/%d  ·  Тело: %d/%d" % [s.materials.wallet,WorldCalendar.age_years(s.soul.born,s.day),s.soul.limit_years,WorldCalendar.age_years(s.body().born,s.day),s.body().limit_years]
+		heading.text += "\nP3 · Камни: %d  ·  Душа: %d/%d  ·  Тело: %d/%d" % [s.materials.wallet,WorldCalendar.age_years(s.soul.born,s.day),s.soul.limit_years,WorldCalendar.age_years(s.body().born,s.day if s.body().alive else s.body().died),s.body().limit_years]
+		if integrated != null: heading.text = heading.text.replace("P3 · ",SliceWorld.NAMES[SliceWorld.STAGES.find(s.body().milestone)]+" · ")
 		player.load_factor = 0.55 if MaterialWorld.weight(s) > int(P3Content.data().carry_grams) else 1.0
 		if player.load_factor < 1.0: heading.text += " · Перегрузка"
 
@@ -184,6 +197,9 @@ func button(label: String, callback: Callable) -> void:
 	column.add_child(control)
 
 func close_panel() -> void:
+	if integrated != null and journey_ui.locked():
+		journey_ui.main()
+		return
 	if p3 and session.state.running() != null and session.state.running().kind != "travel":
 		material_ui.work()
 		return
@@ -209,6 +225,12 @@ func act(command: String) -> void:
 	show_panel("Запись в журнале",NOTES.get(command,NOTES.get(command+"."+str(session.state.exploration.source),"Сведения сохранены.")))
 
 func interact(key: String) -> void:
+	if integrated != null and key == "steps":
+		show_panel("Старая водоотводная кладка","Нижний пролёт осыпался. Вы помните, как шов в камне огибал склон. Печать прежней техники сохранилась, но ранняя Ци ещё не держит полётную доску.",{"Сверить кладку и пройти обходом":journey_ui.preview.bind("survey")})
+		return
+	if integrated != null and key == "retreat":
+		journey_ui.main()
+		return
 	if p3:
 		match key:
 			"mentor":
@@ -226,11 +248,13 @@ func interact(key: String) -> void:
 					failure()
 					return
 				show_panel("Инь Цю","Старик умер. Я взял его лавку, но о медном знаке мы с ним не говорили.")
+			elif not s.obligations.is_empty() and s.obligations[0].body != s.body().id:
+				show_panel("Ло Вэй","Прежде мы не встречались. Если ищете товары, они под навесом.")
 			elif e.story == "new":
 				show_panel("Ло Вэй","Видишь колесо за осокой? Там я обронил медный знак. Сил спуститься к затвору уже нет. Верни его — поделюсь припасами.",{"Я поищу знак":act.bind("accept"),"Прости, у меня свой путь":act.bind("decline")})
-			elif e.story == "asked" and e.holder == s.body().id:
+			elif e.story == "asked" and s.obligations[0].active and e.holder == s.body().id:
 				show_panel("Ло Вэй","Узнаю потёртый край. Ты могла оставить его себе. Вот припасы, как обещал. Загляни ещё как-нибудь.",{"Передать знак":act.bind("return")})
-			elif e.story == "returned" and s.day > int(e.notes["return"]):
+			elif e.story == "returned" and s.obligations[0].body == s.body().id and s.day > int(e.notes["return"]):
 				show_panel("Ло Вэй","Я всю жизнь берег ключ, а пройти так и не решился. Куда ведёт затвор — не знаю. Возьми его. Ты ведь уже однажды выбрала вернуть его мне.",{"Принять его просьбу":act.bind("gift")})
 			else:
 				show_panel("Ло Вэй",{"asked":"Ищи под колесом, у старого водосброса.","declined":"Что ж. Тогда просто посиди в тени.","returned":"Сегодня я хочу подержать его сам. До другой встречи.","gift":"Ищи разрыв в узоре камня."}.get(e.story,""))
@@ -246,6 +270,7 @@ func interact(key: String) -> void:
 			if e.holder == s.body().id:
 				options["Осмотреть оборот знака"] = act.bind("notch")
 				if e.notes.has("notch") or e.notes.has("gift"): options["Вставить знак в оправу"] = act.bind("open")
+			if integrated != null and e.gate and not s.flags.has("hall.board"): options["Взять полётную доску в зале"] = journey_ui.preview.bind("board")
 			show_panel("Старый затвор","Порог свободен. За ним тот самый каменный зал." if e.gate else "Сквозь решётку виден зал. Узор на оправе прерывается.",options)
 		"retreat":
 			var days := WorldCalendar.add_years(s.day,16)-s.day
@@ -253,8 +278,10 @@ func interact(key: String) -> void:
 			show_panel("Уединение у дальней пристани","Практика займёт 16 лет. Выход: %s. Мир продолжит жить; пожилые знакомые могут не дождаться. Личные обещания могут утратить силу." % WorldCalendar.label(plan.finish),{"Подтвердить уединение":retreat.bind(plan)})
 		"ferry":
 			var plan := SedgeWorld.route_plan(s)
+			var warning := ""
+			if s.slice.get("unstable",0) > 0 and s.slice.decay <= plan.finish: warning = " Нестабильная Ци распадётся в пути."
 			var destination := "дальний берег" if e.place=="court" else "торговый двор"
-			show_panel("Переправа","Путь на %s: 3 дня + 2 дня из-за разлива. Прибытие %s. В пути возможна остановка." % [destination,WorldCalendar.label(plan.finish)],{"Отправиться":start_trip.bind(plan)})
+			show_panel("Переправа","Путь на %s: 3 дня + 2 дня из-за разлива. Прибытие %s. В пути возможна остановка." % [destination,WorldCalendar.label(plan.finish)]+warning,{"Отправиться":start_trip.bind(plan)})
 
 func assess_root() -> void:
 	var response := "Метод извлечения освоен." if SedgeWorld.qualified(session.state) else "Я знаю, где искать корень, но не умею отделить оболочку от живых волокон. Нужно учиться травничеству."
@@ -273,6 +300,9 @@ func retreat(plan: Dictionary) -> void:
 	restore_action()
 
 func restore_action() -> void:
+	if integrated != null and journey_ui.locked():
+		journey_ui.main()
+		return
 	var active := session.state.running()
 	if p3 and active == null and MaterialWorld.occupied(session.state) and SedgeWorld.active_trip(session.state) == null:
 		material_ui.work()
@@ -321,6 +351,9 @@ func journal() -> void:
 	show_panel("Путевой журнал","Записей ещё нет. Найдите торговца у красного навеса." if lines.is_empty() else "\n".join(lines))
 
 func menu() -> void:
+	if integrated != null:
+		journey_ui.main()
+		return
 	if p3:
 		show_panel("Белая осока · материальная подготовка","WASD — движение · E — взаимодействие · J — журнал\nПКМ / стрелки — камера · Esc — меню. Обучение и работа расходуют дни только после подтверждения.",{"Имущество и процессы":material_ui.inventory,"Маршрут P3":material_ui.guide,"Сохранить и выйти":leave})
 		return

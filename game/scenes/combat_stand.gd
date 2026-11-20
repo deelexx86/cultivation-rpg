@@ -69,19 +69,25 @@ func _ready() -> void:
 	if id == "":
 		id = "sedge-" + rank
 	var base := "user://sedge-combat" if probe == "" else "user://sedge-combat-probe"
-	var storage := SnapshotStore.new(base, id, true, true, true)
-	session = SedgeSession.new(CombatState.fresh(id, rank), storage)
-	var exists := FileAccess.file_exists(storage.path("current.json")) or FileAccess.file_exists(storage.path("previous.json"))
-	if exists and not session.reload() or not exists and not session.save():
-		push_error(session.error)
-		get_tree().quit(1)
-		return
+	var exists := true
+	if SliceSession.current != null:
+		session = SliceSession.current
+		id = session.state.campaign_id
+	else:
+		var storage := SnapshotStore.new(base, id, true, true, true)
+		session = SedgeSession.new(CombatState.fresh(id, rank), storage)
+		exists = FileAccess.file_exists(storage.path("current.json")) or FileAccess.file_exists(storage.path("previous.json"))
+		if exists and not session.reload() or not exists and not session.save():
+			push_error(session.error)
+			get_tree().quit(1)
+			return
 	if probe != "" and motion_probe != "":
 		RenderingServer.frame_post_draw.connect(record_motion)
-	DisplayServer.window_set_title("Cultivation RPG · P4 · " + id)
+	DisplayServer.window_set_title(("Белая осока · " if SliceSession.current != null else "Cultivation RPG · P4 · ") + id)
 	get_tree().auto_accept_quit = false
 	SedgeLandscape.light(stage)
 	player = SedgePlayer.new()
+	if SliceSession.current != null and session.state.active_body>0: player.appearance = "character-male-f" if session.state.slice.carrier=="cold" else "character-male-b"
 	player.external_motion = true
 	stage.add_child(player)
 	player.collision_layer = 2
@@ -100,6 +106,7 @@ func _ready() -> void:
 		pause("restore" if session.state.mode == "active" else "death")
 	else:
 		input_notice = "Камнееды у водосброса. Южная тропа за спиной ведёт к отдыху."
+	if SliceSession.current != null and "--p5-tour" in args: SliceTour.combat.call_deferred(self)
 	print("P4_READY rank=", session.state.combat.rank, " loaded=", exists, " renderer=", RenderingServer.get_current_rendering_method())
 
 func load_scene() -> void:
@@ -649,6 +656,7 @@ func render_hud() -> void:
 		site, P4Content.RANK_NAMES[c.rank], WorldCalendar.label(s.day), a.hp, float(a.qi)/1000, a.shield, c.wards,
 		CombatWorld.control_load(c), CombatWorld.control(c), flight, maxf(0, player.position.y), speed,
 		"  ·  Медитация" if c.meditating else "", "  ·  Травма рёбер" if a.injury else ""]
+	if s.slice.get("unstable",0) > 0: hud.text += "\nНестабильная Ци %d · распад %s" % [s.slice.unstable,WorldCalendar.label(s.slice.decay)]
 	var phase := ""
 	if a.action.key != "":
 		phase = "%s: %s %.1f c" % [P4Content.LABELS[a.action.key], "подготовка" if a.action.wind else "восстановление", maxf(a.action.wind, a.action.rest) / 60.0]
@@ -731,8 +739,8 @@ func pause(view: String) -> void:
 			add_button(pause_box, "Удержать канат и продолжить", finish_trip)
 		"rest":
 			title.text = "Отдых на берегу"
-			text.text = "Здоровье %d/100. Доз лекарства: %d.\nДля восстановления Ци используйте медитацию (M)." % [a.hp, c.medicine]
-			if a.hp < 100:
+			text.text = "Здоровье %d/%d. Доз лекарства: %d.\nДля восстановления Ци используйте медитацию (M)." % [a.hp,SliceWorld.vitals(session.state).hp,c.medicine]
+			if a.hp < SliceWorld.vitals(session.state).hp:
 				add_button(pause_box, "Лечение +50 здоровья · 7 дней", recovery.bind(false, false))
 				if c.medicine > 0:
 					add_button(pause_box, "Лечение с лекарством · 2 дня и доза", recovery.bind(true, false))
@@ -741,12 +749,21 @@ func pause(view: String) -> void:
 		_:
 			title.text = "Продолжение на паузе" if view == "restore" else "Системная пауза"
 			text.text = "Ци %.1f  ·  Щит %d  ·  В полёте снарядов %d\nБоевые команды доступны после продолжения." % [float(a.qi) / 1000, a.shield, c.projectiles.size()]
+	if SliceSession.current != null and (view == "death" or (view in ["manual","restore","rest"] and safe() and not MaterialWorld.occupied(session.state))):
+		add_button(pause_box,"Продолжить путь души" if view == "death" else "Вернуться в долину",return_village)
 	if view not in ["error", "death", "interrupted"]:
 		add_button(pause_box, "Продолжить   /   Esc", resume)
 	if view != "error":
 		add_button(pause_box, "Сохранить и выйти   /   F12", leave)
 	pause_panel.reset_size()
 	pause_panel.show()
+
+func return_village() -> void:
+	if not SliceSession.current.switch_area("village"):
+		show_error(session.error if session.error != "" else "Дождитесь окончания действия и выйдите из боя.")
+		return
+	get_tree().paused = false
+	get_tree().change_scene_to_file.call_deferred(SliceSession.VILLAGE)
 
 func resume() -> void:
 	if session.dirty:

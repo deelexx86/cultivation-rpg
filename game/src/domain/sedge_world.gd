@@ -27,7 +27,7 @@ static func valid(s: CampaignState) -> bool:
 	var e := s.exploration
 	if not StateCodec.shape(e, schema()) or e.sign_id != SIGN or e.place not in [YARD,BANK] or absf(e.x) > 2600 or absf(e.z) > 2600:
 		return false
-	if s.person(LO) == null or s.person("yin-qiu") == null or e.holder not in ["spillway","body.1",LO,"socket"] or e.story not in ["new","asked","declined","returned","gift"] or e.source not in ["dry","flooded"]:
+	if s.person(LO) == null or s.person("yin-qiu") == null or (e.holder not in ["spillway","body.1",LO,"socket"] and not SliceWorld.sign_holder(s,e.holder)) or e.story not in ["new","asked","declined","returned","gift"] or e.source not in ["dry","flooded"]:
 		return false
 	if e.gate != (e.holder == "socket") or (e.story == "returned") != (e.holder == LO):
 		return false
@@ -36,7 +36,7 @@ static func valid(s: CampaignState) -> bool:
 			return false
 	if e.story in ["asked","returned","gift"] and s.obligations.is_empty():
 		return false
-	if e.story == "gift" and e.holder not in [s.body().id,"socket"]:
+	if e.story == "gift" and e.holder not in [s.body().id,"socket"] and not SliceWorld.sign_holder(s,e.holder):
 		return false
 	var trip := s.action(e.journey)
 	if e.journey != "" and (trip == null or trip.kind != "travel" or trip.status == "complete"):
@@ -105,19 +105,20 @@ static func apply(s: CampaignState, cmd: String) -> String:
 				var oath := CampaignState.Obligation.new()
 				oath.id = "trade-sign"
 				oath.person = LO
+				oath.body = s.body().id
 				s.obligations.append(oath)
 		"take":
 			if e.holder != "spillway": return "Знака здесь нет."
 			e.holder = s.body().id
 		"return":
-			if not alive or e.story != "asked" or e.holder != s.body().id: return "Некому вернуть знак."
+			if not alive or e.story != "asked" or not s.obligations[0].active or e.holder != s.body().id: return "Некому вернуть знак."
 			e.holder = LO
 			e.story = "returned"
 			s.obligations[0].active = false
 			s.obligations[0].ended = s.day
 			s.supplies += 1
 		"gift":
-			if not alive or e.story != "returned" or s.day <= int(e.notes["return"]): return "Зайдите в другой день."
+			if not alive or e.story != "returned" or s.obligations[0].body != s.body().id or s.day <= int(e.notes["return"]): return "Зайдите в другой день."
 			e.story = "gift"
 			e.holder = s.body().id
 		"notch":
