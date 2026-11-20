@@ -38,11 +38,7 @@ func _initialize() -> void:
 			r.step("endure")
 			r.step("finish")
 			must(r.state.day==WorldCalendar.add_years(started,2) and r.state.soul.limit_years==200,"two-year stable condensation")
-			r.state = StateCodec.clone(wave)
-			r.state.slice.carrier="cold"
-			r.state.combat.actors.hero.hp=80
-			r.step("endure")
-			must(SliceWorld.apply(r.state,"finish")!="" and r.state.slice.load,"cold body cannot skip alignment for stable condensation")
+			cold_condensation()
 		r.state = StateCodec.clone(wave)
 		var wallet: int = r.state.materials.wallet
 		r.play("stop")
@@ -87,6 +83,28 @@ func _initialize() -> void:
 	print("P5_RULE_", "PASS" if failures==0 else "FAIL"," checks=",checks," failures=",failures)
 	quit(int(failures!=0))
 
+func cold_condensation() -> void:
+	var r := SliceRoute.new("vs-root-whole")
+	r.prepare("condense")
+	r.material("choose","")
+	r.play("bury")
+	Simulation.lose_body(r.state,"combat")
+	r.step("transfer")
+	r.state.exploration.x = int(SliceWorld.STEPS.x*100)
+	r.state.exploration.z = int(SliceWorld.STEPS.z*100)
+	r.play("survey")
+	r.workshop()
+	r.play("unearth")
+	r.step("sensitivity")
+	r.material("choose","condense")
+	r.trip()
+	r.grow()
+	r.play("begin")
+	r.step("infuse")
+	r.state.outcomes["wave.1"] = 0
+	r.step("endure")
+	must(r.error == "" and r.state.body().profile == "cold" and r.state.slice.load and SliceWorld.apply(r.state,"finish") != "",r.error+" cold carrier requires alignment")
+
 func second_life(r: SliceRoute) -> void:
 	Simulation.lose_body(r.state,"combat")
 	must(StateCodec.clone(r.state)!=null and r.state.mode=="body_dead" and r.state.materials.wallet==0,"durable death")
@@ -94,7 +112,7 @@ func second_life(r: SliceRoute) -> void:
 	var first: int = r.state.soul.first_milestones.foundation
 	r.step("transfer")
 	must(r.state.active_body==1 and WorldCalendar.age_years(r.state.body().born,r.state.day)==18 and r.state.day==WorldCalendar.add_years(date,5),"new carrier")
-	must(r.state.soul.mastery.get("operation.stabilization")==2 and not r.state.slice.sensitive and r.state.body().limit_years==100,"mastery and physical reset")
+	must(r.state.soul.mastery.get("operation.stabilization")==2 and CharacterRules.sensitivity(r.state)==1 and r.state.body().limit_years==100,"mastery and physical reset")
 	r.workshop()
 	must(SliceWorld.cache(r.state,false)!="","new carrier first surveys approach")
 	r.state.exploration.x = int(SliceWorld.STEPS.x*100)
@@ -114,7 +132,7 @@ func second_life(r: SliceRoute) -> void:
 	r.step("endure")
 	r.step("extend" if r.state.slice.load else "finish")
 	must(r.state.soul.first_milestones.foundation==first and r.state.soul.limit_years==200 and r.state.body().limit_years==200,"same milestone in second life")
-	print("P5_SECOND_LIFE carrier=",r.state.slice.carrier," wallet=",r.state.materials.wallet," day=",r.state.day)
+	print("P5_SECOND_LIFE carrier=",r.state.body().profile," wallet=",r.state.materials.wallet," day=",r.state.day)
 
 func story() -> void:
 	for branch: String in ["gift","late","estate"]:

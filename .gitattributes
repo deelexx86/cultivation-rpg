@@ -3,3 +3,4 @@
 *.glb -text
 *.png -text
 *.zip -text
+*.snapshot -text

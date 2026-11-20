@@ -32,7 +32,7 @@ func _ready() -> void:
 
 func show_carrier(s: CampaignState) -> void:
 	if s.slice.is_empty() or s.active_body==0: return
-	var model_id := "character-male-f" if s.slice.carrier=="cold" else "character-male-b"
+	var model_id := "character-male-f" if s.body().profile=="cold" else "character-male-b"
 	if model_id==appearance: return
 	appearance = model_id
 	actor.queue_free()

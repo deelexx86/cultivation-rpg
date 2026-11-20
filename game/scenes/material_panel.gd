@@ -56,7 +56,12 @@ func shop() -> void:
 	scene.show_panel("Лавка · Ло Вэй" if prefix == "lo." else "Лавка · Инь Цю",lines,options)
 
 func mentor() -> void:
-	var options := {"Травничество · 8 камней / 4 года":training.bind("herbalism"),"Алхимия и оба способа · трактат / 6 лет":training.bind("alchemy"),"Обработка и заказы":recipes,"Сравнить способы подготовки":methods}
+	var herb_label := "Травничество · 8 камней / 4 года"
+	var alchemy_label := "Алхимия и оба способа · трактат / 6 лет"
+	if not state().slice.is_empty() and state().soul.mental.reason > 1:
+		herb_label = "Травничество · 8 камней / %d дн." % CharacterRules.study_days(state(),4)
+		alchemy_label = "Алхимия и оба способа · трактат / %d дн." % CharacterRules.study_days(state(),6)
+	var options := {herb_label:training.bind("herbalism"),alchemy_label:training.bind("alchemy"),"Обработка и заказы":recipes,"Сравнить способы подготовки":methods}
 	for row: Dictionary in state().materials.jobs:
 		if row.customer != state().body().id: continue
 		if row.executor == "workshop" and row.status in ["running","ready"]:
@@ -66,14 +71,15 @@ func mentor() -> void:
 	options["Забрать сосуд с хранения"] = run.bind("retrieve","")
 	if not state().slice.is_empty():
 		options["Тайник и наследие"] = scene.journey_ui.inheritance
+		options["Тело и душа"] = scene.journey_ui.character
 	var learned := PackedStringArray()
 	for key: String in P3Content.data().training:
 		if state().soul.mastery.get(P3Content.data().training[key].mastery,0) > 0:
-			options.erase("Травничество · 8 камней / 4 года" if key == "herbalism" else "Алхимия и оба способа · трактат / 6 лет")
+			options.erase(herb_label if key == "herbalism" else alchemy_label)
 			learned.append("Травничество — освоено" if key == "herbalism" else "Алхимия и оба способа подготовки — освоены")
 	if not state().person(MaterialWorld.MENTOR).alive:
-		options.erase("Травничество · 8 камней / 4 года")
-		options.erase("Алхимия и оба способа · трактат / 6 лет")
+		options.erase(herb_label)
+		options.erase(alchemy_label)
 		scene.show_panel("Мастерская · новый исполнитель","Шэнь Юй умер. Его личные уроки завершились, но мастерская продолжает принятые заказы по прежним условиям. Материалы и готовые результаты остаются у своих владельцев.",options)
 		return
 	if state().soul.mastery.get("alchemy.materials",0) == 0:
@@ -102,8 +108,8 @@ func forecast(days: int) -> String:
 
 func training(key: String) -> void:
 	var def: Dictionary = P3Content.data().training[key]
-	var days := WorldCalendar.add_years(state().day,def.years)-state().day
-	scene.show_panel("Подтвердить обучение","Цена: %d камней, %d лет. Трактат остаётся вещью; освоенное знание сохраняется в душе.\n%s" % [def.price,def.years,forecast(days)],{"Начать обучение":run.bind("learn",key)})
+	var days := CharacterRules.study_days(state(),def.years)
+	scene.show_panel("Подтвердить обучение","Цена: %d камней, %d дней. Трактат остаётся вещью; освоенное знание сохраняется в душе.\n%s" % [def.price,days,forecast(days)],{"Начать обучение":run.bind("learn",key)})
 
 func root() -> void:
 	var s := state()
@@ -132,7 +138,7 @@ func extraction(method: String) -> void:
 
 func inventory() -> void:
 	var s := state()
-	var lines := "Камни: %d; свободно %d. Груз %.1f / %.1f кг.\n" % [s.materials.wallet,s.materials.wallet-s.materials.pledged,MaterialWorld.weight(s)/1000.0,P3Content.data().carry_grams/1000.0]
+	var lines := "Камни: %d; свободно %d. Груз %.1f / %.1f кг.\n" % [s.materials.wallet,s.materials.wallet-s.materials.pledged,MaterialWorld.weight(s)/1000.0,CharacterRules.carry_limit(s)/1000.0]
 	if s.slice.is_empty() and s.materials.method != "": lines = "P3 завершён: материальная подготовка сохранена. Выполнение прорыва — этап P5.\n"+lines
 	for raw: Dictionary in s.materials.items:
 		if raw.holder in ["consumed","merchant"] or raw.owner != s.body().id: continue
@@ -174,7 +180,8 @@ func recipe_preview(key: String, id: String) -> void:
 	var def: Dictionary = P3Content.data().recipes[key]
 	var mode: String = {"active":"Вы заняты: набор и сосуд зарезервированы. Безопасной отмены нет; выход сохраняет текущий прогресс.","autonomous":"Автономно: вы свободны, набор и сосуд заняты до получения результата. При отмене после начала сырьё становится нестабильным.","workshop":"Заказ мастерской: сырьё передаётся мастерской, вы свободны. Организация продолжает работу при смене мастера. Цена не возвращается; отмена до начала возвращает сырьё, позднее — нестабильный полуфабрикат. Получение лично при визите."}[def.mode]
 	var risk := " Ускоренный нагрев заведомо оставляет нестабильность; нужно исправление за 1 камень / 3 дня до истечения 365 дней." if key == "force" else " Освоенная работа с подходящим сырьём даёт объявленный результат без дополнительного броска провала."
-	scene.show_panel(RECIPES[key],"%s → %d × %s. Цена %d камней; срок %d дней.\n%s%s\n%s" % [item_name(MaterialWorld.item(state(),id)),def.quantity,LABELS[def.output],def.fee,def.days,mode,risk,forecast(def.days)],{"Подтвердить работу":run.bind("recipe."+key,id)})
+	var days := CharacterRules.craft_days(state(),key,def.days)
+	scene.show_panel(RECIPES[key],"%s → %d × %s. Цена %d камней; срок %d дней.\n%s%s\n%s" % [item_name(MaterialWorld.item(state(),id)),def.quantity,LABELS[def.output],def.fee,days,mode,risk,forecast(days)],{"Подтвердить работу":run.bind("recipe."+key,id)})
 
 func processes() -> void:
 	var options := {}

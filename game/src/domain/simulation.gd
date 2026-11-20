@@ -198,6 +198,7 @@ static func step(state: CampaignState, budget: int) -> String:
 	expire(state)
 	for event: CampaignState.WorldEvent in EventGraph.due(state):
 		apply_event(state, event)
+	if not state.slice.is_empty(): CharacterRules.check_teacher(state)
 	MaterialWorld.settle(state)
 	complete(state, action)
 	state.revision += 1

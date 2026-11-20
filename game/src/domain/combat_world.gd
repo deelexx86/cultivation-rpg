@@ -31,19 +31,22 @@ static func control_load(c: Dictionary) -> int:
 			total += 1
 	return total
 
-static func control(c: Dictionary) -> int:
+static func control(s: CampaignState) -> int:
+	if not s.slice.is_empty(): return s.soul.mental.control
+	var c := s.combat
 	return int(P4Content.VITALS[HERO].control) + int(c.rank in ["core", "soul"])
 
 static func toggle_perception(s: CampaignState) -> void:
 	var c := s.combat
 	if c.perception:
 		c.perception = false
-	elif not s.soul.mastery.has("combat.perception") or control_load(c) >= control(c) or c.actors[HERO].qi <= 0:
+	elif not s.soul.mastery.has("combat.perception") or control_load(c) >= control(s) or c.actors[HERO].qi <= 0:
 		c.notice = "Для восприятия нужны Ци и свободное управление."
 	else:
 		c.perception = true
 
-static func toggle_flight(c: Dictionary) -> void:
+static func toggle_flight(s: CampaignState) -> void:
+	var c := s.combat
 	var a: Dictionary = c.actors[HERO]
 	if flight_load(a) > 0:
 		a.flight = "glide"
@@ -51,7 +54,7 @@ static func toggle_flight(c: Dictionary) -> void:
 		return
 	var mode := flight_mode(c)
 	var needed := 2 if mode == "artifact" else 1
-	if mode == "" or a.qi < 6000 or control_load(c) + needed > control(c) or a.action.key == "dodge":
+	if mode == "" or a.qi < 6000 or control_load(c) + needed > control(s) or a.action.key == "dodge":
 		c.notice = "Для взлёта нужны подходящая стадия, 6 Ци и свободное управление."
 		return
 	a.qi -= 6000
@@ -201,7 +204,7 @@ static func advance(s: CampaignState, space: CombatSpace, direction: Vector3, ru
 	if direction.length_squared() > 0.01:
 		c.meditating = false
 	flow(s)
-	move_actor(c, HERO, space, direction, running)
+	move_actor(s, HERO, space, direction, running)
 	step_action(s, HERO, space)
 	if c.queued.key != "" and hero.action.key == "" and hero.stagger == 0:
 		var command: Dictionary = c.queued
@@ -223,7 +226,11 @@ static func flow(s: CampaignState) -> void:
 		air_cost = 42 if CombatState.vec(hero.velocity).length() < 10 else 100
 	elif hero.flight == "artifact":
 		air_cost = 58 if CombatState.vec(hero.velocity).length() < 6 else 104
-	hero.qi = clampi(int(hero.qi) + passive(s) + (310 if c.meditating else 0) - upkeep - air_cost, 0, int(SliceWorld.vitals(s).qi) * 1000)
+	var meditation_gain := 310
+	if not s.slice.is_empty():
+		meditation_gain += (int(CharacterRules.card(s).conductivity)-2)*40
+		if c.perception: upkeep -= (int(s.soul.mental.reason)-1)*6
+	hero.qi = clampi(int(hero.qi) + passive(s) + (meditation_gain if c.meditating else 0) - upkeep - air_cost, 0, int(SliceWorld.vitals(s).qi) * 1000)
 	if hero.qi == 0:
 		if c.perception:
 			c.perception = false
@@ -231,13 +238,15 @@ static func flow(s: CampaignState) -> void:
 			hero.flight = "glide"
 			c.notice = "Ци исчерпана. Аварийное снижение, Ctrl помогает сесть."
 
-static func move_actor(c: Dictionary, id: String, space: CombatSpace, direction: Vector3, running: bool = false) -> void:
+static func move_actor(s: CampaignState, id: String, space: CombatSpace, direction: Vector3, running: bool = false) -> void:
+	var c := s.combat
 	var a: Dictionary = c.actors[id]
 	var velocity := CombatState.vec(a.velocity)
 	var input := direction.limit_length()
 	var at := pos(a)
 	var horizontal := Vector3(input.x, 0, input.z)
 	var speed: float = P4Content.VITALS[id].speed
+	if id == HERO: speed *= CharacterRules.stride(s)
 	var movement_locked: bool = a.action.wind > 0 or a.stagger > 0 or (id == HERO and c.meditating)
 	if movement_locked:
 		input = Vector3.ZERO
@@ -302,7 +311,7 @@ static func enemy(s: CampaignState, id: String, space: CombatSpace) -> void:
 	var moving: bool = a.action.key == "" and delta.length() > (8.0 if airborne else float(card.range) * 0.82)
 	if not airborne and absf(delta.y) > 2.4:
 		moving = false
-	move_actor(c, id, space, direction if moving else Vector3.ZERO)
+	move_actor(s, id, space, direction if moving else Vector3.ZERO)
 	step_action(s, id, space)
 	if a.action.key == "" and a.stagger == 0 and delta.length() <= card.range:
 		start(s, id, CombatState.order(key, HERO, Vector3.ZERO, direction), space)
@@ -342,7 +351,8 @@ static func start(s: CampaignState, id: String, command: Dictionary, space: Comb
 	if id == HERO and s.exploration.place != SedgeWorld.YARD and not crossing(s) and kind in ["shot", "sphere", "ground", "melee", "cone", "line", "pulse"]:
 		reject(c, id, "Боевые цели находятся на торговом берегу.")
 		return
-	if id == HERO and (a.qi < int(card.qi) * 1000 or control_load(c) + int(card.get("load", 0)) > control(c)):
+	var cost := action_cost(s,key) if id == HERO else int(card.qi)
+	if id == HERO and (a.qi < cost * 1000 or control_load(c) + int(card.get("load", 0)) > control(s)):
 		reject(c, id, "Не хватает Ци или свободного управления.")
 		return
 	if kind == "ward" and (c.wards <= 0 or a.shield > 0):
@@ -387,13 +397,17 @@ static func start(s: CampaignState, id: String, command: Dictionary, space: Comb
 	var horizontal := Vector3(direction.x, 0, direction.z).normalized()
 	if not horizontal.is_zero_approx():
 		a.face = CombatState.pack(horizontal)
-	a.qi -= int(card.qi) * 1000
+	a.qi -= cost * 1000
 	a.action = {"key":key, "target":target, "center":CombatState.pack(point), "direction":CombatState.pack(direction), "wind":card.wind, "rest":0}
 	if id == HERO:
 		c.meditating = false
 		c.notice = P4Content.LABELS[key]
 	if card.wind == 0:
 		release(s, id, space)
+
+static func action_cost(s: CampaignState, key: String) -> int:
+	if key == "bolt" and not s.slice.is_empty(): return CharacterRules.bolt_cost(s)
+	return P4Content.ACTIONS[key].qi
 
 static func blink_allowed(c: Dictionary, id: String, point: Vector3, space: CombatSpace) -> bool:
 	var a: Dictionary = c.actors[id]
@@ -516,7 +530,8 @@ static func projectiles(s: CampaignState, space: CombatSpace) -> void:
 				nearest = fraction
 				struck = target
 		if struck != "":
-			hit(s, shot.owner, struck, card, from)
+			var bonus := CharacterRules.bolt_bonus(s) if shot.key == "bolt" and shot.owner == HERO and not s.slice.is_empty() else 0
+			hit(s, shot.owner, struck, card, from, bonus)
 		elif nearest == INF and shot.life > 1 and maxf(absf(to.x), maxf(absf(to.y), absf(to.z))) <= 26.0:
 			shot.life -= 1
 			shot.pos = CombatState.pack(to)
@@ -524,10 +539,10 @@ static func projectiles(s: CampaignState, space: CombatSpace) -> void:
 			remaining.append(shot)
 	c.projectiles = remaining
 
-static func hit(s: CampaignState, owner: String, id: String, card: Dictionary, source: Vector3) -> void:
+static func hit(s: CampaignState, owner: String, id: String, card: Dictionary, source: Vector3, bonus: int = 0) -> void:
 	var c := s.combat
 	var a: Dictionary = c.actors[id]
-	var damage: int = card.damage
+	var damage: int = card.damage + bonus
 	if owner == HERO and not s.slice.is_empty() and s.slice.unstable > 0:
 		damage += 5
 		SliceWorld.drain(s)
@@ -566,7 +581,9 @@ static func hit(s: CampaignState, owner: String, id: String, card: Dictionary, s
 		if (kind == "heavy" or damage >= 28) and a.flight in ["artifact", "self"]:
 			a.flight = "glide"
 			c.notice = "Тяжёлый удар сорвал полёт."
-	if damage >= int(P4Content.VITALS[id].stability):
+	var stability := int(P4Content.VITALS[id].stability)
+	if id == HERO and not s.slice.is_empty(): stability += (int(s.soul.mental.focus)-2)*4
+	if damage >= stability:
 		a.stagger = 24
 		if a.action.wind > 0:
 			a.action = CombatState.action()

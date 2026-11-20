@@ -3,14 +3,20 @@ extends RefCounted
 ## The mutable simulation model. No Nodes, frame clock or filesystem access.
 
 class Soul extends RefCounted:
+	var mental: Dictionary = {}
 	var born: int = 0
 	var limit_years: int = 100
 	var first_milestones: Dictionary[String, int] = {}
 	var mastery: Dictionary[String, int] = {}
 	func encode() -> Dictionary:
-		return {"born": born, "limit_years": limit_years, "first_milestones": first_milestones.duplicate(), "mastery": mastery.duplicate()}
+		var result := {"born": born, "limit_years": limit_years, "first_milestones": first_milestones.duplicate(), "mastery": mastery.duplicate()}
+		if not mental.is_empty(): result.mental = mental.duplicate()
+		return result
 
 class Body extends RefCounted:
+	var profile: String = ""
+	var footwork: int = 0
+	var sense_drills: int = 0
 	var id: String = "body.1"
 	var born: int = WorldCalendar.ordinal(-18)
 	var limit_years: int = 100
@@ -19,7 +25,9 @@ class Body extends RefCounted:
 	var milestone: String = "initial"
 	var practice_days: int = 0
 	func encode() -> Dictionary:
-		return {"id": id, "born": born, "limit_years": limit_years, "alive": alive, "died": died, "milestone": milestone, "practice_days": practice_days}
+		var result := {"id": id, "born": born, "limit_years": limit_years, "alive": alive, "died": died, "milestone": milestone, "practice_days": practice_days}
+		if profile != "": result.merge({"profile":profile, "footwork":footwork, "sense_drills":sense_drills})
+		return result
 
 class Action extends RefCounted:
 	var id: String = ""

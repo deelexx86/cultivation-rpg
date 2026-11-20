@@ -52,7 +52,7 @@ static func assign_fields(object: RefCounted, data: Dictionary) -> void:
 		elif old is Dictionary:
 			old.clear()
 			for entry: String in data[key]:
-				old[entry] = int(data[key][entry]) if key in ["first_milestones", "mastery", "known", "outcomes"] else data[key][entry]
+				old[entry] = int(data[key][entry]) if key in ["first_milestones", "mastery", "mental", "known", "outcomes"] else data[key][entry]
 		elif old is Array:
 			old.assign(data[key])
 		else:
@@ -68,6 +68,8 @@ static func decode(data: Variant) -> CampaignState:
 		spec["combat"] = CombatState.schema()
 	if data is Dictionary and data.has("slice"):
 		spec["slice"] = SliceWorld.schema()
+		spec.soul.mental = {"control":"int","focus":"int","reason":"int"}
+		spec.bodies[0].merge({"profile":"str","footwork":"int","sense_drills":"int"})
 	if not shape(data, spec):
 		return null
 	var state := CampaignState.new()
@@ -182,6 +184,9 @@ static func problems(state: CampaignState) -> PackedStringArray:
 	for key: String in state.outcomes:
 		if state.outcomes[key] not in [0, 1]:
 			errors.append("Invalid resolved outcome")
+	if not state.slice.is_empty() and not CharacterRules.valid(state):
+		errors.append("Invalid schema-6 character profile or practice limits")
+		return errors
 	if not state.exploration.is_empty() and not SedgeWorld.valid(state):
 		errors.append("Invalid White Sedge state")
 	if not state.materials.is_empty():

@@ -51,7 +51,7 @@ func _ready() -> void:
 	get_tree().auto_accept_quit = false
 	SedgeLandscape.light(self)
 	player = SedgePlayer.new()
-	if integrated != null and session.state.active_body>0: player.appearance = "character-male-f" if session.state.slice.carrier=="cold" else "character-male-b"
+	if integrated != null and session.state.active_body>0: player.appearance = "character-male-f" if session.state.body().profile=="cold" else "character-male-b"
 	add_child(player)
 	if p3: material_ui = MaterialPanel.new(self)
 	build_ui()
@@ -129,8 +129,9 @@ func refresh() -> void:
 	if p3:
 		heading.text += "\nP3 · Камни: %d  ·  Душа: %d/%d  ·  Тело: %d/%d" % [s.materials.wallet,WorldCalendar.age_years(s.soul.born,s.day),s.soul.limit_years,WorldCalendar.age_years(s.body().born,s.day if s.body().alive else s.body().died),s.body().limit_years]
 		if integrated != null: heading.text = heading.text.replace("P3 · ",SliceWorld.NAMES[SliceWorld.STAGES.find(s.body().milestone)]+" · ")
-		player.load_factor = 0.55 if MaterialWorld.weight(s) > int(P3Content.data().carry_grams) else 1.0
+		player.load_factor = 0.55 if MaterialWorld.weight(s) > CharacterRules.carry_limit(s) else 1.0
 		if player.load_factor < 1.0: heading.text += " · Перегрузка"
+		player.load_factor *= CharacterRules.stride(s)
 
 func _process(delta: float) -> void:
 	if land == null: return

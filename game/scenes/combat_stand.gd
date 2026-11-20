@@ -87,7 +87,7 @@ func _ready() -> void:
 	get_tree().auto_accept_quit = false
 	SedgeLandscape.light(stage)
 	player = SedgePlayer.new()
-	if SliceSession.current != null and session.state.active_body>0: player.appearance = "character-male-f" if session.state.slice.carrier=="cold" else "character-male-b"
+	if SliceSession.current != null and session.state.active_body>0: player.appearance = "character-male-f" if session.state.body().profile=="cold" else "character-male-b"
 	player.external_motion = true
 	stage.add_child(player)
 	player.collision_layer = 2
@@ -478,7 +478,7 @@ func handle_key(key: int) -> void:
 		KEY_R:
 			CombatWorld.toggle_perception(s)
 		KEY_V:
-			CombatWorld.toggle_flight(s.combat)
+			CombatWorld.toggle_flight(s)
 		KEY_M:
 			CombatWorld.toggle_meditation(s)
 		KEY_X:
@@ -605,8 +605,7 @@ func build_ui() -> void:
 	for key: String in P4Content.skills(session.state):
 		var action := key
 		var label: String = P4Content.LABELS[key]
-		var card: Dictionary = P4Content.ACTIONS[key]
-		add_button(book_box, "%s · %d Ци" % [label, card.qi], func() -> void:
+		add_button(book_box, "%s · %d Ци" % [label, CombatWorld.action_cost(session.state,key)], func() -> void:
 			if not get_tree().paused:
 				choose(action))
 	book.hide()
@@ -654,7 +653,7 @@ func render_hud() -> void:
 	var speed := "  ·  Восприятие ×%.2f" % perception_rate() if c.perception else ""
 	hud.text = "%s  /  %s  ·  %s\nЗдоровье %d  ·  Ци %.1f  ·  Щит %d  ·  Талисманы %d  ·  Управление %d/%d\n%s  ·  %.1f м%s%s%s" % [
 		site, P4Content.RANK_NAMES[c.rank], WorldCalendar.label(s.day), a.hp, float(a.qi)/1000, a.shield, c.wards,
-		CombatWorld.control_load(c), CombatWorld.control(c), flight, maxf(0, player.position.y), speed,
+		CombatWorld.control_load(c), CombatWorld.control(s), flight, maxf(0, player.position.y), speed,
 		"  ·  Медитация" if c.meditating else "", "  ·  Травма рёбер" if a.injury else ""]
 	if s.slice.get("unstable",0) > 0: hud.text += "\nНестабильная Ци %d · распад %s" % [s.slice.unstable,WorldCalendar.label(s.slice.decay)]
 	var phase := ""

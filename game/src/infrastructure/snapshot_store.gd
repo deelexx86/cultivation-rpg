@@ -54,7 +54,7 @@ static func pack(state: CampaignState, number: int) -> String:
 	if not state.combat.is_empty():
 		header.merge({"schema": 4, "content": "white-sedge-combat-1", "build": "p4"}, true)
 	if not state.slice.is_empty():
-		header.merge({"schema":5,"content":"white-sedge-campaign-1","build":"p5"}, true)
+		header.merge({"schema":6,"content":"white-sedge-character-1","build":"p7.1"}, true)
 	return JSON.stringify({"header": header, "payload": payload, "checksum": digest(header, payload)})
 
 static func digest(header: Dictionary, payload: String) -> String:
@@ -63,7 +63,7 @@ static func digest(header: Dictionary, payload: String) -> String:
 	canonical.sequence = int(canonical.sequence)
 	return (JSON.stringify(canonical) + "\n" + payload).sha256_text()
 
-func read_file(file_path: String) -> Dictionary:
+func read_file(file_path: String, header_only: bool = false) -> Dictionary:
 	if not FileAccess.file_exists(file_path):
 		return {"error": "missing"}
 	var file := FileAccess.open(file_path, FileAccess.READ)
@@ -99,12 +99,15 @@ func read_file(file_path: String) -> Dictionary:
 		expected_schema = 4
 		expected_content = "white-sedge-combat-1"
 	if slice_slot:
-		expected_schema = 5
-		expected_content = "white-sedge-campaign-1"
+		expected_schema = 6
+		expected_content = "white-sedge-character-1"
+		if int(header.schema) == 5:
+			return {"error":"Кампания схемы 5 открывается в сборке P5. Для P7.1 начните отдельную кампанию. Файлы сохранены.", "incompatible":true}
 	if int(header.schema) != expected_schema or header.content != expected_content or header.rng_algorithm != "sha256-keyed-v1":
 		return {"error": "Unsupported snapshot schema/content/RNG; migration required", "incompatible": true}
 	if header.campaign_id != campaign_id or int(header.sequence) < 1:
 		return {"error": "Snapshot identity/sequence mismatch"}
+	if header_only: return {"error":""}
 	if json.parse(payload) != OK:
 		return {"error": "Malformed payload"}
 	var state := StateCodec.decode(json.data)
@@ -144,12 +147,15 @@ func load_current() -> Dictionary:
 		return {"error": "Invalid campaign slot ID"}
 	var current := read_file(path("current.json"))
 	if current.error == "":
+		if slice_slot and read_file(path("previous.json"),true).get("incompatible",false):
+			return {"error":"Резервная копия относится к другой версии кампании. Файлы сохранены.", "incompatible":true}
 		sequence = current.sequence
 		current.recovered = false
 		return current
 	if current.get("incompatible", false):
 		return current # Never silently rewind an unsupported newer save.
 	var backup := read_file(path("previous.json"))
+	if backup.get("incompatible",false): return backup
 	if backup.error != "":
 		return {"error": "No valid continuation; current: %s; previous: %s" % [current.error, backup.error]}
 	# Repair current without rotating the good backup over a corrupt primary.
@@ -190,6 +196,9 @@ func save(state: CampaignState) -> bool:
 		return false
 	if current.error == "missing" and FileAccess.file_exists(path("previous.json")):
 		last_error = "Recover the existing backup before writing"
+		return false
+	if slice_slot and read_file(path("previous.json"),true).get("incompatible",false):
+		last_error = "Cannot rotate an incompatible backup"
 		return false
 	var next_sequence := sequence + 1
 	var source := pack(state, next_sequence)

@@ -121,6 +121,7 @@ static func craft(h) -> void:
 static func start(h) -> void:
 	await h.get_tree().create_timer(0.3).timeout
 	var s: SliceSession = h.integrated
+	var character := "--character" in OS.get_cmdline_user_args()
 	if "--ending" in OS.get_cmdline_user_args():
 		if s.state.mode=="body_dead":
 			await click(h,"Начать перенос души")
@@ -142,12 +143,17 @@ static func start(h) -> void:
 				await click(h,"Сохранить и выйти")
 			return
 		await click(h,"Завершить этап")
+		if character and not h.verify_scene(s.state.soul.mental.reason == 2 and s.state.body().footwork == 0 and CharacterRules.quality(s.state) == 1,"New body, trained soul"): return
 		await near(h,"steps")
 		await choice(h,"Сверить кладку",false)
 		await mentor(h,"Тайник и наследие")
 		await choice(h,"Осмотреть и забрать",false)
 		await mentor(h,"Тайник и наследие")
 		await choice(h,"Развить чувствительность")
+		if character:
+			await mentor(h,"Тело и душа")
+			await MaterialSceneProbe.capture(h,"new-carrier")
+			print("P71_INHERITANCE carrier=",s.state.body().profile," mind=",s.state.soul.mental.reason," sensitivity=",CharacterRules.sensitivity(s.state))
 		await near(h,"quartz")
 		await click(h,"Выделить наружный фрагмент")
 		await click(h,"Подтвердить способ")
@@ -155,7 +161,7 @@ static func start(h) -> void:
 		await click(h,"Подготовить плавный способ")
 		await chamber(h,false)
 		if h.verify_scene(s.state.body().limit_years==200 and s.state.soul.limit_years==200 and s.state.soul.first_milestones.foundation<s.state.body().born+WorldCalendar.ordinal(18),"second Foundation"):
-			print("P5_REBIRTH_PASS carrier=",s.state.slice.carrier," wallet=",s.state.materials.wallet)
+			print("P5_REBIRTH_PASS carrier=",s.state.body().profile," wallet=",s.state.materials.wallet)
 			h.leave()
 		return
 	var quick := "--condense" in OS.get_cmdline_user_args()
@@ -169,11 +175,23 @@ static func start(h) -> void:
 		await click(h,"Разговор о медном знаке")
 		await click(h,"Передать знак")
 	for kind: String in ["Набор","Герметичный","Учебный","Талисман","Лекарство"]:
+		if character and kind == "Лекарство": continue
 		await near(h,"shop")
 		await click(h,"Купить: "+kind)
+	if character:
+		for drill: String in ["Школа шага","Созерцание трактата"]:
+			await mentor(h,"Тело и душа")
+			await choice(h,drill)
+		await mentor(h,"Тело и душа")
+		await MaterialSceneProbe.capture(h,"trained")
+		if not h.verify_scene(s.state.soul.mental.reason == 2 and s.state.body().footwork == 1,"Paid training in first body"): return
 	for label: String in ["Травничество","Алхимия и оба способа"]:
 		await mentor(h,label)
 		await click(h,"Начать обучение")
+		if character:
+			var days := s.state.running().duration
+			if not h.verify_scene(days in [730,731,1095,1096],"Reason shortens lesson on calendar"): return
+			print("P71_LESSON ",label," days=",days)
 		await click(h,"Завершить оставшуюся работу")
 	if quick:
 		await near(h,"shop")
@@ -219,6 +237,9 @@ static func start(h) -> void:
 
 static func combat(h) -> void:
 	await h.get_tree().process_frame
+	if "--measure-bolt" in OS.get_cmdline_user_args():
+		await bolt(h)
+		return
 	if h.session.state.mode=="body_dead":
 		await combat_click(h,"Продолжить путь души")
 		return
@@ -252,6 +273,25 @@ static func combat(h) -> void:
 		if h.modal=="death": break
 	if h.modal!="death": push_error("Expected lethal encounter"); h.get_tree().quit(1); return
 	print("P5_DEATH_SAVED")
+	h.leave()
+
+static func bolt(h) -> void:
+	var s: CampaignState = h.session.state
+	var expected := 21 if s.body().milestone == "foundation" else 15
+	var date := s.day
+	await combat_click(h,"Продолжить   /")
+	tap(KEY_TAB)
+	await h.get_tree().physics_frame
+	tap(KEY_2)
+	for i in 180:
+		await h.get_tree().physics_frame
+		if s.combat.actors[P4Content.YOUNG].hp < 30: break
+	var damage := 30 - int(s.combat.actors[P4Content.YOUNG].hp)
+	if damage != expected or s.combat.actors.hero.qi != 43000 or s.day != date:
+		push_error("Exported bolt damage=%d, Qi=%d, target=%s" % [damage,s.combat.actors.hero.qi,h.target])
+		h.get_tree().quit(1)
+		return
+	print("P71_BOLT_PASS quality=",CharacterRules.quality(s)," damage=",damage," qi_before=50000 qi_after=",s.combat.actors.hero.qi)
 	h.leave()
 
 static func combat_click(h,label: String) -> void:

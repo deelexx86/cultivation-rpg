@@ -11,11 +11,13 @@ const LIMITS := [100,115,130,150,200]
 static func fresh(id: String, seed_key: String) -> CampaignState:
 	var s := CombatState.fresh(id,"qi")
 	s.soul.mastery["method.white-sedge"] = 1
+	s.soul.mental = CharacterRules.MIND.duplicate()
+	s.body().profile = "first"
 	s.seed_value = seed_key
 	s.body().born = WorldCalendar.ordinal(-20)
 	s.exploration.z = 700
 	s.slice = {"area":"village","phase":"","method":"","load":false,"aligned":false,"attempt":0,
-		"pool":false,"unstable":0,"decay":0,"sensitive":true,"carrier":"first","fees":0,
+		"pool":false,"unstable":0,"decay":0,"fees":0,
 		"outer":0,"inner":0,"lost":0,"buried":false,"raid":-1,"robbed":false,"result":""}
 	for key: String in SHOP: s.materials.stock[key] = SHOP[key].count
 	sync_consumables(s)
@@ -23,7 +25,7 @@ static func fresh(id: String, seed_key: String) -> CampaignState:
 
 static func schema() -> Dictionary:
 	return {"area":"str","phase":"str","method":"str","load":"bool","aligned":"bool","attempt":"int",
-		"pool":"bool","unstable":"int","decay":"int","sensitive":"bool","carrier":"str","fees":"int",
+		"pool":"bool","unstable":"int","decay":"int","fees":"int",
 		"outer":"int","inner":"int","lost":"int","buried":"bool","raid":"int","robbed":"bool","result":"str"}
 
 static func body_owner(s: CampaignState, id: String) -> bool:
@@ -44,7 +46,9 @@ static func stored_stones(s: CampaignState) -> int:
 	return s.slice.inner + s.slice.outer + s.slice.lost
 
 static func vitals(s: CampaignState) -> Dictionary:
-	if s.slice.get("carrier","") == "cold": return {"hp":80,"qi":120}
+	if not s.slice.is_empty():
+		var card := CharacterRules.card(s)
+		return {"hp":int(card.fortitude)*20, "qi":card.capacity}
 	return P4Content.VITALS[P4Content.HERO]
 
 static func sync_consumables(s: CampaignState) -> void:
@@ -126,8 +130,7 @@ static func rebirth(s: CampaignState) -> void:
 	s.mode = "active"
 	var key := "carrier."+body.id
 	var cold: int = s.outcomes[key]
-	s.slice.carrier = "cold" if cold else "warm"
-	s.slice.sensitive = false
+	body.profile = "cold" if cold else "warm"
 	s.slice.area = "village"
 	s.exploration.place = SedgeWorld.YARD
 	s.exploration.x = 100
@@ -196,6 +199,7 @@ static func apply(s: CampaignState,cmd: String,fatal: bool = false) -> String:
 	if s.mode != "active": return "Это тело погибло."
 	var p := s.slice
 	var stage := STAGES.find(s.body().milestone)
+	if CharacterRules.DRILLS.has(cmd): return CharacterRules.start(s,cmd,fatal)
 	var phase: String = p.phase
 	var smooth: bool = p.method.begins_with("smooth")
 	var years := 0
@@ -215,16 +219,13 @@ static func apply(s: CampaignState,cmd: String,fatal: bool = false) -> String:
 			s.flags["hall.board"] = "taken"
 			s.combat.artifact = s.combat.rank == "foundation"
 			p.result = "Доска формации у вас. На Основании её полёт потребует Ци и управления."
-		"sensitivity":
-			if p.sensitive or not MaterialWorld.at_workshop(s) or not s.person(MaterialWorld.MENTOR).alive or phase != "": return "Практика у живого наставника недоступна."
-			if not charge(s,4): return "Нужны четыре камня."
-			years = 2
 		"gather","minor","risk_minor","steady","begin":
 			if phase != "" or s.exploration.place != SedgeWorld.BANK: return "Нужна свободная камера на дальнем берегу."
 			if cmd == "steady":
 				if not s.flags.has("unsteady."+s.body().id): return "Поток уже устойчив."
 				years = 2
 			elif cmd == "gather":
+				if not s.soul.mastery.has("method.white-sedge"): return "Нужен освоенный метод Белой осоки."
 				if stage >= 4 or p.pool: return "Накопление уже заполнено."
 				years = YEARS[stage] if stage < 3 else 1
 			elif cmd != "begin":
@@ -263,7 +264,7 @@ static func apply(s: CampaignState,cmd: String,fatal: bool = false) -> String:
 			if cmd == "align" and smooth: return "Выравнивание доступно при конденсации."
 			p.aligned = cmd == "align"
 			p.load = cmd == "endure" and s.outcomes.get("wave.%d"%p.attempt,0)==1
-			if not smooth and p.carrier == "cold" and not p.aligned: p.load = true
+			if not smooth and s.body().profile == "cold" and not p.aligned: p.load = true
 			p.phase = "settling"
 			if smooth: years = 3
 			elif p.aligned: years = 1
@@ -293,11 +294,11 @@ static func completed(s: CampaignState,a: CampaignState.Action) -> void:
 	var cmd := a.id.get_slice(".",1)
 	var p := s.slice
 	var stage := STAGES.find(s.body().milestone)
+	if CharacterRules.DRILLS.has(cmd):
+		CharacterRules.complete(s,cmd)
+		return
 	match cmd:
 		"transfer": rebirth(s)
-		"sensitivity":
-			p.sensitive = true
-			p.result = "Чувствительность тела развита. Знакомые операции снова доступны."
 		"steady":
 			s.flags.erase("unsteady."+s.body().id)
 			s.flags["retry."+s.body().id] = "yes"
@@ -357,7 +358,7 @@ static func problems(s: CampaignState) -> PackedStringArray:
 	var p := s.slice
 	var errors := PackedStringArray()
 	if s.combat.is_empty() or not StateCodec.shape(p,schema()): return PackedStringArray(["Invalid integrated campaign"])
-	if p.area not in ["village","ravine"] or p.carrier not in ["first","warm","cold"] or p.phase not in ["","entry","infusing","wave","settling","final","finishing"]: errors.append("Invalid campaign phase")
+	if p.area not in ["village","ravine"] or p.phase not in ["","entry","infusing","wave","settling","final","finishing"]: errors.append("Invalid campaign phase")
 	var locked_items := 0
 	var quartz := 0
 	var ingredients := 0

@@ -20,18 +20,41 @@ func inheritance() -> void:
 	var opts := {}
 	if not s.slice.buried: opts["Спрятать 24 камня, набор, сосуд и знак при наличии"] = preview.bind("bury")
 	elif s.slice.inner > 0: opts["Осмотреть и забрать содержимое"] = preview.bind("unearth")
-	if not s.slice.sensitive: opts["Развить чувствительность · 4 камня / 2 года"] = preview.bind("sensitivity")
+	if CharacterRules.sensitivity(s) < 2: opts["Развить чувствительность · 4 камня / 2 года"] = preview.bind("sensitivity")
 	host.show_panel("Тайник у старой мастерской","Снаружи поместятся 8 камней, внутри — 16, свободный набор и сосуд со всем содержимым. Место останется в памяти. Оставленное имущество сразу перестаёт быть доступным в пути.",opts)
+
+func character() -> void:
+	var s := state()
+	var card := CharacterRules.card(s)
+	var roots := PackedStringArray()
+	for element: String in card.roots: roots.append(CharacterRules.ELEMENTS[element])
+	var info := "Корни: %s. Ступень: %s.\n" % [", ".join(roots), SliceWorld.NAMES[SliceWorld.STAGES.find(s.body().milestone)]]
+	info += "Крепость %d · Подвижность %d · Проводимость %d · Чувствительность %d\n" % [card.fortitude, CharacterRules.mobility(s), card.conductivity, CharacterRules.sensitivity(s)]
+	info += "Запас Ци %.1f / %d · Качество %d\n" % [s.combat.actors.hero.qi/1000.0,card.capacity,CharacterRules.quality(s)]
+	info += "Контроль %d · Сосредоточение %d · Разум %d\n" % [s.soul.mental.control,s.soul.mental.focus,s.soul.mental.reason]
+	info += "Искра: %d Ци, %d урона до защиты. Огненный корень экономит 1 Ци. Дерево сокращает стабилизацию с трёх дней до двух." % [CharacterRules.bolt_cost(s), int(P4Content.ACTIONS.bolt.damage)+CharacterRules.bolt_bonus(s)]
+	var opts := {}
+	if MaterialWorld.at_workshop(s) and s.person(MaterialWorld.MENTOR).alive:
+		for cmd: String in CharacterRules.DRILLS:
+			var drill: Dictionary = CharacterRules.DRILLS[cmd]
+			if not CharacterRules.saturated(s,cmd):
+				opts["%s · %s" % [drill.label,drill.result]] = preview.bind(cmd)
+	else: info += "\nПрактики проводит Шэнь Юй у зелёного навеса."
+	opts["Вернуться"] = main
+	host.show_panel("Тело и душа",info,opts)
 
 func main() -> void:
 	var s := state()
 	var p := s.slice
 	var a := s.running()
+	if a == null and s.mode == "active" and MaterialWorld.occupied(s) and SedgeWorld.active_trip(s) == null:
+		host.material_ui.work()
+		return
 	var stage := SliceWorld.STAGES.find(s.body().milestone)
 	var opts := {}
 	var text := "%s · %s\nДуша %d/%d лет · тело %d/%d лет · %d камней\n%s" % [WorldCalendar.label(s.day),SliceWorld.NAMES[stage],WorldCalendar.age_years(0,s.day),s.soul.limit_years,WorldCalendar.age_years(s.body().born,s.body().died if not s.body().alive else s.day),s.body().limit_years,s.materials.wallet,p.result]
 	var title := "Долина Белой Осоки"
-	if p.carrier != "first": text += "\nСовместимость: %s. Пределы здоровья / Ци: %d / %d." % ["холодная" if p.carrier=="cold" else "тёплая",SliceWorld.vitals(s).hp,SliceWorld.vitals(s).qi]
+	if s.body().profile != "first": text += "\nСовместимость: %s. Пределы здоровья / Ци: %d / %d." % ["холодная" if s.body().profile=="cold" else "тёплая",SliceWorld.vitals(s).hp,SliceWorld.vitals(s).qi]
 	if p.unstable: text += "\nНестабильная Ци: %d · распад %s." % [p.unstable,WorldCalendar.label(p.decay)]
 	if s.mode == "ended":
 		title = "Путь души завершён"
@@ -82,6 +105,7 @@ func main() -> void:
 		if s.exploration.place == SedgeWorld.YARD:
 			opts["Спуститься к камнеедам"] = enter_ravine
 		opts["Имущество и процессы"] = host.material_ui.inventory
+		opts["Тело и душа"] = character
 		opts["Личный план"] = guide
 		opts["Путевой журнал"] = host.journal
 	opts["Сохранить и выйти"] = host.leave
@@ -113,6 +137,11 @@ func preview(cmd: String) -> void:
 	var end := s.day+a.duration if a != null else s.day
 	var projected: int = candidate.materials.wallet-s.materials.wallet
 	var text := "Дата после этапа: %s. Изменение кошелька: %+d камней." % [WorldCalendar.label(end),projected]
+	if CharacterRules.DRILLS.has(cmd):
+		var drill: Dictionary = CharacterRules.DRILLS[cmd]
+		text += "\n%s за %d г. Оплата при подтверждении. Прирост один раз %s, только при завершении. Гибель носителя или наставника прекращает практику без возврата оплаты." % [drill.result,drill.years,"для души" if cmd in ["reason","weave","focus"] else "для этого тела"]
+		text += "\nК концу практики душе %d из %d лет, телу %d из %d. Запас жизни после практики: %d дней." % [WorldCalendar.age_years(s.soul.born,end),s.soul.limit_years,WorldCalendar.age_years(s.body().born,end),s.body().limit_years,maxi(0,mini(s.soul_expiry(),s.body_expiry())-end)]
+		if cmd == "reason": text += "\nУчебный трактат остаётся у вас. Срок будущих уроков сократится вдвое."
 	match cmd:
 		"begin": text += "\nКамера стоит 4 камня. Плавное закрепление: пять лет, возможны ещё два. Конденсация: два года, с выравниванием три. После введения материалы расходуются без возврата. Незавершённый контур даёт только временную Ци."
 		"infuse": text += "\nБудут внесены препарат или целый корень, первый кварц и камни первой стадии."

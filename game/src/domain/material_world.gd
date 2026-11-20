@@ -118,7 +118,7 @@ static func buy(s: CampaignState, offer: String) -> String:
 	return ""
 
 static func extract(s: CampaignState, command: String) -> String:
-	if not s.slice.get("sensitive",true): return "Новому телу нужна практика чувствительности у наставника."
+	if CharacterRules.sensitivity(s) < 2: return "Новому телу нужна практика чувствительности у наставника."
 	if equipment(s,"kit") == "" or not room(s,2 if command.begins_with("root.") else 1): return "Нужны набор сбора и свободный подходящий сосуд."
 	if command.begins_with("root."):
 		if s.materials.root != "standing": return "Источник уже извлечён; нового роста нет."
@@ -157,6 +157,8 @@ static func inspect(s: CampaignState, target: String) -> String:
 			s.materials.notes["quartz.observed"] = s.day
 			return ""
 		if s.soul.mastery.get("alchemy.materials",0) == 0: return "Видна аномалия; без алхимии структура неизвестна."
+	if not s.slice.is_empty() and CharacterRules.sensitivity(s)*10 + int(s.soul.mental.reason)-1 < 11:
+		return "Слабый признак неразличим для этого носителя."
 	s.materials.notes[target+".recognized"+("."+str(s.exploration.source) if target=="root" else "")] = s.day
 	return ""
 
@@ -167,7 +169,7 @@ static func occupied(s: CampaignState) -> bool:
 	return false
 
 static func start(s: CampaignState, recipe: String, input_id: String) -> String:
-	if not s.slice.is_empty() and not s.slice.sensitive and recipe not in ["order","learn.herbalism","learn.alchemy"]:
+	if CharacterRules.sensitivity(s) < 2 and recipe not in ["order","learn.herbalism","learn.alchemy"]:
 		return "Новому телу нужна практика чувствительности у наставника."
 	var learn := recipe.begins_with("learn.")
 	if (learn or recipe == "order") and not at_workshop(s): return "Посетите мастерскую у зелёного навеса."
@@ -181,7 +183,7 @@ static func start(s: CampaignState, recipe: String, input_id: String) -> String:
 		def = P3Content.data().training[key]
 		if not s.person(MENTOR).alive or s.soul.mastery.get(def.mastery,0) > 0: return "Наставник недоступен либо знание уже освоено."
 		if key == "alchemy" and equipment(s,"treatise") == "": return "Нужен учебный трактат; покупка сама не обучает."
-		days = WorldCalendar.add_years(s.day,def.years)-s.day
+		days = CharacterRules.study_days(s,def.years)
 		if not spend(s,def.price): return "Недостаточно камней для обучения."
 	else:
 		if not P3Content.data().recipes.has(recipe): return "Нет такой операции."
@@ -192,7 +194,7 @@ static func start(s: CampaignState, recipe: String, input_id: String) -> String:
 		if not room(s,int(def.quantity)-1): return "Сосуд занят или заполнен."
 		if recipe != "order" and equipment(s,"kit") == "": return "Нужен свободный набор."
 		if not spend(s,def.fee): return "Недостаточно свободных камней для работы."
-		days = def.days
+		days = CharacterRules.craft_days(s,recipe,def.days)
 		inputs.append(input_id)
 		if recipe != "order": equipment_ids.assign([equipment(s,"vessel"),equipment(s,"kit")])
 	var id := serial(s,"job")
