@@ -1,0 +1,355 @@
+{
+  "date": "2026-11-21",
+  "tested_commit": "c5068a2902f528f52dc9bff7ada5cd74c3330a34",
+  "clean_checkout": true,
+  "platform": "Windows 11 Home x64 build 26200, AMD Radeon RX 580 2048SP",
+  "engine": "Godot 4.8.beta3.official.c51ff06e8",
+  "command": "pwsh -NoProfile -File tools/verify_clean_checkout.ps1 -Phase P71 -Branch work/p7-1-character-foundations",
+  "design_validator": [
+    "Design documentation / EXAMPLE fixture validation",
+    "checks=2174, text_files=93, markdown_files=60, local_links=679, json_files=16, milestones=16, checkpoints=32",
+    "Errors: 0",
+    "Scope: documents and reference arithmetic; no game execution, production balance or playtest results."
+  ],
+  "clean_run_markers": [
+    "P0_ASSET_REBUILD_PASS",
+    "P0_TEST_PASS geometry transforms materials animation_samples",
+    "P0_SMOKE_PASS animation_advanced=true",
+    "P1_GROUP_PASS calendar",
+    "P1_GROUP_PASS preview",
+    "P1_GROUP_PASS chronology",
+    "P1_GROUP_PASS life",
+    "P1_GROUP_PASS causality",
+    "P1_GROUP_PASS save",
+    "P1_TEST_PASS checks=182 calendar preview chronology life causality save",
+    "P1_CRASH_RECOVERY_PASS:before_write checkpoint=5",
+    "P1_CRASH_RECOVERY_PASS:partial_write checkpoint=5",
+    "P1_CRASH_RECOVERY_PASS:after_flush checkpoint=5",
+    "P1_CRASH_RECOVERY_PASS:after_verify checkpoint=5",
+    "P1_CRASH_RECOVERY_PASS:partial_backup checkpoint=5",
+    "P1_CRASH_RECOVERY_PASS:after_backup_write checkpoint=5",
+    "P1_CRASH_RECOVERY_PASS:after_backup_replace checkpoint=5",
+    "P1_CRASH_RECOVERY_PASS:after_main_replace checkpoint=10",
+    "P1_CRASH_PASS stages=8",
+    "P1_DEMO_PASS date=0020-01-01 progress=7305 spent=1 engine=4.8-beta3 (official) display=headless",
+    "P1_DEMO_PASS date=0020-01-01 progress=7305 spent=1 engine=4.8-beta3 (official) display=Windows",
+    "P1_VERIFY_PASS",
+    "P2_ASSETS_PASS packs=3 models=20",
+    "P2_RULE_PASS checks=47",
+    "P2_SCENE_PASS",
+    "P2_RESUME_PASS",
+    "P3_RULE_PASS checks=337",
+    "P3_CRASH_PASS terminations=64",
+    "P3_SCENE_PASS day=3663 partial_practice=10",
+    "P3_RESUME_PASS day=3713 wallet=47",
+    "P3_CONDENSE_PASS day=3653",
+    "P3_PROPERTY_PASS",
+    "P3_MORTALITY_PASS",
+    "P3_VERIFY_PASS",
+    "P4_RULE_PASS checks=83 failures=0",
+    "P4_UI_YOUNG_PASS renderer=forward_plus",
+    "P4_UI_CORE_PASS renderer=forward_plus",
+    "P4_UI_FOUNDATION_PASS renderer=forward_plus",
+    "P4_UI_ELITE_PASS renderer=forward_plus",
+    "P4_UI_YOUNG_PASS renderer=gl_compatibility",
+    "P4_UI_CORE_PASS renderer=gl_compatibility",
+    "P4_UI_FOUNDATION_PASS renderer=gl_compatibility",
+    "P4_UI_ELITE_PASS renderer=gl_compatibility",
+    "P4_UI_PASS",
+    "P4_MOTION_PASS",
+    "P4_VERIFY_PASS",
+    "P5_RULE_PASS checks=540 failures=0",
+    "P5_CRASH_PASS terminations=40",
+    "P5_REBIRTH_PASS carrier=warm wallet=4",
+    "P5_ENDING_PASS",
+    "P5_EXPORT_PASS",
+    "P5_VERIFY_PASS",
+    "P71_RULE_PASS checks=75 failures=0",
+    "P71_BOLT_PASS quality=1 damage=15 qi_before=50000 qi_after=43000",
+    "P71_BOLT_PASS quality=3 damage=21 qi_before=50000 qi_after=43000",
+    "P71_INHERITED_RECIPE_PASS",
+    "P71_EXPORT_PASS",
+    "P71_VERIFY_PASS",
+    "P71_CLEAN_CHECKOUT_PASS"
+  ],
+  "rules_two_identical_runs": [
+    "P71_STUDY timing=never herb=1461 alchemy=2192 total_days=3653 spent=20",
+    "P71_STUDY timing=early herb=731 alchemy=1096 total_days=3288 spent=28",
+    "P71_STUDY timing=late herb=1461 alchemy=1096 total_days=4018 spent=28",
+    "P71_RECIPE carrier=cold wood=false days=3 restored_sensitivity=2",
+    "P71_RULE_PASS checks=75 failures=0"
+  ],
+  "export_observations": [
+    "P71_LESSON Травничество days=731",
+    "P71_LESSON Алхимия и оба способа days=1096",
+    "P5_FIRST_FOUNDATION method=smooth day=16480 wallet=25",
+    "P5_WINDUP_SAVED",
+    "P5_DEATH_SAVED",
+    "P5_TRANSFER_SAVED",
+    "P71_INHERITANCE carrier=warm mind=2 sensitivity=2",
+    "P71_INHERITED_RECIPE_PASS",
+    "P5_REBIRTH_PASS carrier=warm wallet=4"
+  ],
+  "bolt_keyboard_input_same_start": [
+    {
+      "stage": "initial",
+      "observation": "P71_BOLT_PASS quality=1 damage=15 qi_before=50000 qi_after=43000",
+      "snapshot_hero_milli_qi": 43000,
+      "snapshot_young_hp": 15
+    },
+    {
+      "stage": "foundation",
+      "observation": "P71_BOLT_PASS quality=3 damage=21 qi_before=50000 qi_after=43000",
+      "snapshot_hero_milli_qi": 43000,
+      "snapshot_young_hp": 9
+    }
+  ],
+  "second_foundation_snapshot": {
+    "schema": 6,
+    "day": 31861,
+    "first_foundation_day": 16475,
+    "soul_limit_years": 200,
+    "mental": {
+      "control": 4,
+      "focus": 2,
+      "reason": 2
+    },
+    "wallet": 4,
+    "stone_fees_including_chambers": 31,
+    "bodies": [
+      {
+        "alive": false,
+        "born": -7305,
+        "died": 16480,
+        "footwork": 1,
+        "id": "body.1",
+        "limit_years": 200,
+        "milestone": "foundation",
+        "practice_days": 30,
+        "profile": "first",
+        "sense_drills": 0
+      },
+      {
+        "alive": true,
+        "born": 11731,
+        "died": -1,
+        "footwork": 0,
+        "id": "body.2",
+        "limit_years": 200,
+        "milestone": "foundation",
+        "practice_days": 30,
+        "profile": "warm",
+        "sense_drills": 1
+      }
+    ],
+    "stabilization_mastery": 2,
+    "lessons_and_stabilizations": [
+      {
+        "customer": "body.1",
+        "recipe": "learn.herbalism",
+        "days": 731,
+        "status": "claimed"
+      },
+      {
+        "customer": "body.1",
+        "recipe": "learn.alchemy",
+        "days": 1096,
+        "status": "claimed"
+      },
+      {
+        "customer": "body.1",
+        "recipe": "stabilize",
+        "days": 2,
+        "status": "claimed"
+      },
+      {
+        "customer": "body.1",
+        "recipe": "mature",
+        "days": 30,
+        "status": "claimed"
+      },
+      {
+        "customer": "body.2",
+        "recipe": "stabilize",
+        "days": 2,
+        "status": "claimed"
+      },
+      {
+        "customer": "body.2",
+        "recipe": "mature",
+        "days": 30,
+        "status": "claimed"
+      }
+    ]
+  },
+  "p4_export_motion": [
+    {
+      "renderer": "forward_plus",
+      "scene": "ground",
+      "pace": "normal",
+      "frames": 82,
+      "fps": 143.83,
+      "frame_ms_p95": 7.434,
+      "combat_hz": 58.6,
+      "hero_hold_percent": 0.0,
+      "camera_landmark_hold_percent": 0.0
+    },
+    {
+      "renderer": "forward_plus",
+      "scene": "ground",
+      "pace": "half",
+      "frames": 162,
+      "fps": 144.03,
+      "frame_ms_p95": 7.256,
+      "combat_hz": 29.52,
+      "hero_hold_percent": 0.0,
+      "camera_landmark_hold_percent": 0.0
+    },
+    {
+      "renderer": "forward_plus",
+      "scene": "ground",
+      "pace": "quarter",
+      "frames": 327,
+      "fps": 143.99,
+      "frame_ms_p95": 7.232,
+      "combat_hz": 14.58,
+      "hero_hold_percent": 0.0,
+      "camera_landmark_hold_percent": 0.0
+    },
+    {
+      "renderer": "forward_plus",
+      "scene": "air",
+      "pace": "normal",
+      "frames": 82,
+      "fps": 143.94,
+      "frame_ms_p95": 7.233,
+      "combat_hz": 58.64,
+      "hero_hold_percent": 0.0,
+      "camera_landmark_hold_percent": 0.0
+    },
+    {
+      "renderer": "forward_plus",
+      "scene": "air",
+      "pace": "half",
+      "frames": 163,
+      "fps": 143.99,
+      "frame_ms_p95": 7.235,
+      "combat_hz": 29.33,
+      "hero_hold_percent": 0.0,
+      "camera_landmark_hold_percent": 0.0
+    },
+    {
+      "renderer": "forward_plus",
+      "scene": "air",
+      "pace": "quarter",
+      "frames": 326,
+      "fps": 144.0,
+      "frame_ms_p95": 7.236,
+      "combat_hz": 14.62,
+      "hero_hold_percent": 0.0,
+      "camera_landmark_hold_percent": 0.0
+    },
+    {
+      "renderer": "gl_compatibility",
+      "scene": "ground",
+      "pace": "normal",
+      "frames": 83,
+      "fps": 143.92,
+      "frame_ms_p95": 7.515,
+      "combat_hz": 57.92,
+      "hero_hold_percent": 0.0,
+      "camera_landmark_hold_percent": 0.0
+    },
+    {
+      "renderer": "gl_compatibility",
+      "scene": "ground",
+      "pace": "half",
+      "frames": 163,
+      "fps": 143.99,
+      "frame_ms_p95": 7.551,
+      "combat_hz": 29.33,
+      "hero_hold_percent": 0.0,
+      "camera_landmark_hold_percent": 0.0
+    },
+    {
+      "renderer": "gl_compatibility",
+      "scene": "ground",
+      "pace": "quarter",
+      "frames": 326,
+      "fps": 144.0,
+      "frame_ms_p95": 7.252,
+      "combat_hz": 14.62,
+      "hero_hold_percent": 0.0,
+      "camera_landmark_hold_percent": 0.0
+    },
+    {
+      "renderer": "gl_compatibility",
+      "scene": "air",
+      "pace": "normal",
+      "frames": 83,
+      "fps": 144.07,
+      "frame_ms_p95": 7.174,
+      "combat_hz": 57.98,
+      "hero_hold_percent": 0.0,
+      "camera_landmark_hold_percent": 0.0
+    },
+    {
+      "renderer": "gl_compatibility",
+      "scene": "air",
+      "pace": "half",
+      "frames": 163,
+      "fps": 144.04,
+      "frame_ms_p95": 7.132,
+      "combat_hz": 29.34,
+      "hero_hold_percent": 0.0,
+      "camera_landmark_hold_percent": 0.0
+    },
+    {
+      "renderer": "gl_compatibility",
+      "scene": "air",
+      "pace": "quarter",
+      "frames": 327,
+      "fps": 144.0,
+      "frame_ms_p95": 7.148,
+      "combat_hz": 14.58,
+      "hero_hold_percent": 0.0,
+      "camera_landmark_hold_percent": 0.0
+    }
+  ],
+  "schema5_fixtures": [
+    {
+      "file": "current.snapshot",
+      "bytes": 15885,
+      "sha256": "bbedaacd92aebfbe303db1561d6ea4fd0360ff81f1859054b754a6e66eb1000c"
+    },
+    {
+      "file": "previous.snapshot",
+      "bytes": 15556,
+      "sha256": "1f9c8c05c00aeb56ea2bf5d25bb9af0f238085e686cda9a24217f373a0698309"
+    }
+  ],
+  "windows_export": [
+    {
+      "file": "CultivationRPG.exe",
+      "bytes": 104852480,
+      "sha256": "2f099ad62fdef78223c5060ad09073ce1829008e3efab3045a6c93ff4e3e215d"
+    },
+    {
+      "file": "CultivationRPG.pck",
+      "bytes": 661896,
+      "sha256": "a9b5867131bf089b9319ed4438d4021e681510eb8e8de8c0b256c5f5f5163401"
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "p71-trained.png",
+      "bytes": 164194,
+      "sha256": "128aea5d540dcebf630820fa38f63bd479387efc5201cee02469eccd14b406e7"
+    },
+    {
+      "file": "p71-new-carrier.png",
+      "bytes": 181023,
+      "sha256": "e74304c634a9502df3f874cc332ebfb1bfc870549e9d101f2adc3480cc26a396"
+    }
+  ]
+}
